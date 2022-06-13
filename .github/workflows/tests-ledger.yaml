@@ -12,4 +12,4 @@ jobs:
     steps:
       # take all codes in thie proj
       - uses: actions/checkout@v2
-      - run: cd ledgers && npm install && npm run test:ci
+      - run: cd ledger && npm install && npm run test:ci
