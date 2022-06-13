@@ -3,7 +3,7 @@ import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 
 import { User } from '../model/user';
-import { validateRequest, BadRequestError } from '@shawtickets/common';
+import { validateRequest, BadRequestError } from '@bookkeeping/common';
 import { Password } from '../services/password';
 import { StatusCodes } from 'http-status-codes';
 

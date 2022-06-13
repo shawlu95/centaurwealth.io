@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ledger-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ledger
+  template:
+    metadata:
+      labels:
+        app: ledger
+    spec:
+      containers:
+        - name: ledger
+          image: shawlu95/ledger
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://ledger-mongo-srv:27017/ledger'
+            - name: jwt
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ledger-srv
+spec:
+  selector:
+    app: ledger
+  ports:
+    - name: ledger
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
