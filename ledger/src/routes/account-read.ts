@@ -18,4 +18,4 @@ router.get('/api/account', requireAuth, async (req: Request, res: Response) => {
   return res.status(StatusCodes.OK).send({ accounts });
 });
 
-export { router as accountGet };
+export { router as accountRead };
