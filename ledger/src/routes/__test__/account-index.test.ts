@@ -2,7 +2,6 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
-import { natsWrapper } from '../../nats-wrapper';
 import { Account, AccountType } from '../../model/account';
 
 it('returns 400 if not signed in', async () => {

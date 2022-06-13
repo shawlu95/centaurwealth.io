@@ -1,10 +1,7 @@
-import mongoose from 'mongoose';
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { Account } from '../model/account';
 import { StatusCodes } from 'http-status-codes';
 import {
-  BadRequestError,
   NotAuthorizedError,
   NotFoundError,
   requireAuth,

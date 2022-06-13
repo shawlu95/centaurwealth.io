@@ -3,8 +3,6 @@ import mongoose from 'mongoose';
 import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
 import { natsWrapper } from '../../nats-wrapper';
-import { EntryType } from '@bookkeeping/common';
-import { Account, AccountType } from '../../model/account';
 import { Transaction } from '../../model/transaction';
 import { buildTransaction } from './transaction-test-util';
 
