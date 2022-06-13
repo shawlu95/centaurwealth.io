@@ -49,7 +49,6 @@ it('returns 400 when trying to use others account', async () => {
     .post('/api/transaction')
     .set('Cookie', global.signin(userId))
     .send({
-      userId,
       memo: 'beer',
       entries: [
         {
@@ -92,7 +91,6 @@ it('returns 401 when debit != credit', async () => {
     .post('/api/transaction')
     .set('Cookie', global.signin(userId))
     .send({
-      userId,
       memo: 'beer',
       entries: [
         {
@@ -137,7 +135,6 @@ it('returns 200 with successful transaction', async () => {
     .post('/api/transaction')
     .set('Cookie', global.signin(userId))
     .send({
-      userId,
       memo: 'beer',
       entries: [
         {
