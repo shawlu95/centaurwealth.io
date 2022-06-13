@@ -4,7 +4,7 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 
 import { accountCreate } from './routes/account-create';
-import { accountRead } from './routes/account-read';
+import { accountRead } from './routes/account-index';
 import { accountUpdate } from './routes/account-update';
 import { transactionCreate } from './routes/transaction-create';
 import { transactionRead } from './routes/transaction-index';
