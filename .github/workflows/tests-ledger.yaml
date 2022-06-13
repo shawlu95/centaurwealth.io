@@ -1,0 +1,15 @@
+name: tests-ledger
+
+on:
+  pull_request:
+    paths:
+      - 'ledger/**'
+
+jobs:
+  build:
+    # start up a container
+    runs-on: ubuntu-latest
+    steps:
+      # take all codes in thie proj
+      - uses: actions/checkout@v2
+      - run: cd ledgers && npm install && npm run test:ci
