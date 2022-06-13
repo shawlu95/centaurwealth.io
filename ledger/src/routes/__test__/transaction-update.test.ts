@@ -8,6 +8,32 @@ import { Account, AccountType } from '../../model/account';
 import { Transaction } from '../../model/transaction';
 import { buildAccountPair } from './transaction-test-util';
 
+const buildTransaction = async () => {
+  const { userId, cash, expense } = await buildAccountPair();
+  const transaction = Transaction.build({
+    userId,
+    memo: 'beer',
+    entries: [
+      {
+        amount: 10,
+        type: EntryType.Credit,
+        accountId: cash.id,
+        accountName: cash.name,
+        accountType: cash.type,
+      },
+      {
+        amount: 10,
+        type: EntryType.Debit,
+        accountId: expense.id,
+        accountName: expense.name,
+        accountType: expense.type,
+      },
+    ],
+  });
+  await transaction.save();
+  return { userId, cash, expense, transaction };
+};
+
 it('returns 400 if not signed in', async () => {
   await request(app)
     .put('/api/transaction')
@@ -16,12 +42,118 @@ it('returns 400 if not signed in', async () => {
 });
 
 it('returns 401 if missing memo', async () => {
-  const { userId, cash, expense } = await buildAccountPair();
-
+  const { userId, cash, expense, transaction } = await buildTransaction();
   await request(app)
-    .post('/api/transaction')
+    .put('/api/transaction')
     .set('Cookie', global.signin(userId))
     .send({
+      id: transaction.id,
+      entries: [
+        {
+          amount: 10,
+          type: EntryType.Credit,
+          accountId: cash.id,
+          accountName: cash.name,
+          accountType: cash.type,
+        },
+        {
+          amount: 10,
+          type: EntryType.Debit,
+          accountId: expense.id,
+          accountName: expense.name,
+          accountType: expense.type,
+        },
+      ],
+    })
+    .expect(StatusCodes.BAD_REQUEST);
+});
+
+it('returns 401 if no entry', async () => {
+  const { userId, cash, expense, transaction } = await buildTransaction();
+  await request(app)
+    .put('/api/transaction')
+    .set('Cookie', global.signin(userId))
+    .send({
+      id: transaction.id,
+      memo: 'food',
+      entries: [],
+    })
+    .expect(StatusCodes.BAD_REQUEST);
+});
+
+it('returns 400 when trying to use others transaction', async () => {
+  const { userId, cash, expense, transaction } = await buildTransaction();
+  await request(app)
+    .put('/api/transaction')
+    .set('Cookie', global.signin())
+    .send({
+      id: transaction.id,
+      memo: 'beer',
+      entries: [
+        {
+          amount: 5,
+          type: EntryType.Credit,
+          accountId: cash.id,
+          accountName: cash.name,
+          accountType: cash.type,
+        },
+        {
+          amount: 5,
+          type: EntryType.Debit,
+          accountId: expense.id,
+          accountName: expense.name,
+          accountType: expense.type,
+        },
+      ],
+    })
+    .expect(StatusCodes.UNAUTHORIZED);
+});
+
+it('returns 400 when trying to use others account', async () => {
+  const { userId, cash, expense, transaction } = await buildTransaction();
+
+  const newCash = Account.build({
+    userId: new mongoose.Types.ObjectId().toHexString(),
+    name: 'cash',
+    type: AccountType.Asset,
+  });
+  await newCash.save();
+
+  await request(app)
+    .put('/api/transaction')
+    .set('Cookie', global.signin(userId))
+    .send({
+      id: transaction.id,
+      memo: 'beer',
+      entries: [
+        {
+          amount: 10,
+          type: EntryType.Credit,
+          accountId: newCash.id,
+          accountName: cash.name,
+          accountType: cash.type,
+        },
+        {
+          amount: 10,
+          type: EntryType.Debit,
+          accountId: expense.id,
+          accountName: expense.name,
+          accountType: expense.type,
+        },
+      ],
+    })
+    .expect(StatusCodes.UNAUTHORIZED);
+});
+
+it('returns 401 when debit != credit', async () => {
+  const { userId, cash, expense, transaction } = await buildTransaction();
+
+  await request(app)
+    .put('/api/transaction')
+    .set('Cookie', global.signin(userId))
+    .send({
+      id: transaction.id,
+      memo: 'beer',
       entries: [
         {
           amount: 10,
@@ -42,10 +174,37 @@ it('returns 401 if missing memo', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
-it('returns 401 if no entry', async () => {});
+it('returns 200 with successful transaction', async () => {
+  const { userId, cash, expense, transaction } = await buildTransaction();
 
-it('returns 400 when trying to use others account', async () => {});
+  await request(app)
+    .put('/api/transaction')
+    .set('Cookie', global.signin(userId))
+    .send({
+      id: transaction.id,
+      memo: 'food',
+      entries: [
+        {
+          amount: 5,
+          type: EntryType.Credit,
+          accountId: cash.id,
+          accountName: cash.name,
+          accountType: cash.type,
+        },
+        {
+          amount: 5,
+          type: EntryType.Debit,
+          accountId: expense.id,
+          accountName: expense.name,
+          accountType: expense.type,
+        },
+      ],
+    })
+    .expect(StatusCodes.OK);
 
-it('returns 401 when debit != credit', async () => {});
-
-it('returns 200 with successful transaction', async () => {});
+  const updated = await Transaction.findById(transaction.id);
+  expect(updated).toBeDefined();
+  expect(updated!.userId).toEqual(userId);
+  expect(updated!.memo).toEqual('food');
+  expect(updated!.entries[0].amount).toEqual(5);
+});

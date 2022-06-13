@@ -16,16 +16,35 @@ const router = express.Router();
 
 const validators = [
   body('memo').not().isEmpty().withMessage('Please provide transaction memo'),
+  body('entries').not().isEmpty().withMessage('Please provide entries'),
 ];
 
 router.put(
   '/api/transaction',
   requireAuth,
-  // validators,
-  // validateRequest,
+  validators,
+  validateRequest,
   async (req: Request, res: Response) => {
-    console.log('update transaction');
-    return res.status(StatusCodes.OK).send({ status: 'ok' });
+    const { id, memo, entries } = req.body;
+    const userId = req.currentUser!.id;
+
+    const transaction = await Transaction.findById(id);
+    if (!transaction) {
+      throw new NotFoundError();
+    }
+
+    if (userId != transaction.userId) {
+      throw new NotAuthorizedError();
+    }
+
+    transaction.set({
+      userId,
+      memo,
+      entries,
+    });
+    await transaction.save();
+
+    return res.status(StatusCodes.OK).send({ id: transaction.id });
   }
 );
 
