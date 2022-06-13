@@ -4,6 +4,7 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 
 import { accountCreate } from './routes/account-create';
+import { accountGet } from './routes/account-get';
 import { accountUpdate } from './routes/account-update';
 import { transactionCreate } from './routes/transaction-create';
 import { transactionUpdate } from './routes/transaction-update';
@@ -24,6 +25,7 @@ app.use(
 app.use(currentUser);
 
 app.use(accountCreate);
+app.use(accountGet);
 app.use(accountUpdate);
 app.use(transactionCreate);
 app.use(transactionUpdate);
