@@ -7,7 +7,7 @@ import { currentUserRouter } from './routes/current-user';
 import { signinRouter } from './routes/signin';
 import { signoutRouter } from './routes/signout';
 import { signupRouter } from './routes/signup';
-import { errorHandler, NotFoundError } from '@shawtickets/common';
+import { errorHandler, NotFoundError } from '@bookkeeping/common';
 
 const app = express();
 app.set('trust proxy', true); // trust nginx
