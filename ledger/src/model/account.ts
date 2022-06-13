@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
-import { AssetClass } from '@bookkeeping/common';
+import { AccountType } from '@bookkeeping/common';
 
 interface AccountAttrs {
   userId: string;
   name: string;
-  class: AssetClass;
+  type: AccountType;
 }
 
 interface AccountModel extends mongoose.Model<AccountDoc> {
@@ -14,7 +14,7 @@ interface AccountModel extends mongoose.Model<AccountDoc> {
 interface AccountDoc extends mongoose.Document {
   userId: string;
   name: string;
-  class: AssetClass;
+  type: AccountType;
 }
 
 const accountSchema = new mongoose.Schema(
@@ -27,10 +27,10 @@ const accountSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    class: {
+    type: {
       type: String,
       required: true,
-      enum: Object.values(AssetClass),
+      enum: Object.values(AccountType),
     },
   },
   {
@@ -52,4 +52,4 @@ const Account = mongoose.model<AccountAttrs, AccountModel>(
   accountSchema
 );
 
-export { Account };
+export { Account, AccountType };

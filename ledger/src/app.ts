@@ -9,6 +9,7 @@ import { transactionCreate } from './routes/transaction-create';
 import { transactionUpdate } from './routes/transaction-update';
 import { transactionDelete } from './routes/transaction-delete';
 
+import { currentUser } from '@bookkeeping/common';
 import { errorHandler, NotFoundError } from '@bookkeeping/common';
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(
     secure: false,
   })
 );
+app.use(currentUser);
 
 app.use(accountCreate);
 app.use(accountUpdate);
