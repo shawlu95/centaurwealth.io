@@ -15,6 +15,7 @@ import { Transaction } from '../model/transaction';
 const router = express.Router();
 
 const validators = [
+  body('id').not().isEmpty().withMessage('Please provide transaction id'),
   body('memo').not().isEmpty().withMessage('Please provide transaction memo'),
   body('entries').not().isEmpty().withMessage('Please provide entries'),
 ];

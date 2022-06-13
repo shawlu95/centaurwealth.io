@@ -15,6 +15,33 @@ it('returns 400 if not signed in', async () => {
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
+it('returns 401 if missing id', async () => {
+  const { userId, cash, expense, transaction } = await buildTransaction();
+  await request(app)
+    .put('/api/transaction')
+    .set('Cookie', global.signin(userId))
+    .send({
+      memo: 'food',
+      entries: [
+        {
+          amount: 10,
+          type: EntryType.Credit,
+          accountId: cash.id,
+          accountName: cash.name,
+          accountType: cash.type,
+        },
+        {
+          amount: 10,
+          type: EntryType.Debit,
+          accountId: expense.id,
+          accountName: expense.name,
+          accountType: expense.type,
+        },
+      ],
+    })
+    .expect(StatusCodes.BAD_REQUEST);
+});
+
 it('returns 401 if missing memo', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
   await request(app)
