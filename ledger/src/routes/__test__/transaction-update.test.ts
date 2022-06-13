@@ -6,33 +6,7 @@ import { natsWrapper } from '../../nats-wrapper';
 import { EntryType } from '@bookkeeping/common';
 import { Account, AccountType } from '../../model/account';
 import { Transaction } from '../../model/transaction';
-import { buildAccountPair } from './transaction-test-util';
-
-const buildTransaction = async () => {
-  const { userId, cash, expense } = await buildAccountPair();
-  const transaction = Transaction.build({
-    userId,
-    memo: 'beer',
-    entries: [
-      {
-        amount: 10,
-        type: EntryType.Credit,
-        accountId: cash.id,
-        accountName: cash.name,
-        accountType: cash.type,
-      },
-      {
-        amount: 10,
-        type: EntryType.Debit,
-        accountId: expense.id,
-        accountName: expense.name,
-        accountType: expense.type,
-      },
-    ],
-  });
-  await transaction.save();
-  return { userId, cash, expense, transaction };
-};
+import { buildTransaction } from './transaction-test-util';
 
 it('returns 400 if not signed in', async () => {
   await request(app)

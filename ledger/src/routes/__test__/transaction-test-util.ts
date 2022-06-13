@@ -25,3 +25,29 @@ export const buildAccountPair = async () => {
 
   return { userId, cash, expense };
 };
+
+export const buildTransaction = async () => {
+  const { userId, cash, expense } = await buildAccountPair();
+  const transaction = Transaction.build({
+    userId,
+    memo: 'beer',
+    entries: [
+      {
+        amount: 10,
+        type: EntryType.Credit,
+        accountId: cash.id,
+        accountName: cash.name,
+        accountType: cash.type,
+      },
+      {
+        amount: 10,
+        type: EntryType.Debit,
+        accountId: expense.id,
+        accountName: expense.name,
+        accountType: expense.type,
+      },
+    ],
+  });
+  await transaction.save();
+  return { userId, cash, expense, transaction };
+};
