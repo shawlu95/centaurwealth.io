@@ -17,6 +17,14 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: shawlu95/balance
+      context: balance
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
     - image: shawlu95/ledger
       context: ledger
       docker:

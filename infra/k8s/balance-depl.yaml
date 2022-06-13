@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: balance-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: balance
+  template:
+    metadata:
+      labels:
+        app: balance
+    spec:
+      containers:
+        - name: balance
+          image: shawlu95/balance
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://balance-mongo-srv:27017/balance'
+            - name: jwt
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: balance-srv
+spec:
+  selector:
+    app: balance
+  ports:
+    - name: balance
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

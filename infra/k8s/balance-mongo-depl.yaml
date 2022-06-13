@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: balance-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: balance-mongo
+  template:
+    metadata:
+      labels:
+        app: balance-mongo
+    spec:
+      containers:
+        - name: balance-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: balance-mongo-srv
+spec:
+  selector:
+    app: balance-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
