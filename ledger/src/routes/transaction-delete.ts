@@ -8,6 +8,8 @@ import {
   validateRequest,
 } from '@bookkeeping/common';
 import { Transaction } from '../model/transaction';
+import { TransactionDeletedPublisher } from '../events/publishers/transaction-deleted-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -33,6 +35,9 @@ router.delete(
     }
 
     await Transaction.deleteOne({ id });
+
+    new TransactionDeletedPublisher(natsWrapper.client).publish({ id });
+
     return res.status(StatusCodes.OK).send();
   }
 );

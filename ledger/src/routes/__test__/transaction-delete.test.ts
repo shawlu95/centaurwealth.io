@@ -50,3 +50,17 @@ it('returns 200 if delete successfully', async () => {
   const deleted = await Transaction.findById(transaction.id);
   expect(deleted).toBeNull();
 });
+
+it('emits an transaction delete event', async () => {
+  const { userId, transaction } = await buildTransaction();
+
+  expect(natsWrapper.client.publish).not.toHaveBeenCalled();
+
+  await request(app)
+    .delete('/api/transaction')
+    .set('Cookie', global.signin(userId))
+    .send({ id: transaction.id })
+    .expect(StatusCodes.OK);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+});

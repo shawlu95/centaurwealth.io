@@ -8,6 +8,8 @@ import {
   validateRequest,
 } from '@bookkeeping/common';
 import { Transaction } from '../model/transaction';
+import { TransactionUpdatedPublisher } from '../events/publishers/transaction-updated-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -41,6 +43,13 @@ router.put(
       entries,
     });
     await transaction.save();
+
+    new TransactionUpdatedPublisher(natsWrapper.client).publish({
+      id: transaction.id,
+      userId: transaction.userId,
+      memo: transaction.memo,
+      entries: transaction.entries,
+    });
 
     return res.status(StatusCodes.OK).send({ id: transaction.id });
   }

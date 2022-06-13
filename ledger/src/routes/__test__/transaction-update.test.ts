@@ -209,3 +209,36 @@ it('returns 200 with successful transaction', async () => {
   expect(updated!.memo).toEqual('food');
   expect(updated!.entries[0].amount).toEqual(5);
 });
+
+it('emits a transaction created event', async () => {
+  const { userId, cash, expense, transaction } = await buildTransaction();
+
+  expect(natsWrapper.client.publish).not.toHaveBeenCalled();
+
+  await request(app)
+    .put('/api/transaction')
+    .set('Cookie', global.signin(userId))
+    .send({
+      id: transaction.id,
+      memo: 'food',
+      entries: [
+        {
+          amount: 5,
+          type: EntryType.Credit,
+          accountId: cash.id,
+          accountName: cash.name,
+          accountType: cash.type,
+        },
+        {
+          amount: 5,
+          type: EntryType.Debit,
+          accountId: expense.id,
+          accountName: expense.name,
+          accountType: expense.type,
+        },
+      ],
+    })
+    .expect(StatusCodes.OK);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
