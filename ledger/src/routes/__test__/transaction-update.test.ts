@@ -22,6 +22,7 @@ it('returns 401 if missing id', async () => {
     .set('Cookie', global.signin(userId))
     .send({
       memo: 'food',
+      date: '2022-06-12',
       entries: [
         {
           amount: 10,
@@ -49,6 +50,7 @@ it('returns 401 if missing memo', async () => {
     .set('Cookie', global.signin(userId))
     .send({
       id: transaction.id,
+      date: '2022-06-12',
       entries: [
         {
           amount: 10,
@@ -77,7 +79,36 @@ it('returns 401 if no entry', async () => {
     .send({
       id: transaction.id,
       memo: 'food',
+      date: '2022-06-12',
       entries: [],
+    })
+    .expect(StatusCodes.BAD_REQUEST);
+});
+
+it('returns 401 if no date', async () => {
+  const { userId, cash, expense, transaction } = await buildTransaction();
+  await request(app)
+    .put('/api/transaction')
+    .set('Cookie', global.signin(userId))
+    .send({
+      id: transaction.id,
+      memo: 'food',
+      entries: [
+        {
+          amount: 10,
+          type: EntryType.Credit,
+          accountId: cash.id,
+          accountName: cash.name,
+          accountType: cash.type,
+        },
+        {
+          amount: 10,
+          type: EntryType.Debit,
+          accountId: expense.id,
+          accountName: expense.name,
+          accountType: expense.type,
+        },
+      ],
     })
     .expect(StatusCodes.BAD_REQUEST);
 });
@@ -90,6 +121,7 @@ it('returns 400 when trying to use others transaction', async () => {
     .send({
       id: transaction.id,
       memo: 'beer',
+      date: '2022-06-12',
       entries: [
         {
           amount: 5,
@@ -126,6 +158,7 @@ it('returns 400 when trying to use others account', async () => {
     .send({
       id: transaction.id,
       memo: 'beer',
+      date: '2022-06-12',
       entries: [
         {
           amount: 10,
@@ -155,6 +188,7 @@ it('returns 401 when debit != credit', async () => {
     .send({
       id: transaction.id,
       memo: 'beer',
+      date: '2022-06-12',
       entries: [
         {
           amount: 10,
@@ -184,6 +218,7 @@ it('returns 200 with successful transaction', async () => {
     .send({
       id: transaction.id,
       memo: 'food',
+      date: '2022-06-12',
       entries: [
         {
           amount: 5,
@@ -221,7 +256,7 @@ it('emits a transaction created event', async () => {
     .send({
       id: transaction.id,
       memo: 'food',
-      date: new Date(),
+      date: '2022-06-12',
       entries: [
         {
           amount: 5,
