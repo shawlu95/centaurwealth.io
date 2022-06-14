@@ -48,5 +48,12 @@ export const buildTransaction = async () => {
     ],
   });
   await transaction.save();
+
+  cash.set({ credit: 10 });
+  await cash.save();
+
+  expense.set({ debit: 10 });
+  await expense.save();
+
   return { userId, cash, expense, transaction };
 };
