@@ -61,7 +61,11 @@ export class TransactionUpdatedListener extends Listener<TransactionUpdatedEvent
         });
       }
 
-      old.set({ memo: data.memo, entries: data.entries });
+      old.set({
+        memo: data.memo,
+        date: new Date(data.date),
+        entries: data.entries,
+      });
       await old.save();
 
       await account.save();

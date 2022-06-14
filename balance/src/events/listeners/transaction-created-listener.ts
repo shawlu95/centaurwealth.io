@@ -18,7 +18,10 @@ export class TransactionCreatedListener extends Listener<TransactionCreatedEvent
   queueGroupName = queueGroupName;
 
   async onMessage(data: TransactionCreatedEvent['data'], msg: Message) {
-    const transaction = Transaction.build(data);
+    const transaction = Transaction.build({
+      ...data,
+      date: new Date(data.date),
+    });
     await transaction.save();
 
     for (var i in data.entries) {

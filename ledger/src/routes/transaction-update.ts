@@ -25,7 +25,7 @@ router.put(
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
-    const { id, memo, entries } = req.body;
+    const { id, memo, date, entries } = req.body;
     const userId = req.currentUser!.id;
 
     const transaction = await Transaction.findById(id);
@@ -40,6 +40,7 @@ router.put(
     transaction.set({
       userId,
       memo,
+      date: new Date(date),
       entries,
     });
     await transaction.save();
@@ -48,6 +49,7 @@ router.put(
       id: transaction.id,
       userId: transaction.userId,
       memo: transaction.memo,
+      date: transaction.date,
       entries: transaction.entries,
     });
 

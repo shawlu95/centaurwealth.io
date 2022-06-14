@@ -33,6 +33,7 @@ it('returns transactions of signed-in user', async () => {
   const transaciton = Transaction.build({
     userId,
     memo: 'beer',
+    date: new Date(),
     entries: [
       {
         amount: 10,

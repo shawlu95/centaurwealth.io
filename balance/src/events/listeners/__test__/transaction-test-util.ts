@@ -30,6 +30,7 @@ export const buildTransaction = async () => {
     id: new mongoose.Types.ObjectId().toHexString(),
     userId,
     memo: 'beer',
+    date: new Date(),
     entries: [
       {
         amount: 10,
