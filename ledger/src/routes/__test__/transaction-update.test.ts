@@ -221,6 +221,7 @@ it('emits a transaction created event', async () => {
     .send({
       id: transaction.id,
       memo: 'food',
+      date: new Date(),
       entries: [
         {
           amount: 5,

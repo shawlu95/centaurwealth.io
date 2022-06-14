@@ -22,6 +22,7 @@ it('returns 401 when memo is missing', async () => {
     .post('/api/transaction')
     .set('Cookie', global.signin(userId))
     .send({
+      date: new Date(),
       entries: [
         {
           amount: 10,
@@ -57,6 +58,7 @@ it('returns 400 when trying to use others account', async () => {
     .set('Cookie', global.signin(userId))
     .send({
       memo: 'beer',
+      date: new Date(),
       entries: [
         {
           amount: 10,
@@ -85,6 +87,7 @@ it('returns 401 when debit != credit', async () => {
     .set('Cookie', global.signin(userId))
     .send({
       memo: 'beer',
+      date: new Date(),
       entries: [
         {
           amount: 10,
@@ -115,6 +118,7 @@ it('returns 200 with successful transaction', async () => {
     .set('Cookie', global.signin(userId))
     .send({
       memo: 'beer',
+      date: new Date(),
       entries: [
         {
           amount: 10,
@@ -151,6 +155,7 @@ it('emits a transaction created event', async () => {
     .set('Cookie', global.signin(userId))
     .send({
       memo: 'beer',
+      date: new Date(),
       entries: [
         {
           amount: 10,

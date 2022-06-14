@@ -20,6 +20,7 @@ const setup = async () => {
     id: new mongoose.Types.ObjectId().toHexString(),
     userId,
     memo: 'fun',
+    date: new Date(),
     entries: [
       {
         amount: 10,

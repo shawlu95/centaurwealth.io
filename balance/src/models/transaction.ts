@@ -13,6 +13,7 @@ interface TransactionAttrs {
   id: string; // required to replicate object
   userId: string;
   memo: string;
+  date: Date;
   entries: Entry[];
 }
 
@@ -23,6 +24,7 @@ interface TransactionModel extends mongoose.Model<TransactionDoc> {
 interface TransactionDoc extends mongoose.Document {
   userId: string;
   memo: string;
+  date: Date;
   entries: Entry[];
 }
 
@@ -59,6 +61,10 @@ const transactionSchema = new mongoose.Schema(
     },
     memo: {
       type: String,
+      required: true,
+    },
+    date: {
+      type: mongoose.Schema.Types.Date,
       required: true,
     },
     entries: {

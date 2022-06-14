@@ -21,6 +21,7 @@ const setup = async () => {
     id: transaction.id,
     userId,
     memo: 'fun',
+    date: new Date(),
     entries: [
       {
         amount: 15,

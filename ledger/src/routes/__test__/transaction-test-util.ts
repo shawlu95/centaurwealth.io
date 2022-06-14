@@ -27,6 +27,7 @@ export const buildTransaction = async () => {
   const transaction = Transaction.build({
     userId,
     memo: 'beer',
+    date: new Date(),
     entries: [
       {
         amount: 10,

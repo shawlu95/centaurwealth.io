@@ -10,6 +10,8 @@ const router = express.Router();
 
 const validators = [
   body('memo').not().isEmpty().withMessage('Please provide transaction memo'),
+  body('date').not().isEmpty().withMessage('Please provide transaction date'),
+  body('entries').not().isEmpty().withMessage('Please provide entries'),
 ];
 
 router.post(
@@ -18,12 +20,13 @@ router.post(
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
-    const { memo, entries } = req.body;
+    const { memo, date, entries } = req.body;
     const userId = req.currentUser!.id;
 
     const transaction = Transaction.build({
       userId,
       memo,
+      date: new Date(date),
       entries,
     });
     await transaction.save();
@@ -32,6 +35,7 @@ router.post(
       id: transaction.id,
       userId: transaction.userId,
       memo: transaction.memo,
+      date: transaction.date,
       entries: transaction.entries,
     });
     return res.status(StatusCodes.OK).send({ id: transaction.id });
