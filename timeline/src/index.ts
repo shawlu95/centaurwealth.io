@@ -1,0 +1,62 @@
+import mongoose from 'mongoose';
+import { app } from './app';
+import { AccountCreatedListener } from './events/listeners/account-created-listener';
+import { AccountUpdatedListener } from './events/listeners/account-updated-listener';
+import { TransactionCreatedListener } from './events/listeners/transaction-created-listener';
+import { TransactionUpdatedListener } from './events/listeners/transaction-updated-listener';
+import { TransactionDeletedListener } from './events/listeners/transaction-deleted-listener';
+
+import { natsWrapper } from './nats-wrapper';
+
+const start = async () => {
+  if (!process.env.jwt) {
+    throw new Error('JWT key is undefined');
+  }
+
+  if (!process.env.MONGO_URI) {
+    throw new Error('MONGO_URI is undefined');
+  }
+
+  if (!process.env.NATS_CLIENT_ID) {
+    throw new Error('NATS_CLIENT_ID is undefined');
+  }
+
+  if (!process.env.NATS_CLUSTER_ID) {
+    throw new Error('NATS_CLUSTER_ID is undefined');
+  }
+
+  if (!process.env.NATS_URL) {
+    throw new Error('NATS_URL is undefined');
+  }
+
+  try {
+    await natsWrapper.connect(
+      process.env.NATS_CLUSTER_ID,
+      process.env.NATS_CLIENT_ID,
+      process.env.NATS_URL
+    );
+    natsWrapper.client.on('close', () => {
+      console.log('NATS connection closed!');
+      process.exit();
+    });
+    process.on('SIGINT', () => natsWrapper.client.close());
+    process.on('SIGTERM', () => natsWrapper.client.close());
+
+    new AccountCreatedListener(natsWrapper.client).listen();
+    new AccountUpdatedListener(natsWrapper.client).listen();
+    new TransactionCreatedListener(natsWrapper.client).listen();
+    new TransactionUpdatedListener(natsWrapper.client).listen();
+    new TransactionDeletedListener(natsWrapper.client).listen();
+
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('connected to mongodb');
+  } catch (err) {
+    console.error(err);
+  }
+
+  app.listen(3000, () => {
+    console.log('Listening on port 3000');
+  });
+};
+
+start();
