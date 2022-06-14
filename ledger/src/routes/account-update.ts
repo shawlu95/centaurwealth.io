@@ -9,6 +9,8 @@ import {
   requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
+import { AccountUpdatedPublisher } from '../events/publishers/account-updated-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -41,6 +43,13 @@ router.patch(
 
     account.set({ name });
     await account.save();
+
+    new AccountUpdatedPublisher(natsWrapper.client).publish({
+      id: account.id,
+      userId: account.userId,
+      name: account.name,
+      type: account.type,
+    });
 
     return res.status(StatusCodes.OK).send({ id: account.id });
   }

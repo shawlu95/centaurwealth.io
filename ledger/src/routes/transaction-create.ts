@@ -3,6 +3,8 @@ import { body } from 'express-validator';
 import { Transaction } from '../model/transaction';
 import { StatusCodes } from 'http-status-codes';
 import { requireAuth, validateRequest } from '@bookkeeping/common';
+import { TransactionCreatedPublisher } from '../events/publishers/transaction-created-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -25,6 +27,13 @@ router.post(
       entries,
     });
     await transaction.save();
+
+    new TransactionCreatedPublisher(natsWrapper.client).publish({
+      id: transaction.id,
+      userId: transaction.userId,
+      memo: transaction.memo,
+      entries: transaction.entries,
+    });
     return res.status(StatusCodes.OK).send({ id: transaction.id });
   }
 );

@@ -80,3 +80,21 @@ it('returns 200 with successful account creation', async () => {
   expect(account).toBeDefined();
   expect(account!.userId).toEqual(userId);
 });
+
+it('emits an account creation event', async () => {
+  const userId = new mongoose.Types.ObjectId().toHexString();
+  expect(natsWrapper.client.publish).not.toHaveBeenCalled();
+
+  const {
+    body: { id },
+  } = await request(app)
+    .post('/api/account')
+    .set('Cookie', global.signin(userId))
+    .send({
+      name: 'cash',
+      type: 'asset',
+    })
+    .expect(StatusCodes.OK);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+});

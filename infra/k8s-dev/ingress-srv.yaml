@@ -17,6 +17,13 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
+          - path: /api/balance/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: balance-srv
+                port:
+                  number: 3000
           - path: /api/?(.*)
             pathType: Prefix
             backend:

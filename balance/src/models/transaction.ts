@@ -10,6 +10,7 @@ import {
 import { Account } from './account';
 
 interface TransactionAttrs {
+  id: string; // required to replicate object
   userId: string;
   memo: string;
   entries: Entry[];
@@ -108,7 +109,10 @@ transactionSchema.pre('save', async function (done) {
 });
 
 transactionSchema.statics.build = (attrs: TransactionAttrs) => {
-  return new Transaction(attrs);
+  return new Transaction({
+    _id: attrs.id,
+    ...attrs,
+  });
 };
 
 const Transaction = mongoose.model<TransactionAttrs, TransactionModel>(

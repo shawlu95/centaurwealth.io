@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ledger-depl
+  name: balance-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ledger
+      app: balance
   template:
     metadata:
       labels:
-        app: ledger
+        app: balance
     spec:
       containers:
-        - name: ledger
-          image: shawlu95/ledger
+        - name: balance
+          image: shawlu95/balance
           env:
             - name: NATS_CLIENT_ID
               valueFrom:
@@ -25,7 +25,7 @@ spec:
             - name: NATS_CLUSTER_ID
               value: 'book'
             - name: MONGO_URI
-              value: 'mongodb://ledger-mongo-srv:27017/ledger'
+              value: 'mongodb://balance-mongo-srv:27017/balance'
             - name: jwt
               valueFrom:
                 secretKeyRef:
@@ -35,12 +35,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ledger-srv
+  name: balance-srv
 spec:
   selector:
-    app: ledger
+    app: balance
   ports:
-    - name: ledger
+    - name: balance
       protocol: TCP
       port: 3000
       targetPort: 3000

@@ -99,3 +99,23 @@ it('returns 200 with successful update', async () => {
   expect(updated?.userId).toEqual(userId);
   expect(updated?.name).toEqual('equipment');
 });
+
+it('emits an account update event', async () => {
+  const userId = new mongoose.Types.ObjectId().toHexString();
+  const account = Account.build({
+    userId,
+    name: 'cash',
+    type: AccountType.Asset,
+  });
+  await account.save();
+
+  expect(natsWrapper.client.publish).not.toHaveBeenCalled();
+
+  await request(app)
+    .patch('/api/account')
+    .set('Cookie', global.signin(userId))
+    .send({ id: account.id, name: 'equipment' })
+    .expect(StatusCodes.OK);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
