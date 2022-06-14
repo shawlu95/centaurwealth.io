@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import {
+  Entry,
   AccountType,
   BadRequestError,
   EntryType,
@@ -7,14 +8,6 @@ import {
   NotFoundError,
 } from '@bookkeeping/common';
 import { Account } from './account';
-
-interface Entry {
-  amount: number;
-  type: EntryType;
-  accountId: string;
-  accountName: string; // denormalized
-  accountType: AccountType; // denormalized
-}
 
 interface TransactionAttrs {
   userId: string;
