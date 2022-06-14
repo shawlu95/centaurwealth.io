@@ -16,6 +16,14 @@ spec:
         - name: ledger
           image: shawlu95/ledger
           env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'book'
             - name: MONGO_URI
               value: 'mongodb://ledger-mongo-srv:27017/ledger'
             - name: jwt
