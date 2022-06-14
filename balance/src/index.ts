@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 import { app } from './app';
 import { AccountCreatedListener } from './events/listeners/account-created-listener';
 import { AccountUpdatedListener } from './events/listeners/account-updated-listener';
+import { TransactionCreatedListener } from './events/listeners/transaction-created-listener';
+import { TransactionUpdatedListener } from './events/listeners/transaction-updated-listener';
+import { TransactionDeletedListener } from './events/listeners/transaction-deleted-listener';
+
 import { natsWrapper } from './nats-wrapper';
 
 const start = async () => {
@@ -40,6 +44,9 @@ const start = async () => {
 
     new AccountCreatedListener(natsWrapper.client).listen();
     new AccountUpdatedListener(natsWrapper.client).listen();
+    new TransactionCreatedListener(natsWrapper.client).listen();
+    new TransactionUpdatedListener(natsWrapper.client).listen();
+    new TransactionDeletedListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log('connected to mongodb');
