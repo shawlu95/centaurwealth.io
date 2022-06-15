@@ -1,16 +1,13 @@
 import { Message } from 'node-nats-streaming';
 import {
-  Entry,
   Subjects,
   Listener,
-  AccountUpdatedEvent,
   AccountType,
-  NotFoundError,
   TransactionDeletedEvent,
-  EntryType,
 } from '@bookkeeping/common';
 import { queueGroupName } from './queue-group-name';
 import { Point } from '../../model/point';
+import { getDelta } from '../util';
 
 export class TransactionDeletedListener extends Listener<TransactionDeletedEvent> {
   readonly subject = Subjects.TransactionDeleted;
@@ -20,27 +17,8 @@ export class TransactionDeletedListener extends Listener<TransactionDeletedEvent
     const userId = data.userId;
     const date = new Date(data.date);
 
-    var assetDelta = 0;
-    var liabilityDelta = 0;
-    for (var i in data.entries) {
-      const entry: Entry = data.entries[i];
-
-      if (entry.accountType == AccountType.Asset) {
-        if (entry.type == EntryType.Credit) {
-          assetDelta -= entry.amount;
-        } else if (entry.type == EntryType.Debit) {
-          assetDelta += entry.amount;
-        }
-      }
-
-      if (entry.accountType == AccountType.Liability) {
-        if (entry.type == EntryType.Credit) {
-          liabilityDelta += entry.amount;
-        } else if (entry.type == EntryType.Debit) {
-          liabilityDelta -= entry.amount;
-        }
-      }
-    }
+    var assetDelta = getDelta(AccountType.Asset, data.entries);
+    var liabilityDelta = getDelta(AccountType.Liability, data.entries);
 
     const query = { userId, date };
     const update = { expire: new Date() };
