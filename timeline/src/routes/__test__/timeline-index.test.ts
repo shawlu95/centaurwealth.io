@@ -13,11 +13,21 @@ it('returns 401 when not signed in', async () => {
 
 it('returns 200 and list of data points', async () => {
   const userA = new mongoose.Types.ObjectId().toHexString();
-  const pointA = Point.build({ userId: userA, date: new Date('2021-01-01') });
+  const pointA = Point.build({
+    userId: userA,
+    date: new Date('2021-01-01'),
+    asset: 0,
+    liability: 0,
+  });
   await pointA.save();
 
   const userB = new mongoose.Types.ObjectId().toHexString();
-  const pointB = Point.build({ userId: userB, date: new Date('2022-01-01') });
+  const pointB = Point.build({
+    userId: userB,
+    date: new Date('2022-01-01'),
+    asset: 0,
+    liability: 0,
+  });
   await pointB.save();
 
   const {

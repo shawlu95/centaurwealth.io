@@ -9,7 +9,8 @@ router.get(
   '/api/timeline/current',
   requireAuth,
   async (req: Request, res: Response) => {
-    const points = await Point.find({ userId: req.currentUser!.id });
+    const userId = req.currentUser!.id;
+    const points = await Point.find({ userId }).sort('date');
     return res.status(StatusCodes.OK).send({ points });
   }
 );
