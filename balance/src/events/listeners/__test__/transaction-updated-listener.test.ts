@@ -9,35 +9,52 @@ import {
 } from '@bookkeeping/common';
 import mongoose from 'mongoose';
 import { Account } from '../../../models/account';
-import { Transaction } from '../../../models/transaction';
-import { buildTransaction } from './transaction-test-util';
+import { buildAccountPair } from './transaction-test-util';
 import { TransactionUpdatedListener } from '../transaction-updated-listener';
 
 const setup = async () => {
   const listener = new TransactionUpdatedListener(natsWrapper.client);
-  const { userId, cash, expense, transaction } = await buildTransaction();
+  const { userId, cash, expense } = await buildAccountPair();
 
   const data: TransactionUpdatedEvent['data'] = {
-    id: transaction.id,
+    id: userId, // deprecated
     userId,
     memo: 'fun',
     date: new Date(),
-    entries: [
-      {
-        amount: 15,
-        type: EntryType.Credit,
-        accountId: cash.id,
-        accountName: cash.name,
-        accountType: cash.type,
-      },
-      {
-        amount: 15,
-        type: EntryType.Debit,
-        accountId: expense.id,
-        accountName: expense.name,
-        accountType: expense.type,
-      },
-    ],
+    entries: {
+      old: [
+        {
+          amount: 10,
+          type: EntryType.Credit,
+          accountId: cash.id,
+          accountName: cash.name,
+          accountType: cash.type,
+        },
+        {
+          amount: 10,
+          type: EntryType.Debit,
+          accountId: expense.id,
+          accountName: expense.name,
+          accountType: expense.type,
+        },
+      ],
+      new: [
+        {
+          amount: 15,
+          type: EntryType.Credit,
+          accountId: cash.id,
+          accountName: cash.name,
+          accountType: cash.type,
+        },
+        {
+          amount: 15,
+          type: EntryType.Debit,
+          accountId: expense.id,
+          accountName: expense.name,
+          accountType: expense.type,
+        },
+      ],
+    },
   };
 
   // create a fake message with fake ack function
@@ -52,28 +69,22 @@ const setup = async () => {
 it('undoes existing transaction', async () => {
   const { cash, expense, listener, data, msg } = await setup();
 
-  expect(cash.credit).toEqual(10);
+  expect(cash.credit).toEqual(0);
   expect(cash.debit).toEqual(0);
 
   expect(expense.credit).toEqual(0);
-  expect(expense.debit).toEqual(10);
+  expect(expense.debit).toEqual(0);
 
   await listener.onMessage(data, msg);
 
   const updatedCash = await Account.findById(cash.id);
   const updatedExpense = await Account.findById(expense.id);
 
-  expect(updatedCash?.credit).toEqual(15);
+  expect(updatedCash?.credit).toEqual(5);
   expect(updatedCash?.debit).toEqual(0);
 
   expect(updatedExpense?.credit).toEqual(0);
-  expect(updatedExpense?.debit).toEqual(15);
-
-  const transaction = await Transaction.findById(data.id);
-  expect(transaction).not.toBeNull();
-  expect(transaction!.memo).toEqual('fun');
-  expect(transaction!.entries.length).toEqual(2);
-  expect(transaction!.entries[0].amount).toEqual(15);
+  expect(updatedExpense?.debit).toEqual(5);
 });
 
 it('acks the message', async () => {

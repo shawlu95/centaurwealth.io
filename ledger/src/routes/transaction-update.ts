@@ -38,6 +38,7 @@ router.put(
       throw new NotAuthorizedError();
     }
 
+    const deprecated = { ...transaction };
     transaction.set({
       userId,
       memo,
@@ -51,7 +52,10 @@ router.put(
       userId: transaction.userId,
       memo: transaction.memo,
       date: transaction.date,
-      entries: transaction.entries,
+      entries: {
+        old: deprecated.entries,
+        new: transaction.entries,
+      },
     });
 
     return res.status(StatusCodes.OK).send({ id: transaction.id });
