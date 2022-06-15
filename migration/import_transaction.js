@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { signin, getAccounts, postTransaction } = require('./utils');
 const { AccountType } = require('@bookkeeping/common');
-const { email, password } = require('./config');
+const { email, password, file } = require('./config');
 
 const txn = {
   id: null,
@@ -22,9 +22,7 @@ const txn = {
 
   const accounts = await getAccounts({ options });
 
-  const lines = fs
-    .readFileSync('/Users/shaw.lu/Downloads/2022-06-14_entries.csv', 'utf-8')
-    .split(/\r?\n/);
+  const lines = fs.readFileSync(file, 'utf-8').split(/\r?\n/);
 
   for (var i in lines) {
     const line = lines[i];
