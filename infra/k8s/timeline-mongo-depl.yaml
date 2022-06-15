@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timeline-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timeline-mongo
+  template:
+    metadata:
+      labels:
+        app: timeline-mongo
+    spec:
+      containers:
+        - name: timeline-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: timeline-mongo-srv
+spec:
+  selector:
+    app: timeline-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
