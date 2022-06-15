@@ -17,23 +17,27 @@ export class TransactionUpdatedListener extends Listener<TransactionUpdatedEvent
     const userId = data.userId;
     const date = new Date(data.date);
 
-    var assetDelta = -getDelta(AccountType.Asset, data.entries.old);
-    var liabilityDelta = -getDelta(AccountType.Liability, data.entries.old);
-
-    assetDelta += getDelta(AccountType.Asset, data.entries.new);
-    liabilityDelta += getDelta(AccountType.Liability, data.entries.new);
+    var assetDelta =
+      getDelta(AccountType.Asset, data.entries.new) -
+      getDelta(AccountType.Asset, data.entries.old);
+    var liabilityDelta =
+      getDelta(AccountType.Liability, data.entries.new) -
+      getDelta(AccountType.Liability, data.entries.old);
 
     const query = { userId, date };
     const update = { expire: new Date() };
     const options = { upsert: true, new: true, setDefaultsOnInsert: true };
-    var point = await Point.findOneAndUpdate(query, update, options);
+    await Point.findOneAndUpdate(query, update, options);
 
-    point?.set({
-      asset: point.asset + assetDelta,
-      liability: point.liability + liabilityDelta,
-    });
-
-    await point?.save();
+    const points = await Point.find({ userId, date: { $gte: date } });
+    for (var i in points) {
+      const point = points[i];
+      point.set({
+        asset: point.asset + assetDelta,
+        liability: point.liability + liabilityDelta,
+      });
+      await point.save();
+    }
 
     msg.ack();
   }
