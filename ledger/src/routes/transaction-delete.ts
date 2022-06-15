@@ -36,7 +36,13 @@ router.delete(
 
     await Transaction.deleteOne({ id });
 
-    new TransactionDeletedPublisher(natsWrapper.client).publish({ id });
+    new TransactionDeletedPublisher(natsWrapper.client).publish({
+      id: transaction.id,
+      userId: transaction.userId,
+      memo: transaction.memo,
+      date: transaction.date,
+      entries: transaction.entries,
+    });
 
     return res.status(StatusCodes.OK).send();
   }
