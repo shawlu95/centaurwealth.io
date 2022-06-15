@@ -22,7 +22,48 @@ it('returns 401 when memo is missing', async () => {
     .post('/api/transaction')
     .set('Cookie', global.signin(userId))
     .send({
-      date: new Date(),
+      date: '2022-06-12',
+      entries: [
+        {
+          amount: 10,
+          type: EntryType.Credit,
+          accountId: cash.id,
+          accountName: cash.name,
+          accountType: cash.type,
+        },
+        {
+          amount: 5,
+          type: EntryType.Debit,
+          accountId: expense.id,
+          accountName: expense.name,
+          accountType: expense.type,
+        },
+      ],
+    })
+    .expect(StatusCodes.BAD_REQUEST);
+});
+
+it('returns 401 if no entry', async () => {
+  const { userId, cash, expense } = await buildAccountPair();
+  await request(app)
+    .post('/api/transaction')
+    .set('Cookie', global.signin(userId))
+    .send({
+      memo: 'food',
+      date: '2022-06-12',
+      entries: [],
+    })
+    .expect(StatusCodes.BAD_REQUEST);
+});
+
+it('returns 401 if no date', async () => {
+  const { userId, cash, expense } = await buildAccountPair();
+
+  await request(app)
+    .post('/api/transaction')
+    .set('Cookie', global.signin(userId))
+    .send({
+      memo: 'food',
       entries: [
         {
           amount: 10,
@@ -58,7 +99,7 @@ it('returns 400 when trying to use others account', async () => {
     .set('Cookie', global.signin(userId))
     .send({
       memo: 'beer',
-      date: new Date(),
+      date: '2022-06-12',
       entries: [
         {
           amount: 10,
@@ -87,7 +128,7 @@ it('returns 401 when debit != credit', async () => {
     .set('Cookie', global.signin(userId))
     .send({
       memo: 'beer',
-      date: new Date(),
+      date: '2022-06-12',
       entries: [
         {
           amount: 10,
@@ -118,7 +159,7 @@ it('returns 200 with successful transaction', async () => {
     .set('Cookie', global.signin(userId))
     .send({
       memo: 'beer',
-      date: new Date(),
+      date: '2022-06-12',
       entries: [
         {
           amount: 10,
@@ -155,7 +196,7 @@ it('emits a transaction created event', async () => {
     .set('Cookie', global.signin(userId))
     .send({
       memo: 'beer',
-      date: new Date(),
+      date: '2022-06-12',
       entries: [
         {
           amount: 10,
