@@ -4,7 +4,7 @@ import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
 import { natsWrapper } from '../../nats-wrapper';
 import { Account, AccountType } from '../../models/account';
-import { buildTransaction } from '../../events/listeners/__test__/transaction-test-util';
+import { buildAccountPair } from '../../events/listeners/__test__/transaction-test-util';
 
 it('returns 401 when not signed in', async () => {
   await request(app)
@@ -14,7 +14,7 @@ it('returns 401 when not signed in', async () => {
 });
 
 it('returns 200 and list of accounts', async () => {
-  const { userId } = await buildTransaction();
+  const { userId } = await buildAccountPair();
 
   const {
     body: { accounts },

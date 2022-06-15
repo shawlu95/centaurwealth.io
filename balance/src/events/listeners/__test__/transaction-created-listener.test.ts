@@ -8,7 +8,6 @@ import {
 } from '@bookkeeping/common';
 import mongoose from 'mongoose';
 import { Account } from '../../../models/account';
-import { Transaction } from '../../../models/transaction';
 import { buildAccountPair } from './transaction-test-util';
 import { TransactionCreatedListener } from '../transaction-created-listener';
 
@@ -61,12 +60,6 @@ it('adds debit and credit amount to accounts', async () => {
 
   expect(updatedExpense?.credit).toEqual(0);
   expect(updatedExpense?.debit).toEqual(10);
-
-  const transaction = await Transaction.findById(data.id);
-  expect(transaction).not.toBeNull();
-  expect(transaction!.memo).toEqual('fun');
-  expect(transaction!.entries.length).toEqual(2);
-  expect(transaction!.entries[0].amount).toEqual(10);
 });
 
 it('acks the message', async () => {
