@@ -6,7 +6,7 @@ import { Point } from '../../model/point';
 
 it('returns 401 when not signed in', async () => {
   await request(app)
-    .get('/api/timeline')
+    .get('/api/timeline/current')
     .send()
     .expect(StatusCodes.UNAUTHORIZED);
 });
@@ -23,7 +23,7 @@ it('returns 200 and list of data points', async () => {
   const {
     body: { points },
   } = await request(app)
-    .get('/api/timeline')
+    .get('/api/timeline/current')
     .set('Cookie', global.signin(userA))
     .send()
     .expect(StatusCodes.OK);

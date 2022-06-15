@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timeline-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timeline
+  template:
+    metadata:
+      labels:
+        app: timeline
+    spec:
+      containers:
+        - name: timeline
+          image: shawlu95/timeline
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'book'
+            - name: MONGO_URI
+              value: 'mongodb://timeline-mongo-srv:27017/timeline'
+            - name: jwt
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: timeline-srv
+spec:
+  selector:
+    app: timeline
+  ports:
+    - name: timeline
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

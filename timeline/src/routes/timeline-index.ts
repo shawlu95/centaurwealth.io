@@ -6,7 +6,7 @@ import { requireAuth } from '@bookkeeping/common';
 const router = express.Router();
 
 router.get(
-  '/api/timeline',
+  '/api/timeline/current',
   requireAuth,
   async (req: Request, res: Response) => {
     const points = await Point.find({ userId: req.currentUser!.id });

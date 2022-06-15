@@ -24,6 +24,13 @@ spec:
                 name: balance-srv
                 port:
                   number: 3000
+          - path: /api/timeline/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: timeline-srv
+                port:
+                  number: 3000
           - path: /api/?(.*)
             pathType: Prefix
             backend:
