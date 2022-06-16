@@ -14,9 +14,14 @@ router.get(
   requireAuth,
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
+
+    const page = parseInt(req.body.page, 10) || 0;
+    const limit = parseInt(req.body.limit, 10) || 10;
+
     const transactions = await Transaction.find({ userId })
       .sort({ date: 'descending' })
-      .limit(25);
+      .skip(page * limit)
+      .limit(limit);
     return res.status(StatusCodes.OK).send({ transactions });
   }
 );
