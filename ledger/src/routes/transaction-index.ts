@@ -25,16 +25,10 @@ router.get(
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
     const { id } = req.params;
-    const transactions = await Transaction.find({ id });
+    const transaction = await Transaction.findOne({ id, userId });
 
-    if (transactions.length == 0) {
+    if (!transaction) {
       throw new NotFoundError();
-    }
-
-    const transaction = transactions[0];
-
-    if (transaction.userId !== userId) {
-      throw new NotAuthorizedError();
     }
 
     return res.status(StatusCodes.OK).send({ transaction });

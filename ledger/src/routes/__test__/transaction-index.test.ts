@@ -39,13 +39,13 @@ it('returns transactions of signed-in user', async () => {
   expect(transactions[0].entries[0].amount).toEqual(10);
 });
 
-it('returns 401 if account does not belong to user', async () => {
+it('returns 404 if account does not belong to user', async () => {
   const { transaction } = await buildTransaction();
 
   await request(app)
     .get('/api/transaction/' + transaction.id)
     .set('Cookie', global.signin())
-    .expect(StatusCodes.UNAUTHORIZED);
+    .expect(StatusCodes.NOT_FOUND);
 });
 
 it('return account with matching id', async () => {

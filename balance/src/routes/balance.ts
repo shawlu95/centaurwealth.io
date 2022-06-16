@@ -16,10 +16,13 @@ router.get(
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
     const { id } = req.params;
-    const account = await Account.find({ id });
-    if (account.length == 0) throw new NotFoundError();
-    if (account[0].userId !== userId) throw new NotAuthorizedError();
-    return res.status(StatusCodes.OK).send({ account: account[0] });
+    const account = await Account.findOne({ id, userId });
+
+    if (!account) {
+      throw new NotFoundError();
+    }
+
+    return res.status(StatusCodes.OK).send({ account });
   }
 );
 
