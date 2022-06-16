@@ -1,23 +1,9 @@
 import express, { Request, Response } from 'express';
-import { body } from 'express-validator';
 import { Account, AccountType } from '../models/account';
 import { StatusCodes } from 'http-status-codes';
-import {
-  BadRequestError,
-  requireAuth,
-  validateRequest,
-} from '@bookkeeping/common';
-import { natsWrapper } from '../nats-wrapper';
+import { requireAuth } from '@bookkeeping/common';
 
 const router = express.Router();
-
-const validators = [
-  body('name').not().isEmpty().withMessage('Please provide account name'),
-  body('type').not().isEmpty().withMessage('Please provide account type'),
-  body('type').custom((type: string) =>
-    Object.values(AccountType).includes(type as AccountType)
-  ),
-];
 
 router.get(
   '/api/balance/current',
