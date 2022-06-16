@@ -2,20 +2,22 @@ import Link from 'next/link';
 
 // Not allowed to fetch data in component in server-side render
 const LandingPage = ({ currentUser, accounts }) => {
-  const accountList = accounts.map((account) => {
-    return (
-      <tr key={account.id}>
-        <td>{account.name}</td>
-        <td>{account.type}</td>
-        <td>{account.balance}</td>
-        <td>
-          <Link href='/tickets/[ticketId]' as={`/tickets/${account.id}`}>
-            <a>View</a>
-          </Link>
-        </td>
-      </tr>
-    );
-  });
+  const accountList = accounts
+    .filter((account) => account.balance != 0)
+    .map((account) => {
+      return (
+        <tr key={account.id}>
+          <td>{account.name}</td>
+          <td>{account.type}</td>
+          <td>{account.balance}</td>
+          <td>
+            <Link href='/tickets/[ticketId]' as={`/tickets/${account.id}`}>
+              <a>View</a>
+            </Link>
+          </td>
+        </tr>
+      );
+    });
   return (
     <div>
       <h1>Accounts</h1>
@@ -44,7 +46,7 @@ const LandingPage = ({ currentUser, accounts }) => {
  */
 LandingPage.getInitialProps = async (context, axios, currentUser) => {
   const { data } = await axios.get('/api/balance/current');
-  return { accounts: data.accounts };
+  return { accounts: data.accounts, currentUser };
 };
 
 export default LandingPage;
