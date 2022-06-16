@@ -25,6 +25,7 @@ interface TransactionDoc extends mongoose.Document {
   memo: string;
   date: Date;
   entries: Entry[];
+  amount: number; // derived
 }
 
 const entrySchema = new mongoose.Schema({
@@ -73,9 +74,16 @@ const transactionSchema = new mongoose.Schema(
   },
   {
     toJSON: {
-      transform(doc, ret) {
+      transform(doc, ret: TransactionDoc) {
         ret.id = ret._id;
         delete ret._id;
+
+        ret.amount = 0;
+        ret.entries.forEach((entry) => {
+          if (entry.type == EntryType.Credit) {
+            ret.amount += entry.amount;
+          }
+        });
       },
     },
   }

@@ -14,7 +14,9 @@ router.get(
   requireAuth,
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
-    const transactions = await Transaction.find({ userId });
+    const transactions = await Transaction.find({ userId })
+      .sort({ date: 'descending' })
+      .limit(25);
     return res.status(StatusCodes.OK).send({ transactions });
   }
 );
