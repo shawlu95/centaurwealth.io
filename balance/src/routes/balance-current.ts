@@ -23,7 +23,9 @@ router.get(
   '/api/balance/current',
   requireAuth,
   async (req: Request, res: Response) => {
-    const accounts = await Account.find({ userId: req.currentUser!.id });
+    const userId = req.currentUser!.id;
+    const sortBy = { type: 1, name: 1 };
+    const accounts = await Account.find({ userId }).sort(sortBy);
     return res.status(StatusCodes.OK).send({ accounts });
   }
 );
