@@ -45,7 +45,7 @@ it('returns 404 if account does not belong to user', async () => {
   await request(app)
     .get('/api/transaction/' + transaction.id)
     .set('Cookie', global.signin())
-    .expect(StatusCodes.NOT_FOUND);
+    .expect(StatusCodes.UNAUTHORIZED);
 });
 
 it('return account with matching id', async () => {
