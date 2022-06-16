@@ -24,8 +24,7 @@ router.get(
   requireAuth,
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
-    const sortBy = { type: 1, name: 1 };
-    const accounts = await Account.find({ userId }).sort(sortBy);
+    const accounts = await Account.find({ userId }).sort({ type: 1, name: 1 });
     return res.status(StatusCodes.OK).send({ accounts });
   }
 );
