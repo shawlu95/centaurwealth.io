@@ -49,7 +49,13 @@ const accountSchema = new mongoose.Schema(
       transform(doc, ret) {
         ret.id = ret._id;
         delete ret._id;
-        ret.balance = parseFloat((ret.debit - ret.credit).toFixed(2));
+        const delta = parseFloat((ret.debit - ret.credit).toFixed(2));
+
+        if (ret.type == AccountType.Asset) {
+          ret.balance = delta;
+        } else {
+          ret.balance = -delta;
+        }
         ret.credit = parseFloat(ret.credit.toFixed(2));
         ret.debit = parseFloat(ret.debit.toFixed(2));
       },
