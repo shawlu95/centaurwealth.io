@@ -16,11 +16,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useForm, Form } from '../../hooks/use-form';
 import { useRequest } from '../../hooks/use-request';
 import DatePicker from '../../components/DatePicker';
-import {
-  getDaysDiff,
-  toTransactionDate,
-  getTransactionDate,
-} from '../../utils/formatTime';
+import { toTransactionDate, getTransactionDate } from '../../utils/formatTime';
 import { DECIMAL } from '../../utils/formatNumber';
 
 function formatEntriesForChain(values) {
