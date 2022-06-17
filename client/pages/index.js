@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Router from 'next/router';
 
 // Not allowed to fetch data in component in server-side render
 const LandingPage = ({ currentUser, accounts }) => {
@@ -21,6 +22,12 @@ const LandingPage = ({ currentUser, accounts }) => {
   return (
     <div>
       <h1>Accounts</h1>
+      <button
+        className='btn btn-primary'
+        onClick={() => Router.push('/accounts/create')}
+      >
+        New Account
+      </button>
       <table className='table'>
         <thead>
           <tr>

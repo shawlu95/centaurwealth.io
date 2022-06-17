@@ -2,11 +2,9 @@ import { useState } from 'react';
 import Router from 'next/router';
 import useRequest from '../../hooks/use-request';
 
-const accountType = new Set(['asset', 'liability', 'equity', 'temporary']);
-
 const CreateTicket = () => {
   const [name, setName] = useState('');
-  const [type, setType] = useState('');
+  const [type, setType] = useState('asset');
   const { doRequest, errors } = useRequest({
     url: '/api/account',
     method: 'post',
@@ -16,13 +14,6 @@ const CreateTicket = () => {
     },
     onSuccess: () => Router.push('/'),
   });
-
-  // onBlur is triggered when user clicks away from first responder
-  const onBlur = () => {
-    if (!accountType.has(type)) {
-      setType('');
-    }
-  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +25,7 @@ const CreateTicket = () => {
       <h1>Create Account</h1>
       <form onSubmit={onSubmit}>
         <div className='form-group'>
-          <label>Title</label>
+          <label>Account Tittle</label>
           <input
             className='form-control'
             value={name}
@@ -42,13 +33,16 @@ const CreateTicket = () => {
           />
         </div>
         <div className='form-group'>
-          <label>Type</label>
-          <input
+          <label>Account Type</label>
+          <select
             className='form-control'
-            value={type}
             onChange={(e) => setType(e.target.value)}
-            onBlur={onBlur}
-          />
+          >
+            <option value='asset'>Asset</option>
+            <option value='liability'>Liability</option>
+            <option value='equity'>Equity</option>
+            <option value='temporary'>Temporary</option>
+          </select>
         </div>
         {errors}
         <button className='btn btn-primary'>Submit</button>

@@ -3,9 +3,7 @@ const Header = ({ currentUser }) => {
   const links = [
     !currentUser && { label: 'Sign up', href: '/auth/signup' },
     !currentUser && { label: 'Sign in', href: '/auth/signin' },
-    currentUser && { label: 'New Account', href: '/accounts/create' },
-    currentUser && { label: 'New Transaction', href: '/transactions/create' },
-    currentUser && { label: 'My Transactions', href: '/transactions' },
+    currentUser && { label: 'Transactions', href: '/transactions' },
     currentUser && { label: 'Sign out', href: '/auth/signout' },
   ]
     .filter((config) => config)
