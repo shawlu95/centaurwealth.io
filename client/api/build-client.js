@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const DEV_URL =
   'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local';
-const PROD_URL = 'http://microservice-ticketing-app.xyz';
+const PROD_URL = 'http://centaurwealth.io/';
 
 export default ({ req }) => {
   if (typeof window === 'undefined') {
