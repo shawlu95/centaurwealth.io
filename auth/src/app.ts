@@ -10,12 +10,12 @@ import { signupRouter } from './routes/signup';
 import { errorHandler, NotFoundError } from '@bookkeeping/common';
 
 const app = express();
-app.set('trust proxy', true);
+app.set('trust proxy', true); // trust nginx
 app.use(json());
 app.use(
   cookieSession({
-    signed: false,
-    secure: false,
+    signed: false, // no need to encrypt because jwt is already encrypted
+    secure: false, // not require https connection
   })
 );
 
