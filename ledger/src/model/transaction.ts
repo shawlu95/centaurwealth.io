@@ -89,7 +89,7 @@ const transactionSchema = new mongoose.Schema(
   }
 );
 
-transactionSchema.pre('save', async function (done) {
+transactionSchema.pre('save', async function (this: TransactionDoc, done) {
   if (this.isModified('entries')) {
     var debit = 0;
     var credit = 0;
