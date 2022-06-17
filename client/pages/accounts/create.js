@@ -22,7 +22,7 @@ const CreateTicket = () => {
 
   return (
     <div>
-      <h1>Create Account</h1>
+      <h3>Create Account</h3>
       <form onSubmit={onSubmit}>
         <div className='form-group'>
           <label>Account Tittle</label>

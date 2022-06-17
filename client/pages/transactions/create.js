@@ -38,6 +38,7 @@ export default function TransactionForm({ accounts, initValues }) {
 
   return (
     <div>
+      <h3>New Transaction</h3>
       <Form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={9}>
@@ -107,20 +108,10 @@ export default function TransactionForm({ accounts, initValues }) {
             </select>
           </Grid>
 
-          <Grid item xs={3}>
-            <input
-              className='form-control'
-              name='amount'
-              placeholder='credit'
-              value={values.amount === 0 ? '' : values.amount}
-              onChange={handleInputChange}
-            />
-          </Grid>
-
           <Grid item xs={8}>
-            <div>
-              <Button type='submit'>Submit</Button>
-            </div>
+            <button type='submit' className='btn btn-primary'>
+              Update
+            </button>
           </Grid>
         </Grid>
       </Form>

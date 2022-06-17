@@ -22,7 +22,7 @@ const LandingPage = ({ currentUser, transactions }) => {
   });
   return (
     <div>
-      <h1>Transactions</h1>
+      <h3>Transactions</h3>
       <button
         className='btn btn-primary'
         onClick={() => Router.push('/transactions/create')}

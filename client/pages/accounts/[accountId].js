@@ -12,7 +12,7 @@ const TicketDetail = ({ account }) => {
   });
   return (
     <div>
-      <h1>{account.name}</h1>
+      <h3>{account.name}</h3>
       <h6>Debit: {account.debit}</h6>
       <h6>Credit: {account.credit}</h6>
       <h6>Balance: {account.balance}</h6>

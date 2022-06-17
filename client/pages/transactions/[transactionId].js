@@ -12,7 +12,8 @@ const TicketDetail = ({ transaction }) => {
   });
   return (
     <div>
-      <h1>{transaction.memo}</h1>
+      <h3>New Transaction</h3>
+      <p>{transaction.memo}</p>
 
       {errors}
       <button onClick={() => doRequest()} className='btn btn-primary'>

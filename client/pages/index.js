@@ -21,7 +21,7 @@ const LandingPage = ({ currentUser, accounts }) => {
     });
   return (
     <div>
-      <h1>Accounts</h1>
+      <h3>Balance Sheet</h3>
       <button
         className='btn btn-primary'
         onClick={() => Router.push('/accounts/create')}
