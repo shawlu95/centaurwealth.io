@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
-import { body } from 'express-validator';
-import { Account, AccountType } from '../models/account';
+import { Account } from '../models/account';
 import { StatusCodes } from 'http-status-codes';
 import {
   NotAuthorizedError,

@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { Account, AccountType } from '../models/account';
+import { Account } from '../models/account';
 import { StatusCodes } from 'http-status-codes';
 import { requireAuth } from '@bookkeeping/common';
 
