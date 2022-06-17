@@ -1,10 +1,5 @@
 import { Message } from 'node-nats-streaming';
-import {
-  Subjects,
-  Listener,
-  AccountCreatedEvent,
-  AccountType,
-} from '@bookkeeping/common';
+import { Subjects, Listener, AccountCreatedEvent } from '@bookkeeping/common';
 import { queueGroupName } from './queue-group-name';
 import { Account } from '../../models/account';
 

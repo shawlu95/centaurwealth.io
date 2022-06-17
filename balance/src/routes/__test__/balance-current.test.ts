@@ -1,9 +1,6 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
 import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
-import { natsWrapper } from '../../nats-wrapper';
-import { Account, AccountType } from '../../models/account';
 import { buildAccountPair } from '../../events/listeners/__test__/transaction-test-util';
 
 it('returns 401 when not signed in', async () => {

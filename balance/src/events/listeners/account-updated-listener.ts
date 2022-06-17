@@ -3,7 +3,6 @@ import {
   Subjects,
   Listener,
   AccountUpdatedEvent,
-  AccountType,
   NotFoundError,
 } from '@bookkeeping/common';
 import { queueGroupName } from './queue-group-name';
