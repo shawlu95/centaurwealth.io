@@ -35,6 +35,15 @@ const LandingPage = ({ currentUser, accounts }) => {
   );
 };
 
+/**
+ * @notice Executed on server, components are rendered only once.
+ * Fetch some data for initial rendering of component.
+ * @notice When exec request on server, connection refused! Because
+ * there's no browser to infer current domain. NextJS attempts to
+ * localhost:80/api/v1/users/currentuser inside the container, wrong!
+ * Here localhost refers to container, not your computer.
+ * Request is not routed to ingress-nginx
+ */
 LandingPage.getInitialProps = async (context, axios, currentUser) => {
   const { data } = await axios.get('/api/balance/current');
   return { accounts: data.accounts, currentUser };
