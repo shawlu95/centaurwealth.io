@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   rules:
-    - host: www.microservice-ticketing-app.xyz
+    - host: centaurwealth.io
       http:
         paths:
           - path: /api/users/?(.*)
@@ -51,7 +51,7 @@ kind: Service
 metadata:
   annotations:
     service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: 'true'
-    service.beta.kubernetes.io/do-loadbalancer-hostname: 'www.microservice-ticketing-app.xyz'
+    service.beta.kubernetes.io/do-loadbalancer-hostname: 'www.centaurwealth.io'
   labels:
     helm.sh/chart: ingress-nginx-2.0.3
     app.kubernetes.io/name: ingress-nginx
