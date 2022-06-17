@@ -11,7 +11,7 @@ const LandingPage = ({ currentUser, accounts }) => {
           <td>{account.type}</td>
           <td>{account.balance}</td>
           <td>
-            <Link href='/tickets/[ticketId]' as={`/tickets/${account.id}`}>
+            <Link href='/accounts/[accountId]' as={`/accounts/${account.id}`}>
               <a>View</a>
             </Link>
           </td>

@@ -28,12 +28,12 @@ it('returns 200 and list of accounts', async () => {
   expect(account.name).toEqual(cash.name);
 });
 
-it('returns 404 if account belong to others', async () => {
+it('returns 401 if account belong to others', async () => {
   const { cash } = await buildAccountPair();
 
   await request(app)
     .get('/api/balance/' + cash.id)
     .set('Cookie', global.signin())
     .send()
-    .expect(StatusCodes.NOT_FOUND);
+    .expect(StatusCodes.UNAUTHORIZED);
 });

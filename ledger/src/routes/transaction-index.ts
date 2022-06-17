@@ -14,7 +14,14 @@ router.get(
   requireAuth,
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
-    const transactions = await Transaction.find({ userId });
+
+    const page = parseInt(req.body.page, 10) || 0;
+    const limit = parseInt(req.body.limit, 10) || 10;
+
+    const transactions = await Transaction.find({ userId })
+      .sort({ date: 'descending' })
+      .skip(page * limit)
+      .limit(limit);
     return res.status(StatusCodes.OK).send({ transactions });
   }
 );
@@ -25,10 +32,14 @@ router.get(
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
     const { id } = req.params;
-    const transaction = await Transaction.findOne({ id, userId });
+    const transaction = await Transaction.findById(id);
 
     if (!transaction) {
       throw new NotFoundError();
+    }
+
+    if (transaction.userId !== userId) {
+      throw new NotAuthorizedError();
     }
 
     return res.status(StatusCodes.OK).send({ transaction });
