@@ -12,28 +12,6 @@ This is a read-heavy app because each transaction is written o``nly once, but ac
 - balance sheet service: listens to write event and automatically update current/historic balance sheet
 - budget service: listens to expense event from ledger service and group expense into category. Support budget planning
 
-## Event Flow
-
-### Account Created
-
-- Published by ledger service
-- Subscribed by:
-  - balance sheet service: replicate the account
-
-### Account Updated
-
-- Published by ledger service
-- Subscribed by:
-  - balance sheet service: update name of the account
-
-### Record Created/Updated/Deleted
-
-- Published by ledger service
-- Subscribed by:
-  - networth service: update asset, liability for all checkpoints after the record
-  - balance sheet service: aggregate the new record into the correct balance sheet
-  - budget service: save the record if it's an expense
-
 ## Learning Experience
 
 - Docker & Kubernetes
