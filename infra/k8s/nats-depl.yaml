@@ -29,7 +29,7 @@ spec:
               '2',
               '-SD',
               '-cid',
-              'book',
+              'centaurwealth',
             ]
 ---
 apiVersion: v1

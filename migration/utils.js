@@ -1,8 +1,8 @@
 const axios = require('axios');
-
+const host = 'http://centaurwealth.dev';
 const postAccount = async ({ type, name, options }) => {
   const res = await axios.post(
-    'http://book.com/api/account',
+    host + '/api/account',
     {
       type,
       name,
@@ -15,7 +15,7 @@ const postAccount = async ({ type, name, options }) => {
 const postTransaction = async ({ txn, options }) => {
   try {
     const res = await axios.post(
-      'http://book.com/api/transaction',
+      host + '/api/transaction',
       {
         memo: txn.memo,
         date: txn.date,
@@ -30,7 +30,7 @@ const postTransaction = async ({ txn, options }) => {
 };
 
 const getAccounts = async ({ id, options }) => {
-  const res = await axios.get('http://book.com/api/account', options);
+  const res = await axios.get(host + '/api/account', options);
   const accounts = {};
   res.data.accounts.forEach((account) => {
     accounts[account.name] = account;
@@ -39,7 +39,7 @@ const getAccounts = async ({ id, options }) => {
 };
 
 const signin = async ({ email, password }) => {
-  const res = await axios.post('http://book.com/api/users/signin', {
+  const res = await axios.post(host + '/api/users/signin', {
     email,
     password,
   });
@@ -47,7 +47,7 @@ const signin = async ({ email, password }) => {
 };
 
 const signup = async ({ email, password }) => {
-  const res = await axios.post('http://book.com/api/users/signup', {
+  const res = await axios.post(host + '/api/users/signup', {
     email,
     password,
   });
