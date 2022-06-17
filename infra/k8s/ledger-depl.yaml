@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: ledger
-          image: shawlu95/ledger
+          image: shawlu95/centaur-ledger
           env:
             - name: NATS_CLIENT_ID
               valueFrom:

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: balance
-          image: shawlu95/balance
+          image: shawlu95/centaur-balance
           env:
             - name: NATS_CLIENT_ID
               valueFrom:

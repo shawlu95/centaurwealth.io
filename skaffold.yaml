@@ -9,7 +9,7 @@ build:
   local:
     push: false
   artifacts:
-    - image: shawlu95/auth
+    - image: shawlu95/centaur-auth
       context: auth
       docker:
         dockerfile: Dockerfile
@@ -17,7 +17,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: shawlu95/balance
+    - image: shawlu95/centaur-balance
       context: balance
       docker:
         dockerfile: Dockerfile
@@ -25,7 +25,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: shawlu95/timeline
+    - image: shawlu95/centaur-timeline
       context: timeline
       docker:
         dockerfile: Dockerfile
@@ -33,7 +33,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: shawlu95/ledger
+    - image: shawlu95/centaur-ledger
       context: ledger
       docker:
         dockerfile: Dockerfile
@@ -41,7 +41,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: shawlu95/client
+    - image: shawlu95/centaur-client
       context: client
       docker:
         dockerfile: Dockerfile

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: shawlu95/auth
+          image: shawlu95/centaur-auth
           env:
             - name: MONGO_URI
               value: 'mongodb://auth-mongo-srv:27017/auth'

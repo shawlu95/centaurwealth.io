@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: timeline
-          image: shawlu95/timeline
+          image: shawlu95/centaur-timeline
           env:
             - name: NATS_CLIENT_ID
               valueFrom:

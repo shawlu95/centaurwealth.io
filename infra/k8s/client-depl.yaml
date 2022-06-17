@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: shawlu95/client
+          image: shawlu95/centaur-client
 ---
 apiVersion: v1
 kind: Service
