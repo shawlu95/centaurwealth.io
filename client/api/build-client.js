@@ -8,7 +8,7 @@ export default ({ req }) => {
   if (typeof window === 'undefined') {
     // We are on server
     return axios.create({
-      baseURL: PROD_URL,
+      baseURL: DEV_URL,
       headers: req.headers,
     });
   } else {
