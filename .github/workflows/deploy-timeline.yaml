@@ -3,7 +3,7 @@ name: deploy-timeline
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'timeline/**'
 
