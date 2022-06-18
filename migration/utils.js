@@ -1,6 +1,5 @@
 const axios = require('axios');
-// const host = 'http://centaurwealth.dev';
-const host = 'http://www.centaurmoney.com';
+const { host } = require('./config');
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));

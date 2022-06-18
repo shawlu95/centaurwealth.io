@@ -15,10 +15,15 @@ router.get(
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
 
+    const limit = parseInt(req.body.limit, 10) || 50;
     const page = parseInt(req.body.page, 10) || 0;
-    const limit = parseInt(req.body.limit, 10) || 10;
 
-    const transactions = await Transaction.find({ userId })
+    var query = {
+      userId,
+      date: { $lte: new Date() },
+    };
+
+    const transactions = await Transaction.find(query)
       .sort({ date: 'descending' })
       .skip(page * limit)
       .limit(limit);

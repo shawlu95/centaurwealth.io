@@ -3,7 +3,7 @@ const { signin, getAccounts, postTransactionBatch, sleep } = require('./utils');
 const { AccountType } = require('@bookkeeping/common');
 const { email, password, file } = require('./config');
 
-const batch = 100;
+const batch = 10;
 const txn = {
   id: null,
   date: null,
@@ -57,7 +57,7 @@ const txn = {
 
       if (transactions.length == batch) {
         await postTransactionBatch({ transactions, options });
-        await sleep(5000);
+        await sleep(1000);
         console.log(transactions.length, transactions[0].date, txn.date);
         transactions = [];
       }
