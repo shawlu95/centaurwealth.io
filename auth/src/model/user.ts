@@ -3,6 +3,7 @@ import { Password } from '../services/password';
 
 // Describe the properties required to create new user
 interface UserAttrs {
+  id?: string;
   email: string;
   password: string;
 }
@@ -54,6 +55,9 @@ userSchema.pre('save', async function (done) {
 });
 
 userSchema.statics.build = (attrs: UserAttrs) => {
+  if (attrs.id) {
+    return new User({ ...attrs, _id: attrs.id });
+  }
   return new User(attrs);
 };
 
