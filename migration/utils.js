@@ -6,15 +6,19 @@ function sleep(ms) {
 }
 
 const postAccount = async ({ type, name, options }) => {
-  const res = await axios.post(
-    host + '/api/account',
-    {
-      type,
-      name,
-    },
-    options
-  );
-  return res.data.id;
+  try {
+    const res = await axios.post(
+      host + '/api/account',
+      {
+        type,
+        name,
+      },
+      options
+    );
+    return res.data.id;
+  } catch (err) {
+    console.log(err.response.data);
+  }
 };
 
 const postTransaction = async ({ txn, options }) => {
@@ -48,28 +52,40 @@ const postTransactionBatch = async ({ transactions, options }) => {
 };
 
 const getAccounts = async ({ id, options }) => {
-  const res = await axios.get(host + '/api/account', options);
-  const accounts = {};
-  res.data.accounts.forEach((account) => {
-    accounts[account.name] = account;
-  });
-  return accounts;
+  try {
+    const res = await axios.get(host + '/api/account', options);
+    const accounts = {};
+    res.data.accounts.forEach((account) => {
+      accounts[account.name] = account;
+    });
+    return accounts;
+  } catch (err) {
+    console.log(err.response.data);
+  }
 };
 
 const signin = async ({ email, password }) => {
-  const res = await axios.post(host + '/api/users/signin', {
-    email,
-    password,
-  });
-  return res.headers['set-cookie'];
+  try {
+    const res = await axios.post(host + '/api/users/signin', {
+      email,
+      password,
+    });
+    return res.headers['set-cookie'];
+  } catch (err) {
+    console.log(err.response.data);
+  }
 };
 
 const signup = async ({ email, password }) => {
-  const res = await axios.post(host + '/api/users/signup', {
-    email,
-    password,
-  });
-  return res.headers['set-cookie'];
+  try {
+    const res = await axios.post(host + '/api/users/signup', {
+      email,
+      password,
+    });
+    return res.headers['set-cookie'];
+  } catch (err) {
+    console.log(err.response.data);
+  }
 };
 
 module.exports = {
