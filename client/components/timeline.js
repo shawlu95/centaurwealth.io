@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -68,10 +70,69 @@ const buildDatasets = (points) => {
   };
 };
 
-const Timeline = ({ points }) => {
+const Timeline = () => {
+  const format = (date) => date.toISOString().split('T')[0];
+  const yearFirstDay = new Date(new Date().getFullYear(), 0, 1);
+  const [points, setPoints] = useState([]);
+  const [start, setStart] = useState(format(yearFirstDay));
+
+  const setRange = (value) => {
+    var date = new Date();
+    switch (value) {
+      case 'ytd':
+        date = yearFirstDay;
+        break;
+      case '1m':
+        date.setMonth(date.getMonth() - 1);
+        break;
+      case '3m':
+        date.setMonth(date.getMonth() - 3);
+        break;
+      case '6m':
+        date.setMonth(date.getMonth() - 6);
+        break;
+      case '1y':
+        date.setFullYear(date.getFullYear() - 1);
+        break;
+      case 'all':
+        date.setFullYear(1970);
+        break;
+    }
+    setStart(format(date));
+  };
+
+  const fetchData = async () => {
+    const {
+      data: { points },
+    } = await axios.get('/api/timeline', { params: { start } });
+    setPoints(points);
+  };
+
+  useEffect(() => {
+    fetchData();
+    return () => {
+      console.log('Cleanup chart');
+    };
+  }, [start]);
+
   const data = buildDatasets(points);
   return (
     <div>
+      <div className='form-group'>
+        <select
+          className='form-control'
+          onChange={(e) => setRange(e.target.value)}
+        >
+          <option value='1m'>1 Month</option>
+          <option value='3m'>3 Months</option>
+          <option value='6m'>6 Months</option>
+          <option value='ytd' selected>
+            YTD
+          </option>
+          <option value='1y'>1 Year</option>
+          <option value='all'>All-time</option>
+        </select>
+      </div>
       <Line data={data} width={400} height={200} />
     </div>
   );
