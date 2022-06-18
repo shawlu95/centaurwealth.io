@@ -59,7 +59,7 @@ const txn = {
       if (transactions.length == batch) {
         await postTransactionBatch({ transactions, options });
         await sleep(100);
-        console.log(transactions.length, transactions[0].date, txn.date, txn);
+        console.log(txn);
         transactions = [];
       }
 
