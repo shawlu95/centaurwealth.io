@@ -1,5 +1,11 @@
 const axios = require('axios');
-const host = 'http://centaurwealth.dev';
+// const host = 'http://centaurwealth.dev';
+const host = 'http://www.centaurmoney.com';
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 const postAccount = async ({ type, name, options }) => {
   const res = await axios.post(
     host + '/api/account',
@@ -21,6 +27,19 @@ const postTransaction = async ({ txn, options }) => {
         date: txn.date,
         entries: txn.entries,
       },
+      options
+    );
+    return res.data.id;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+const postTransactionBatch = async ({ transactions, options }) => {
+  try {
+    const res = await axios.post(
+      host + '/api/transaction/import',
+      { transactions },
       options
     );
     return res.data.id;
@@ -55,9 +74,11 @@ const signup = async ({ email, password }) => {
 };
 
 module.exports = {
+  sleep,
   signin,
   signup,
   getAccounts,
   postAccount,
   postTransaction,
+  postTransactionBatch,
 };
