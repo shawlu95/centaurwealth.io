@@ -6,17 +6,9 @@ import { Point } from '../../model/point';
 
 it('returns 401 when not signed in', async () => {
   await request(app)
-    .get('/api/timeline')
+    .get('/api/timeline?start=2021-01-01')
     .send()
     .expect(StatusCodes.UNAUTHORIZED);
-});
-
-it.skip('returns 400 when start date is missing', async () => {
-  await request(app)
-    .get('/api/timeline')
-    .set('Cookie', global.signin())
-    .send()
-    .expect(StatusCodes.BAD_REQUEST);
 });
 
 it("returns 200 and list of user's data points", async () => {
@@ -41,9 +33,8 @@ it("returns 200 and list of user's data points", async () => {
   const {
     body: { points },
   } = await request(app)
-    .get('/api/timeline')
+    .get('/api/timeline?start=2021-01-01')
     .set('Cookie', global.signin(userA))
-    .send({ start: '2021-01-01' })
     .expect(StatusCodes.OK);
 
   expect(points.length).toEqual(1);
@@ -64,9 +55,8 @@ it('Only returns data points later than start date', async () => {
   const {
     body: { points },
   } = await request(app)
-    .get('/api/timeline')
+    .get('/api/timeline?start=2021-01-02')
     .set('Cookie', global.signin(user))
-    .send({ start: '2021-01-02' })
     .expect(StatusCodes.OK);
 
   expect(points.length).toEqual(0);
