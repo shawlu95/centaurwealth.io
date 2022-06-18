@@ -1,8 +1,9 @@
 const fs = require('fs');
-const { signin, getAccounts, postTransaction } = require('./utils');
+const { signin, getAccounts, postTransactionBatch, sleep } = require('./utils');
 const { AccountType } = require('@bookkeeping/common');
 const { email, password, file } = require('./config');
 
+const batch = 100;
 const txn = {
   id: null,
   date: null,
@@ -23,6 +24,7 @@ const txn = {
   const accounts = await getAccounts({ options });
 
   const lines = fs.readFileSync(file, 'utf-8').split(/\r?\n/);
+  var transactions = [];
 
   for (var i in lines) {
     const line = lines[i];
@@ -51,7 +53,14 @@ const txn = {
           accountId: accounts['Error'].id,
         });
       }
-      await postTransaction({ txn, options });
+      transactions.push({ ...txn });
+
+      if (transactions.length == batch) {
+        await postTransactionBatch({ transactions, options });
+        await sleep(5000);
+        console.log(transactions.length, transactions[0].date, txn.date);
+        transactions = [];
+      }
 
       // new transaction
       txn.id = seq;
@@ -70,5 +79,6 @@ const txn = {
   }
 
   // last transaction
-  await postTransaction({ txn, options });
+  transactions.push({ ...txn });
+  await postTransactionBatch({ transactions, options });
 })();
