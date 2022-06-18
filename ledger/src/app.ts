@@ -10,6 +10,7 @@ import { transactionCreate } from './routes/transaction-create';
 import { transactionRead } from './routes/transaction-index';
 import { transactionUpdate } from './routes/transaction-update';
 import { transactionDelete } from './routes/transaction-delete';
+import { transactionImport } from './routes/transaction-import';
 
 import { currentUser } from '@bookkeeping/common';
 import { errorHandler, NotFoundError } from '@bookkeeping/common';
@@ -32,6 +33,7 @@ app.use(transactionCreate);
 app.use(transactionRead);
 app.use(transactionUpdate);
 app.use(transactionDelete);
+app.use(transactionImport);
 
 app.get('*', async (req, res) => {
   throw new NotFoundError();
