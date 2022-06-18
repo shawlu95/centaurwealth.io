@@ -4,10 +4,12 @@ import Router from 'next/router';
 // Not allowed to fetch data in component in server-side render
 const AccountsPage = ({ currentUser, accounts }) => {
   const getSection = (type) => {
+    var subtotal = 0;
     const body = accounts
       .filter((account) => account.type == type)
       .filter((account) => account.balance > 0)
       .map((account) => {
+        subtotal += account.balance;
         return (
           <tr key={account.id}>
             <td width='40%'>{account.name}</td>
@@ -29,7 +31,15 @@ const AccountsPage = ({ currentUser, accounts }) => {
             <th width='40%'>Balance</th>
           </tr>
         </thead>
-        <tbody>{body}</tbody>
+        <tbody>
+          {body}
+          <tr>
+            <td width='40%'>
+              <b>Subtotal</b>
+            </td>
+            <td>{subtotal.toFixed(2)}</td>
+          </tr>
+        </tbody>
       </table>
     );
   };
