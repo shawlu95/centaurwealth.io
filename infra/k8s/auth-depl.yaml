@@ -16,6 +16,14 @@ spec:
         - name: auth
           image: shawlu95/centaur-auth
           env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'centaurwealth'
             - name: MONGO_URI
               value: 'mongodb://auth-mongo-srv:27017/auth'
             - name: jwt
