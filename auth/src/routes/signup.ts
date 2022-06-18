@@ -5,6 +5,8 @@ import jwt from 'jsonwebtoken';
 import { User } from '../model/user';
 import { validateRequest, BadRequestError } from '@bookkeeping/common';
 import { StatusCodes } from 'http-status-codes';
+import { UserSignupPublisher } from '../events/publishers/user-signup-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -40,6 +42,11 @@ router.post(
 
     // attach jwt to cookie (must be https protocol)
     req.session = { jwt: userJwt };
+
+    new UserSignupPublisher(natsWrapper.client).publish({
+      id: user.id,
+      email: user.email,
+    });
 
     // send a cookie/jwt
     return res.status(StatusCodes.CREATED).send(user);
