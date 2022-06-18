@@ -3,7 +3,7 @@ const { signin, getAccounts, postTransactionBatch, sleep } = require('./utils');
 const { AccountType } = require('@bookkeeping/common');
 const { email, password, file } = require('./config');
 
-const batch = 10;
+const batch = 1;
 const txn = {
   id: null,
   date: null,
@@ -28,14 +28,15 @@ const txn = {
 
   for (var i in lines) {
     const line = lines[i];
-    var [seq, date, memo, account, type, amount] = line.split(',');
+    var [seq, date, memo, accountName, type, amount] = line.split(',');
 
     // assign for the first time
     if (!txn.id) txn.id = seq;
     if (!txn.date) txn.date = date.split(' ')[0];
     if (!txn.memo) txn.memo = memo.slice(2, memo.length - 1);
 
-    account = accounts[account.trim()];
+    const account = accounts[accountName.trim()];
+
     if (seq != txn.id) {
       // transaction complete
       var debit = 0;
@@ -57,8 +58,8 @@ const txn = {
 
       if (transactions.length == batch) {
         await postTransactionBatch({ transactions, options });
-        await sleep(1000);
-        console.log(transactions.length, transactions[0].date, txn.date);
+        await sleep(100);
+        console.log(transactions.length, transactions[0].date, txn.date, txn);
         transactions = [];
       }
 
