@@ -71,7 +71,7 @@ pointSchema.statics.updateCurrent = async (attrs: PointAttrs) => {
     current = Point.build(attrs);
   } else {
     const last = points[0];
-    if (last.date == attrs.date) {
+    if (last.date.getTime() == attrs.date.getTime()) {
       // already has data point on same date, modify existing
       last.set({
         asset: last.asset + attrs.asset,
