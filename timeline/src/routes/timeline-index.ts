@@ -6,11 +6,14 @@ import { requireAuth } from '@bookkeeping/common';
 const router = express.Router();
 
 router.get(
-  '/api/timeline/current',
+  '/api/timeline',
   requireAuth,
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
-    const points = await Point.find({ userId }).sort('date');
+    const yearFirstDay = new Date(new Date().getFullYear(), 0, 1);
+    const start = req.query.start || yearFirstDay;
+    const query = { userId, date: { $gte: start } };
+    const points = await Point.find(query).sort('date');
     return res.status(StatusCodes.OK).send({ points });
   }
 );

@@ -27,6 +27,28 @@ it('adjusts asset and liability for user', async () => {
   expect(msg.ack).toHaveBeenCalled();
 });
 
+it('merges data points for the same date', async () => {
+  const listener = new TransactionCreatedListener(natsWrapper.client);
+  const userId = rand();
+
+  const older: TransactionCreatedEvent['data'] = getTransactionCreatedEvent(
+    userId,
+    new Date('2022-01-01')
+  );
+
+  const newer: TransactionCreatedEvent['data'] = getTransactionCreatedEvent(
+    userId,
+    new Date('2022-01-01')
+  );
+
+  await listener.onMessage(newer, msg);
+  await listener.onMessage(older, msg);
+
+  const points = await Point.find({ userId }).sort('date');
+  expect(points.length).toEqual(1);
+  expect(points[0].asset).toEqual(20);
+});
+
 it('backfills future data point', async () => {
   const listener = new TransactionCreatedListener(natsWrapper.client);
   const userId = rand();
