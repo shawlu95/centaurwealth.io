@@ -5,7 +5,7 @@ import useRequest from '../../hooks/use-request';
 const TicketDetail = ({ account }) => {
   const [name, setName] = useState('');
   const { doRequest, errors } = useRequest({
-    url: '/api/account',
+    url: `/api/account/${account.id}`,
     method: 'patch',
     body: { id: account.id, name: name },
     onSuccess: () => Router.push('/'),
@@ -36,7 +36,9 @@ TicketDetail.getInitialProps = async (context, axios) => {
   const { accountId } = context.query;
   const {
     data: { account },
-  } = await axios.get(`/api/balance/${accountId}`);
+  } = await axios.get(`/api/balance/${accountId}`, {
+    params: { page: 0, limit: 50 },
+  });
   return { account };
 };
 export default TicketDetail;

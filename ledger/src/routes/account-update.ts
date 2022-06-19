@@ -1,4 +1,4 @@
-import { body } from 'express-validator';
+import { param, body } from 'express-validator';
 import express, { Request, Response } from 'express';
 import { Account } from '../model/account';
 import { StatusCodes } from 'http-status-codes';
@@ -15,16 +15,18 @@ import { natsWrapper } from '../nats-wrapper';
 const router = express.Router();
 
 const validators = [
+  param('id').not().isEmpty().withMessage('Please provide account id'),
   body('name').not().isEmpty().withMessage('Please provide account name'),
 ];
 
 router.patch(
-  '/api/account',
+  '/api/account/:id',
   requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
-    const { id, name } = req.body;
+    const { name } = req.body;
+    const { id } = req.params;
     const userId = req.currentUser!.id;
 
     const account = await Account.findById(id);

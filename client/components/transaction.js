@@ -10,14 +10,14 @@ const Transaction = ({ transaction, accounts }) => {
   const getAccount = (id) => accounts.filter((acc) => acc.id === id)[0];
 
   const { doRequest: doUpsert, errors: upsertErrors } = useRequest({
-    url: '/api/transaction',
+    url: isNew ? '/api/transaction' : `/api/transaction/${transaction.id}`,
     method: isNew ? 'post' : 'put',
     body: {},
     onSuccess: () => Router.push('/transactions'),
   });
 
   const { doRequest: doDelete, errors: deleteErrors } = useRequest({
-    url: `/api/transaction?id=${transaction.id}`,
+    url: `/api/transaction/${transaction.id}`,
     method: 'delete',
     body: {},
     onSuccess: () => Router.push('/transactions'),

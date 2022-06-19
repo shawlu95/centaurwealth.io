@@ -27,7 +27,7 @@ it('returns transactions of signed-in user', async () => {
   const {
     body: { transactions },
   } = await request(app)
-    .get('/api/transaction')
+    .get('/api/transaction?page=0&limit=10')
     .set('Cookie', global.signin(userId))
     .send()
     .expect(StatusCodes.OK);

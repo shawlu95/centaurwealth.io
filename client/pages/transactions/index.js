@@ -44,7 +44,9 @@ const LandingPage = ({ currentUser, transactions }) => {
 };
 
 LandingPage.getInitialProps = async (context, axios, currentUser) => {
-  const { data } = await axios.get('/api/transaction');
+  const { data } = await axios.get('/api/transaction', {
+    params: { page: 0, limit: 50 },
+  });
   return { transactions: data.transactions, currentUser };
 };
 
