@@ -74,7 +74,7 @@ const Timeline = () => {
   const format = (date) => date.toISOString().split('T')[0];
   const yearFirstDay = new Date(new Date().getFullYear(), 0, 1);
   const [points, setPoints] = useState([]);
-  const [range, setRange] = useState(format(yearFirstDay));
+  const [range, setRange] = useState('all');
 
   const getDate = (value) => {
     var date = new Date();
