@@ -36,7 +36,9 @@ TicketDetail.getInitialProps = async (context, axios) => {
   const { accountId } = context.query;
   const {
     data: { account },
-  } = await axios.get(`/api/balance/${accountId}`);
+  } = await axios.get(`/api/balance/${accountId}`, {
+    params: { page: 0, limit: 50 },
+  });
   return { account };
 };
 export default TicketDetail;
