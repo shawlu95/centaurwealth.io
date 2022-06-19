@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { body } from 'express-validator';
+import { param, body } from 'express-validator';
 import { StatusCodes } from 'http-status-codes';
 import {
   NotAuthorizedError,
@@ -14,19 +14,20 @@ import { natsWrapper } from '../nats-wrapper';
 const router = express.Router();
 
 const validators = [
-  body('id').not().isEmpty().withMessage('Please provide transaction id'),
+  param('id').not().isEmpty().withMessage('Please provide transaction id'),
   body('memo').not().isEmpty().withMessage('Please provide transaction memo'),
   body('date').not().isEmpty().withMessage('Please provide transaction date'),
   body('entries').not().isEmpty().withMessage('Please provide entries'),
 ];
 
 router.put(
-  '/api/transaction',
+  '/api/transaction/:id',
   requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
-    const { id, memo, date, entries } = req.body;
+    const { id } = req.params;
+    const { memo, date, entries } = req.body;
     const userId = req.currentUser!.id;
 
     const transaction = await Transaction.findById(id);

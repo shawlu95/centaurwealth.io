@@ -6,34 +6,37 @@ import { natsWrapper } from '../../nats-wrapper';
 import { Account, AccountType } from '../../model/account';
 
 it('returns 400 when not signed in', async () => {
+  const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
-    .patch('/api/account')
+    .patch(`/api/account/${id}`)
     .send()
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
 it('rejects with 401 when name is missing', async () => {
+  const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
-    .patch('/api/account')
+    .patch(`/api/account/${id}`)
     .set('Cookie', global.signin())
     .send({ type: 'cash' })
     .expect(StatusCodes.BAD_REQUEST);
 });
 
 it('rejects with 401 when name is invalid', async () => {
+  const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
-    .patch('/api/account')
+    .patch(`/api/account/${id}`)
     .set('Cookie', global.signin())
     .send({ name: '', type: 'cash' })
     .expect(StatusCodes.BAD_REQUEST);
 });
 
 it('rejects with 404 when account is not found', async () => {
+  const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
-    .patch('/api/account')
+    .patch(`/api/account/${id}`)
     .set('Cookie', global.signin())
     .send({
-      id: new mongoose.Types.ObjectId().toHexString(),
       name: 'cash',
     })
     .expect(StatusCodes.NOT_FOUND);
@@ -59,9 +62,9 @@ it('rejects with 401 when colliding with existing account', async () => {
 
   // user tries to rename to an existing asset account
   await request(app)
-    .patch('/api/account')
+    .patch(`/api/account/${account2.id}`)
     .set('Cookie', global.signin(userId))
-    .send({ id: account2.id, name: 'cash' })
+    .send({ name: 'cash' })
     .expect(StatusCodes.BAD_REQUEST);
 });
 
@@ -74,9 +77,9 @@ it('rejects with 400 when account owner is different', async () => {
   await account.save();
 
   await request(app)
-    .patch('/api/account')
+    .patch(`/api/account/${account.id}`)
     .set('Cookie', global.signin())
-    .send({ id: account.id, name: 'equipment' })
+    .send({ name: 'equipment' })
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
@@ -90,9 +93,9 @@ it('returns 200 with successful update', async () => {
   await account.save();
 
   await request(app)
-    .patch('/api/account')
+    .patch(`/api/account/${account.id}`)
     .set('Cookie', global.signin(userId))
-    .send({ id: account.id, name: 'equipment' })
+    .send({ name: 'equipment' })
     .expect(StatusCodes.OK);
 
   const updated = await Account.findById(account.id);
@@ -112,9 +115,9 @@ it('emits an account update event', async () => {
   expect(natsWrapper.client.publish).not.toHaveBeenCalled();
 
   await request(app)
-    .patch('/api/account')
+    .patch(`/api/account/${account.id}`)
     .set('Cookie', global.signin(userId))
-    .send({ id: account.id, name: 'equipment' })
+    .send({ name: 'equipment' })
     .expect(StatusCodes.OK);
 
   expect(natsWrapper.client.publish).toHaveBeenCalled();

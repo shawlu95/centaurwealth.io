@@ -9,16 +9,17 @@ import { Transaction } from '../../model/transaction';
 import { buildTransaction } from './transaction-test-util';
 
 it('returns 400 if not signed in', async () => {
+  const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
-    .put('/api/transaction')
+    .put(`/api/transaction/${id}`)
     .send()
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
-it('returns 401 if missing id', async () => {
+it('returns 404 if missing id', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
   await request(app)
-    .put('/api/transaction')
+    .put(`/api/transaction`)
     .set('Cookie', global.signin(userId))
     .send({
       memo: 'food',
@@ -40,16 +41,15 @@ it('returns 401 if missing id', async () => {
         },
       ],
     })
-    .expect(StatusCodes.BAD_REQUEST);
+    .expect(StatusCodes.NOT_FOUND);
 });
 
 it('returns 401 if missing memo', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
   await request(app)
-    .put('/api/transaction')
+    .put(`/api/transaction/${transaction.id}`)
     .set('Cookie', global.signin(userId))
     .send({
-      id: transaction.id,
       date: '2022-06-12',
       entries: [
         {
@@ -74,10 +74,9 @@ it('returns 401 if missing memo', async () => {
 it('returns 401 if no entry', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
   await request(app)
-    .put('/api/transaction')
+    .put(`/api/transaction/${transaction.id}`)
     .set('Cookie', global.signin(userId))
     .send({
-      id: transaction.id,
       memo: 'food',
       date: '2022-06-12',
       entries: [],
@@ -88,10 +87,9 @@ it('returns 401 if no entry', async () => {
 it('returns 401 if no date', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
   await request(app)
-    .put('/api/transaction')
+    .put(`/api/transaction/${transaction.id}`)
     .set('Cookie', global.signin(userId))
     .send({
-      id: transaction.id,
       memo: 'food',
       entries: [
         {
@@ -116,10 +114,9 @@ it('returns 401 if no date', async () => {
 it('returns 400 when trying to use others transaction', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
   await request(app)
-    .put('/api/transaction')
+    .put(`/api/transaction/${transaction.id}`)
     .set('Cookie', global.signin())
     .send({
-      id: transaction.id,
       memo: 'beer',
       date: '2022-06-12',
       entries: [
@@ -153,10 +150,9 @@ it('returns 400 when trying to use others account', async () => {
   await newCash.save();
 
   await request(app)
-    .put('/api/transaction')
+    .put(`/api/transaction/${transaction.id}`)
     .set('Cookie', global.signin(userId))
     .send({
-      id: transaction.id,
       memo: 'beer',
       date: '2022-06-12',
       entries: [
@@ -183,10 +179,9 @@ it('returns 401 when debit != credit', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
 
   await request(app)
-    .put('/api/transaction')
+    .put(`/api/transaction/${transaction.id}`)
     .set('Cookie', global.signin(userId))
     .send({
-      id: transaction.id,
       memo: 'beer',
       date: '2022-06-12',
       entries: [
@@ -213,10 +208,9 @@ it('returns 200 with successful transaction', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
 
   await request(app)
-    .put('/api/transaction')
+    .put(`/api/transaction/${transaction.id}`)
     .set('Cookie', global.signin(userId))
     .send({
-      id: transaction.id,
       memo: 'food',
       date: '2022-06-12',
       entries: [
@@ -251,10 +245,9 @@ it('emits a transaction created event', async () => {
   expect(natsWrapper.client.publish).not.toHaveBeenCalled();
 
   await request(app)
-    .put('/api/transaction')
+    .put(`/api/transaction/${transaction.id}`)
     .set('Cookie', global.signin(userId))
     .send({
-      id: transaction.id,
       memo: 'food',
       date: '2022-06-12',
       entries: [

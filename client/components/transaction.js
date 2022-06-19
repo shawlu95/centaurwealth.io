@@ -10,7 +10,7 @@ const Transaction = ({ transaction, accounts }) => {
   const getAccount = (id) => accounts.filter((acc) => acc.id === id)[0];
 
   const { doRequest: doUpsert, errors: upsertErrors } = useRequest({
-    url: '/api/transaction',
+    url: isNew ? '/api/transaction' : `/api/transaction/${transaction.id}`,
     method: isNew ? 'post' : 'put',
     body: {},
     onSuccess: () => Router.push('/transactions'),

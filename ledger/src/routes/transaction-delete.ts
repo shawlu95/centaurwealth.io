@@ -14,7 +14,7 @@ import { natsWrapper } from '../nats-wrapper';
 const router = express.Router();
 
 const validators = [
-  param('id').not().isEmpty().withMessage('Please provide account id'),
+  param('id').not().isEmpty().withMessage('Please provide transaction id'),
 ];
 
 router.delete(

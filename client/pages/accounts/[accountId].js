@@ -5,7 +5,7 @@ import useRequest from '../../hooks/use-request';
 const TicketDetail = ({ account }) => {
   const [name, setName] = useState('');
   const { doRequest, errors } = useRequest({
-    url: '/api/account',
+    url: `/api/account/${account.id}`,
     method: 'patch',
     body: { id: account.id, name: name },
     onSuccess: () => Router.push('/'),
