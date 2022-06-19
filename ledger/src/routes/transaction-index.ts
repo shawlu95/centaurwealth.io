@@ -23,19 +23,12 @@ router.get(
   validateRequest,
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
-
-    const limit = parseInt(req.query.limit as string, 10);
-    const page = parseInt(req.query.page as string, 10);
-
-    var query = {
-      userId,
-      date: { $lte: new Date() },
-    };
-
-    const transactions = await Transaction.find(query)
-      .sort({ date: 'descending' })
-      .skip(page * limit)
-      .limit(limit);
+    const transactions = await Transaction.paginate({
+      query: { userId },
+      sort: { date: -1 },
+      page: parseInt(req.query.page as string, 10),
+      limit: parseInt(req.query.limit as string, 10),
+    });
     return res.status(StatusCodes.OK).send({ transactions });
   }
 );

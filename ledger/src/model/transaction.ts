@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { mongoosePagination, Pagination } from 'mongoose-paginate-ts';
 import {
   Entry,
   AccountType,
@@ -121,13 +122,15 @@ transactionSchema.pre('save', async function (this: TransactionDoc, done) {
   done();
 });
 
+transactionSchema.plugin(mongoosePagination);
+
 transactionSchema.statics.build = (attrs: TransactionAttrs) => {
   return new Transaction(attrs);
 };
 
-const Transaction = mongoose.model<TransactionAttrs, TransactionModel>(
-  'Transaction',
-  transactionSchema
-);
+const Transaction: Pagination<TransactionDoc> = mongoose.model<
+  TransactionAttrs,
+  Pagination<TransactionDoc>
+>('Transaction', transactionSchema);
 
 export { Transaction };

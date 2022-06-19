@@ -28,6 +28,8 @@ router.post(
 
     for (var i in transactions) {
       const { memo, date, entries } = transactions[i];
+
+      // @ts-ignore
       const transaction = Transaction.build({
         userId,
         memo,

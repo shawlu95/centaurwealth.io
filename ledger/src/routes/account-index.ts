@@ -33,9 +33,6 @@ router.get(
     const userId = req.currentUser!.id;
     const accountId = req.params.id;
 
-    const limit = parseInt(req.query.limit as string, 10);
-    const page = parseInt(req.query.page as string, 10);
-
     const account = await Account.findById(accountId);
 
     if (!account) {
@@ -46,14 +43,14 @@ router.get(
       throw new NotAuthorizedError();
     }
 
-    const query = {
-      entries: { $elemMatch: { accountId } },
-    };
-
-    const transactions = await Transaction.find(query)
-      .sort({ date: 'descending' })
-      .skip(page * limit)
-      .limit(limit);
+    const transactions = await Transaction.paginate({
+      query: {
+        entries: { $elemMatch: { accountId } },
+      },
+      sort: { date: -1 },
+      page: parseInt(req.query.page as string, 10),
+      limit: parseInt(req.query.limit as string, 10),
+    });
     return res.status(StatusCodes.OK).send({ account, transactions });
   }
 );

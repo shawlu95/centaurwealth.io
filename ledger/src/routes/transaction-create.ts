@@ -23,6 +23,7 @@ router.post(
     const { memo, date, entries } = req.body;
     const userId = req.currentUser!.id;
 
+    // @ts-ignore
     const transaction = Transaction.build({
       userId,
       memo,
