@@ -2,7 +2,7 @@ import Router from 'next/router';
 import Transactions from '../../components/transactions';
 
 // Not allowed to fetch data in component in server-side render
-const LandingPage = ({ transactions }) => {
+const LandingPage = ({ transactions, url, limit }) => {
   return (
     <div>
       <h3>Transactions</h3>
@@ -12,16 +12,20 @@ const LandingPage = ({ transactions }) => {
       >
         New Transaction
       </button>
-      <Transactions transactions={transactions} />
+      <Transactions transactions={transactions} url={url} limit={limit} />
     </div>
   );
 };
 
 LandingPage.getInitialProps = async (context, axios, currentUser) => {
-  const { data } = await axios.get('/api/transaction', {
-    params: { page: 0, limit: 50 },
+  const limit = 25;
+  const url = '/api/transaction';
+  const {
+    data: { transactions },
+  } = await axios.get(url, {
+    params: { page: 1, limit },
   });
-  return { transactions: data.transactions };
+  return { transactions, url, limit };
 };
 
 export default LandingPage;

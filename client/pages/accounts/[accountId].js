@@ -3,7 +3,8 @@ import Router from 'next/router';
 import useRequest from '../../hooks/use-request';
 import Transactions from '../../components/transactions';
 
-const TicketDetail = ({ account, transactions }) => {
+const TicketDetail = ({ account, transactions, url, limit }) => {
+  console.log(transactions, limit);
   const [name, setName] = useState('');
   const { doRequest, errors } = useRequest({
     url: `/api/account/${account.id}`,
@@ -29,24 +30,26 @@ const TicketDetail = ({ account, transactions }) => {
       <button onClick={() => doRequest()} className='btn btn-primary'>
         Update
       </button>
-      <Transactions transactions={transactions} />
+      <Transactions transactions={transactions} url={url} limit={limit} />
     </div>
   );
 };
 
 TicketDetail.getInitialProps = async (context, axios) => {
   const { accountId } = context.query;
+  const limit = 25;
   const {
     data: { account },
   } = await axios.get(`/api/balance/${accountId}`);
 
+  const url = `/api/account/${accountId}`;
   const {
     data: { transactions },
-  } = await axios.get(`/api/account/${accountId}`, {
-    params: { page: 0, limit: 50 },
+  } = await axios.get(url, {
+    params: { page: 1, limit },
   });
 
-  return { account, transactions };
+  return { account, transactions, url, limit };
 };
 
 export default TicketDetail;

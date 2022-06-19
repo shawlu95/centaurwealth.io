@@ -42,7 +42,7 @@ it('returns associated transactions of an account', async () => {
   const {
     body: { account, transactions },
   } = await request(app)
-    .get(`/api/account/${cash.id}?page=0&limit=10`)
+    .get(`/api/account/${cash.id}?page=1&limit=10`)
     .set('Cookie', global.signin(userId))
     .send()
     .expect(StatusCodes.OK);
@@ -51,7 +51,7 @@ it('returns associated transactions of an account', async () => {
   expect(account.type).toEqual('asset');
   expect(account.name).toEqual('cash');
 
-  expect(transactions.length).toEqual(1);
-  expect(transactions[0].userId).toEqual(userId);
-  expect(transactions[0].memo).toEqual(transaction.memo);
+  expect(transactions.docs.length).toEqual(1);
+  expect(transactions.docs[0].userId).toEqual(userId);
+  expect(transactions.docs[0].memo).toEqual(transaction.memo);
 });

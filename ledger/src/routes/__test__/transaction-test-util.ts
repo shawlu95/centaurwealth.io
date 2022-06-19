@@ -24,6 +24,8 @@ export const buildAccountPair = async () => {
 
 export const buildTransaction = async () => {
   const { userId, cash, expense } = await buildAccountPair();
+
+  // @ts-ignore
   const transaction = Transaction.build({
     userId,
     memo: 'beer',

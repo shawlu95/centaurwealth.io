@@ -74,9 +74,9 @@ const Timeline = () => {
   const format = (date) => date.toISOString().split('T')[0];
   const yearFirstDay = new Date(new Date().getFullYear(), 0, 1);
   const [points, setPoints] = useState([]);
-  const [start, setStart] = useState(format(yearFirstDay));
+  const [range, setRange] = useState('all');
 
-  const setRange = (value) => {
+  const getDate = (value) => {
     var date = new Date();
     switch (value) {
       case 'ytd':
@@ -98,13 +98,13 @@ const Timeline = () => {
         date.setFullYear(1970);
         break;
     }
-    setStart(format(date));
+    return format(date);
   };
 
   const fetchData = async () => {
     const {
       data: { points },
-    } = await axios.get('/api/timeline', { params: { start } });
+    } = await axios.get('/api/timeline', { params: { start: getDate(range) } });
     setPoints(points);
   };
 
@@ -113,7 +113,7 @@ const Timeline = () => {
     return () => {
       console.log('Cleanup chart');
     };
-  }, [start]);
+  }, [range]);
 
   const data = buildDatasets(points);
   return (
@@ -122,6 +122,7 @@ const Timeline = () => {
         <select
           className='form-control'
           onChange={(e) => setRange(e.target.value)}
+          value={range}
         >
           <option value='1m'>1 Month</option>
           <option value='3m'>3 Months</option>

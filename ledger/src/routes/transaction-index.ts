@@ -23,19 +23,21 @@ router.get(
   validateRequest,
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
+    const transactions = await Transaction.paginate({
+      query: { userId },
+      sort: { date: -1 },
+      page: parseInt(req.query.page as string, 10),
+      limit: parseInt(req.query.limit as string, 10),
+    });
 
-    const limit = parseInt(req.query.limit as string, 10);
-    const page = parseInt(req.query.page as string, 10);
+    if (!transactions) {
+      throw new NotFoundError();
+    }
 
-    var query = {
-      userId,
-      date: { $lte: new Date() },
-    };
+    for (var i in transactions?.docs) {
+      transactions.docs[i].id = transactions.docs[i]._id;
+    }
 
-    const transactions = await Transaction.find(query)
-      .sort({ date: 'descending' })
-      .skip(page * limit)
-      .limit(limit);
     return res.status(StatusCodes.OK).send({ transactions });
   }
 );

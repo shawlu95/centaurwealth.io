@@ -27,16 +27,16 @@ it('returns transactions of signed-in user', async () => {
   const {
     body: { transactions },
   } = await request(app)
-    .get('/api/transaction?page=0&limit=10')
+    .get('/api/transaction?page=1&limit=10')
     .set('Cookie', global.signin(userId))
     .send()
     .expect(StatusCodes.OK);
   expect(transactions).toBeDefined();
-  expect(transactions.length).toEqual(1);
-  expect(transactions[0].userId).toEqual(userId);
-  expect(transactions[0].memo).toEqual('beer');
-  expect(transactions[0].entries.length).toEqual(2);
-  expect(transactions[0].entries[0].amount).toEqual(10);
+  expect(transactions.docs.length).toEqual(1);
+  expect(transactions.docs[0].userId).toEqual(userId);
+  expect(transactions.docs[0].memo).toEqual('beer');
+  expect(transactions.docs[0].entries.length).toEqual(2);
+  expect(transactions.docs[0].entries[0].amount).toEqual(10);
 });
 
 it('returns 404 if account does not belong to user', async () => {
