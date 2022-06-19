@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Router from 'next/router';
 import useRequest from '../../hooks/use-request';
+import Transactions from '../../components/transactions';
 
-const TicketDetail = ({ account }) => {
+const TicketDetail = ({ account, transactions }) => {
   const [name, setName] = useState('');
   const { doRequest, errors } = useRequest({
     url: `/api/account/${account.id}`,
@@ -28,6 +29,7 @@ const TicketDetail = ({ account }) => {
       <button onClick={() => doRequest()} className='btn btn-primary'>
         Update
       </button>
+      <Transactions transactions={transactions} />
     </div>
   );
 };
@@ -36,9 +38,15 @@ TicketDetail.getInitialProps = async (context, axios) => {
   const { accountId } = context.query;
   const {
     data: { account },
-  } = await axios.get(`/api/balance/${accountId}`, {
+  } = await axios.get(`/api/balance/${accountId}`);
+
+  const {
+    data: { transactions },
+  } = await axios.get(`/api/account/${accountId}`, {
     params: { page: 0, limit: 50 },
   });
-  return { account };
+
+  return { account, transactions };
 };
+
 export default TicketDetail;
