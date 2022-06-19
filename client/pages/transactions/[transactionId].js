@@ -1,6 +1,6 @@
 import Transaction from '../../components/transaction';
 
-const TicketDetail = ({ accounts, transaction }) => {
+const TransactionDetails = ({ accounts, transaction }) => {
   return (
     <div>
       <Transaction transaction={transaction} accounts={accounts} />
@@ -8,7 +8,7 @@ const TicketDetail = ({ accounts, transaction }) => {
   );
 };
 
-TicketDetail.getInitialProps = async (context, axios) => {
+TransactionDetails.getInitialProps = async (context, axios) => {
   const { transactionId } = context.query;
 
   const {
@@ -44,4 +44,4 @@ TicketDetail.getInitialProps = async (context, axios) => {
   return { accounts, transaction };
 };
 
-export default TicketDetail;
+export default TransactionDetails;

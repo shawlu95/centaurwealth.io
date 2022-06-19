@@ -127,9 +127,7 @@ const Timeline = () => {
           <option value='1m'>1 Month</option>
           <option value='3m'>3 Months</option>
           <option value='6m'>6 Months</option>
-          <option value='ytd' selected>
-            YTD
-          </option>
+          <option value='ytd'>YTD</option>
           <option value='1y'>1 Year</option>
           <option value='all'>All-time</option>
         </select>

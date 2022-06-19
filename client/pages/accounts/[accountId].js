@@ -3,8 +3,7 @@ import Router from 'next/router';
 import useRequest from '../../hooks/use-request';
 import Transactions from '../../components/transactions';
 
-const TicketDetail = ({ account, transactions, url, limit }) => {
-  console.log(transactions, limit);
+const AccountDetails = ({ account, transactions, url, limit }) => {
   const [name, setName] = useState('');
   const { doRequest, errors } = useRequest({
     url: `/api/account/${account.id}`,
@@ -15,14 +14,12 @@ const TicketDetail = ({ account, transactions, url, limit }) => {
   return (
     <div>
       <h3>{account.name}</h3>
-      <h6>Debit: {account.debit}</h6>
-      <h6>Credit: {account.credit}</h6>
-      <h6>Balance: {account.balance}</h6>
+      <h5>Balance: {account.balance}</h5>
       <div className='form-group'>
-        <label>Update Title</label>
         <input
           className='form-control'
           value={name}
+          placeholder={'Update Title'}
           onChange={(e) => setName(e.target.value)}
         />
       </div>
@@ -35,7 +32,7 @@ const TicketDetail = ({ account, transactions, url, limit }) => {
   );
 };
 
-TicketDetail.getInitialProps = async (context, axios) => {
+AccountDetails.getInitialProps = async (context, axios) => {
   const { accountId } = context.query;
   const limit = 25;
   const {
@@ -52,4 +49,4 @@ TicketDetail.getInitialProps = async (context, axios) => {
   return { account, transactions, url, limit };
 };
 
-export default TicketDetail;
+export default AccountDetails;

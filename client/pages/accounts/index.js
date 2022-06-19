@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 
 // Not allowed to fetch data in component in server-side render
-const AccountsPage = ({ accounts }) => {
+const AccountsIndex = ({ accounts }) => {
   const getSection = (type) => {
     var subtotal = 0;
     const body = accounts
@@ -65,9 +65,9 @@ const AccountsPage = ({ accounts }) => {
   );
 };
 
-AccountsPage.getInitialProps = async (context, axios, currentUser) => {
+AccountsIndex.getInitialProps = async (context, axios, currentUser) => {
   const { data } = await axios.get('/api/balance/current');
   return { accounts: data.accounts, currentUser };
 };
 
-export default AccountsPage;
+export default AccountsIndex;

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Router from 'next/router';
 import useRequest from '../../hooks/use-request';
 
-const CreateTicket = () => {
+const AccountsCreate = () => {
   const [name, setName] = useState('');
   const [type, setType] = useState('asset');
   const { doRequest, errors } = useRequest({
@@ -51,4 +51,4 @@ const CreateTicket = () => {
   );
 };
 
-export default CreateTicket;
+export default AccountsCreate;
