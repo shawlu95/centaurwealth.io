@@ -1,11 +1,11 @@
 import React from 'react';
 import Transaction from '../../components/transaction';
 
-export default function TransactionForm({ accounts, transaction }) {
+const TransactionsCreate = ({ accounts, transaction }) => {
   return <Transaction transaction={transaction} accounts={accounts} />;
-}
+};
 
-TransactionForm.getInitialProps = async (context, axios, currentUser) => {
+TransactionsCreate.getInitialProps = async (context, axios, currentUser) => {
   const {
     data: { accounts },
   } = await axios.get('/api/balance/current');
@@ -20,3 +20,5 @@ TransactionForm.getInitialProps = async (context, axios, currentUser) => {
 
   return { accounts, transaction, currentUser };
 };
+
+export default TransactionsCreate;
