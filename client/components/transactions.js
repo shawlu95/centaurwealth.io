@@ -64,9 +64,9 @@ const Transactions = ({ transactions: { docs, totalPages }, url, limit }) => {
   const transactionList = transactions.map((transaction) => {
     return (
       <tr key={transaction.id}>
-        <td>{transaction.date.split('T')[0]}</td>
-        <td>{transaction.memo}</td>
-        <td>{transaction.amount}</td>
+        <td width='20%'>{transaction.date.split('T')[0]}</td>
+        <td width='40%'>{transaction.memo}</td>
+        <td width='20%'>{transaction.amount}</td>
         <td>
           <Link
             href='/transactions/[transactionId]'
@@ -84,9 +84,9 @@ const Transactions = ({ transactions: { docs, totalPages }, url, limit }) => {
       <table className='table'>
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Memo</th>
-            <th>Balance</th>
+            <th width='20%'>Date</th>
+            <th width='40%'>Memo</th>
+            <th width='20%'>Amount</th>
           </tr>
         </thead>
         <tbody>{transactionList}</tbody>
