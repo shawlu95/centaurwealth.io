@@ -9,14 +9,14 @@ import { buildTransaction } from './transaction-test-util';
 it('returns 400 if not signed in', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
-    .delete(`/api/transaction?id=${id}`)
+    .delete(`/api/transaction/${id}?page=10&limit=10`)
     .send()
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
 it('returns 404 if id is missing', async () => {
   await request(app)
-    .delete(`/api/transaction`)
+    .delete(`/api/transaction?page=10&limit=10`)
     .set('Cookie', global.signin())
     .send()
     .expect(StatusCodes.NOT_FOUND);
@@ -25,7 +25,7 @@ it('returns 404 if id is missing', async () => {
 it('returns 404 if transaction is not found', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
-    .delete(`/api/transaction?id=${id}`)
+    .delete(`/api/transaction/${id}?page=10&limit=10`)
     .set('Cookie', global.signin())
     .send()
     .expect(StatusCodes.NOT_FOUND);
@@ -34,7 +34,7 @@ it('returns 404 if transaction is not found', async () => {
 it('returns 401 if not owner of transaction', async () => {
   const { transaction } = await buildTransaction();
   await request(app)
-    .delete(`/api/transaction?id=${transaction.id}`)
+    .delete(`/api/transaction/${transaction.id}?page=10&limit=10`)
     .set('Cookie', global.signin())
     .expect(StatusCodes.UNAUTHORIZED);
 });
@@ -42,7 +42,7 @@ it('returns 401 if not owner of transaction', async () => {
 it('returns 200 if delete successfully', async () => {
   const { userId, transaction } = await buildTransaction();
   await request(app)
-    .delete(`/api/transaction?id=${transaction.id}`)
+    .delete(`/api/transaction/${transaction.id}?page=10&limit=10`)
     .set('Cookie', global.signin(userId))
     .expect(StatusCodes.OK);
 
@@ -56,7 +56,7 @@ it('emits an transaction delete event', async () => {
   expect(natsWrapper.client.publish).not.toHaveBeenCalled();
 
   await request(app)
-    .delete(`/api/transaction?id=${transaction.id}`)
+    .delete(`/api/transaction/${transaction.id}?page=10&limit=10`)
     .set('Cookie', global.signin(userId))
     .expect(StatusCodes.OK);
 

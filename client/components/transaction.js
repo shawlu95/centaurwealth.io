@@ -17,7 +17,7 @@ const Transaction = ({ transaction, accounts }) => {
   });
 
   const { doRequest: doDelete, errors: deleteErrors } = useRequest({
-    url: `/api/transaction?id=${transaction.id}`,
+    url: `/api/transaction/${transaction.id}`,
     method: 'delete',
     body: {},
     onSuccess: () => Router.push('/transactions'),

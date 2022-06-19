@@ -1,10 +1,11 @@
 import express, { Request, Response } from 'express';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 import { StatusCodes } from 'http-status-codes';
 import {
   NotAuthorizedError,
   NotFoundError,
   requireAuth,
+  validateRequest,
 } from '@bookkeeping/common';
 import { Transaction } from '../model/transaction';
 import { TransactionDeletedPublisher } from '../events/publishers/transaction-deleted-publisher';
@@ -12,11 +13,17 @@ import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
+const validators = [
+  param('id').not().isEmpty().withMessage('Please provide account id'),
+];
+
 router.delete(
-  '/api/transaction',
+  '/api/transaction/:id',
   requireAuth,
+  validators,
+  validateRequest,
   async (req: Request, res: Response) => {
-    const { id } = req.query;
+    const { id } = req.params;
     const transaction = await Transaction.findById(id);
 
     if (!transaction) {
