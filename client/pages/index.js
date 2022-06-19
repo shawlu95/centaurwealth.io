@@ -12,6 +12,10 @@ const LandingPage = ({ summary }) => {
 };
 
 LandingPage.getInitialProps = async (context, axios, currentUser) => {
+  if (!currentUser) {
+    context.res.writeHead(302, { Location: '/auth/signin' });
+    context.res.end();
+  }
   const {
     data: { summary },
   } = await axios.get('/api/balance/current');
