@@ -11,7 +11,8 @@ router.get(
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
     const accounts = await Account.find({ userId }).sort({ type: 1, name: 1 });
-    return res.status(StatusCodes.OK).send({ accounts });
+    const summary = await Account.summary(userId);
+    return res.status(StatusCodes.OK).send({ accounts, summary });
   }
 );
 

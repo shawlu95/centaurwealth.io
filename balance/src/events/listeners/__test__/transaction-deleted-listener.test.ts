@@ -1,55 +1,8 @@
-import { Message } from 'node-nats-streaming';
-import { natsWrapper } from '../../../nats-wrapper';
-import {
-  AccountUpdatedEvent,
-  AccountType,
-  TransactionCreatedEvent,
-  EntryType,
-  TransactionDeletedEvent,
-} from '@bookkeeping/common';
-import mongoose from 'mongoose';
 import { Account } from '../../../models/account';
-import { buildAccountPair } from './transaction-test-util';
-import { TransactionDeletedListener } from '../transaction-deleted-listener';
-
-const setup = async () => {
-  const listener = new TransactionDeletedListener(natsWrapper.client);
-  const { userId, cash, expense } = await buildAccountPair();
-
-  const data: TransactionDeletedEvent['data'] = {
-    id: new mongoose.Types.ObjectId().toHexString(),
-    userId,
-    memo: 'fun',
-    date: new Date(),
-    entries: [
-      {
-        amount: 10,
-        type: EntryType.Credit,
-        accountId: cash.id,
-        accountName: cash.name,
-        accountType: cash.type,
-      },
-      {
-        amount: 10,
-        type: EntryType.Debit,
-        accountId: expense.id,
-        accountName: expense.name,
-        accountType: expense.type,
-      },
-    ],
-  };
-
-  // create a fake message with fake ack function
-  // @ts-ignore
-  const msg: Message = {
-    ack: jest.fn(),
-  };
-
-  return { cash, expense, listener, data, msg };
-};
+import { buildTransactionEvent } from './transaction-test-util';
 
 it('undoes existing transaction', async () => {
-  const { cash, expense, listener, data, msg } = await setup();
+  const { cash, expense, listener, data, msg } = await buildTransactionEvent();
 
   expect(cash.credit).toEqual(0);
   expect(cash.debit).toEqual(0);
@@ -70,7 +23,7 @@ it('undoes existing transaction', async () => {
 });
 
 it('acks the message', async () => {
-  const { listener, data, msg } = await setup();
+  const { listener, data, msg } = await buildTransactionEvent();
 
   expect(msg.ack).not.toHaveBeenCalled();
 

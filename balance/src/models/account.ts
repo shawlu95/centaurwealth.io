@@ -8,8 +8,16 @@ interface AccountAttrs {
   type: AccountType;
 }
 
+interface AccountSummary {
+  _id?: AccountType;
+  type: AccountType;
+  debit: number;
+  credit: number;
+}
+
 interface AccountModel extends mongoose.Model<AccountDoc> {
   build(attrs: AccountAttrs): AccountDoc;
+  summary(userId: string): Promise<AccountSummary[]>;
 }
 
 interface AccountDoc extends mongoose.Document {
@@ -47,27 +55,53 @@ const accountSchema = new mongoose.Schema(
   {
     toJSON: {
       transform(doc, ret) {
-        ret.id = ret._id;
-        delete ret._id;
-        const delta = parseFloat((ret.debit - ret.credit).toFixed(2));
-
-        if (ret.type == AccountType.Asset) {
-          ret.balance = delta;
-        } else {
-          ret.balance = -delta;
-        }
-        ret.credit = parseFloat(ret.credit.toFixed(2));
-        ret.debit = parseFloat(ret.debit.toFixed(2));
+        injectBalance(ret);
       },
     },
   }
 );
+
+const injectBalance = (ret: any) => {
+  ret.id = ret._id;
+  delete ret._id;
+  const delta = parseFloat((ret.debit - ret.credit).toFixed(2));
+
+  if (ret.type == AccountType.Asset) {
+    ret.balance = delta;
+  } else {
+    ret.balance = -delta;
+  }
+  ret.credit = parseFloat(ret.credit.toFixed(2));
+  ret.debit = parseFloat(ret.debit.toFixed(2));
+};
 
 accountSchema.statics.build = (attrs: AccountAttrs) => {
   return new Account({
     _id: attrs.id,
     ...attrs,
   });
+};
+
+accountSchema.statics.summary = async function (userId: string) {
+  const summary = await this.aggregate([
+    { $match: { userId } },
+    {
+      $group: {
+        _id: '$type',
+        credit: { $sum: '$credit' },
+        debit: { $sum: '$debit' },
+        count: { $sum: 1 },
+      },
+    },
+    { $set: { type: '$_id' } },
+    { $unset: '_id' },
+    { $sort: { type: 1 } },
+  ]);
+
+  for (var i in summary) {
+    injectBalance(summary[i]);
+  }
+  return summary;
 };
 
 const Account = mongoose.model<AccountAttrs, AccountModel>(
