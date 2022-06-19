@@ -1,24 +1,9 @@
-import { useState } from 'react';
-import Router from 'next/router';
-import useRequest from '../../hooks/use-request';
+import Transaction from '../../components/transaction';
 
-const TicketDetail = ({ transaction }) => {
-  const [memo, setMemo] = useState('');
-  const { doRequest, errors } = useRequest({
-    url: '/api/transaction',
-    method: 'put',
-    body: { id: transaction.id, memo },
-    onSuccess: () => Router.push('/'),
-  });
+const TicketDetail = ({ accounts, transaction }) => {
   return (
     <div>
-      <h3>New Transaction</h3>
-      <p>{transaction.memo}</p>
-
-      {errors}
-      <button onClick={() => doRequest()} className='btn btn-primary'>
-        Update
-      </button>
+      <Transaction transaction={transaction} accounts={accounts} />
     </div>
   );
 };
@@ -28,7 +13,20 @@ TicketDetail.getInitialProps = async (context, axios) => {
   const {
     data: { transaction },
   } = await axios.get(`/api/transaction/${transactionId}`);
-  return { transaction };
+
+  transaction.debitAccountId = transaction.entries.filter(
+    (e) => e.type == 'debit'
+  )[0].accountId;
+
+  transaction.creditAccountId = transaction.entries.filter(
+    (e) => e.type == 'credit'
+  )[0].accountId;
+
+  const {
+    data: { accounts },
+  } = await axios.get('/api/balance/current');
+
+  return { accounts, transaction };
 };
 
 export default TicketDetail;
