@@ -5,7 +5,6 @@ import {
   NotAuthorizedError,
   NotFoundError,
   requireAuth,
-  validateRequest,
 } from '@bookkeeping/common';
 import { Transaction } from '../model/transaction';
 import { TransactionDeletedPublisher } from '../events/publishers/transaction-deleted-publisher';
@@ -13,17 +12,11 @@ import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
-const validators = [
-  body('id').not().isEmpty().withMessage('Please provide transaction id'),
-];
-
 router.delete(
   '/api/transaction',
   requireAuth,
-  validators,
-  validateRequest,
   async (req: Request, res: Response) => {
-    const { id } = req.body;
+    const { id } = req.query;
     const transaction = await Transaction.findById(id);
 
     if (!transaction) {
@@ -34,7 +27,7 @@ router.delete(
       throw new NotAuthorizedError();
     }
 
-    await Transaction.deleteOne({ id });
+    await Transaction.findByIdAndDelete(id);
 
     new TransactionDeletedPublisher(natsWrapper.client).publish({
       id: transaction.id,
