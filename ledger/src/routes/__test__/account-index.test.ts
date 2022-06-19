@@ -42,7 +42,7 @@ it('returns associated transactions of an account', async () => {
   const {
     body: { account, transactions },
   } = await request(app)
-    .get(`/api/account/${cash.id}?page=10&limit=10`)
+    .get(`/api/account/${cash.id}?page=0&limit=10`)
     .set('Cookie', global.signin(userId))
     .send()
     .expect(StatusCodes.OK);
