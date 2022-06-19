@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+const OFFSET = 5;
+
 const Transactions = ({ transactions: { docs, totalPages }, url, limit }) => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -46,7 +48,10 @@ const Transactions = ({ transactions: { docs, totalPages }, url, limit }) => {
 
   const range = (start, end) =>
     [...Array(end - start + 1)].map((_, i) => start + i);
-  const buttons = range(1, totalPages).map((key) => (
+  const buttons = range(
+    Math.max(page - OFFSET, 1),
+    Math.min(page + OFFSET, totalPages)
+  ).map((key) => (
     <button
       key={key}
       className={`page-btn ${page == key && 'btn-primary'}`}
