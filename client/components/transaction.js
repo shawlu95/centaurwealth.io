@@ -59,7 +59,7 @@ const Transaction = ({ transaction, accounts }) => {
   );
 
   const deleteButton = !isNew && (
-    <button onClick={doDelete} className='btn btn-secondary'>
+    <button onClick={doDelete} className='btn btn-danger'>
       Delete
     </button>
   );
