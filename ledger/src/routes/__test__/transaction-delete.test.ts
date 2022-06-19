@@ -7,44 +7,43 @@ import { Transaction } from '../../model/transaction';
 import { buildTransaction } from './transaction-test-util';
 
 it('returns 400 if not signed in', async () => {
+  const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
-    .delete('/api/transaction')
+    .delete(`/api/transaction?id=${id}`)
     .send()
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
-it('returns 400 if id is missing', async () => {
+it('returns 404 if id is missing', async () => {
   await request(app)
-    .delete('/api/transaction')
+    .delete(`/api/transaction`)
     .set('Cookie', global.signin())
     .send()
-    .expect(StatusCodes.BAD_REQUEST);
+    .expect(StatusCodes.NOT_FOUND);
 });
 
 it('returns 404 if transaction is not found', async () => {
-  const randomId = new mongoose.Types.ObjectId().toHexString();
+  const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
-    .delete('/api/transaction')
+    .delete(`/api/transaction?id=${id}`)
     .set('Cookie', global.signin())
-    .send({ id: randomId })
+    .send()
     .expect(StatusCodes.NOT_FOUND);
 });
 
 it('returns 401 if not owner of transaction', async () => {
   const { transaction } = await buildTransaction();
   await request(app)
-    .delete('/api/transaction')
+    .delete(`/api/transaction?id=${transaction.id}`)
     .set('Cookie', global.signin())
-    .send({ id: transaction.id })
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
 it('returns 200 if delete successfully', async () => {
   const { userId, transaction } = await buildTransaction();
   await request(app)
-    .delete('/api/transaction')
+    .delete(`/api/transaction?id=${transaction.id}`)
     .set('Cookie', global.signin(userId))
-    .send({ id: transaction.id })
     .expect(StatusCodes.OK);
 
   const deleted = await Transaction.findById(transaction.id);
@@ -57,9 +56,8 @@ it('emits an transaction delete event', async () => {
   expect(natsWrapper.client.publish).not.toHaveBeenCalled();
 
   await request(app)
-    .delete('/api/transaction')
+    .delete(`/api/transaction?id=${transaction.id}`)
     .set('Cookie', global.signin(userId))
-    .send({ id: transaction.id })
     .expect(StatusCodes.OK);
 
   expect(natsWrapper.client.publish).toHaveBeenCalled();
