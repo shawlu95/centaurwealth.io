@@ -29,6 +29,15 @@ router.get(
       page: parseInt(req.query.page as string, 10),
       limit: parseInt(req.query.limit as string, 10),
     });
+
+    if (!transactions) {
+      throw new NotFoundError();
+    }
+
+    for (var i in transactions?.docs) {
+      transactions.docs[i].id = transactions.docs[i]._id;
+    }
+
     return res.status(StatusCodes.OK).send({ transactions });
   }
 );

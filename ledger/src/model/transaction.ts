@@ -26,7 +26,7 @@ interface TransactionDoc extends mongoose.Document {
   memo: string;
   date: Date;
   entries: Entry[];
-  amount: number; // derived
+  amount: number;
 }
 
 const entrySchema = new mongoose.Schema({
@@ -67,6 +67,10 @@ const transactionSchema = new mongoose.Schema(
     date: {
       type: mongoose.Schema.Types.Date,
       required: true,
+    },
+    amount: {
+      type: Number,
+      default: 0,
     },
     entries: {
       type: [entrySchema],
@@ -118,6 +122,7 @@ transactionSchema.pre('save', async function (this: TransactionDoc, done) {
     if (debit != credit) {
       throw new BadRequestError('Debit must equal to credit');
     }
+    this.set('amount', debit);
   }
   done();
 });

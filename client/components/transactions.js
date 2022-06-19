@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 const Transactions = ({ transactions }) => {
-  const transactionList = transactions.map((transaction) => {
+  const transactionList = transactions.docs.map((transaction) => {
     return (
       <tr key={transaction.id}>
         <td>{transaction.date.split('T')[0]}</td>

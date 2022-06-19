@@ -43,7 +43,7 @@ TicketDetail.getInitialProps = async (context, axios) => {
   const {
     data: { transactions },
   } = await axios.get(`/api/account/${accountId}`, {
-    params: { page: 0, limit: 50 },
+    params: { page: 1, limit: 50 },
   });
 
   return { account, transactions };
