@@ -9,9 +9,16 @@ const Transaction = ({ transaction, accounts }) => {
   const isNew = transaction.id === undefined;
   const getAccount = (id) => accounts.filter((acc) => acc.id === id)[0];
 
-  const { doRequest, errors } = useRequest({
+  const { doRequest: doUpsert, errors: upsertErrors } = useRequest({
     url: '/api/transaction',
     method: isNew ? 'post' : 'put',
+    body: {},
+    onSuccess: () => Router.push('/transactions'),
+  });
+
+  const { doRequest: doDelete, errors: deleteErrors } = useRequest({
+    url: `/api/transaction?id=${transaction.id}`,
+    method: 'delete',
     body: {},
     onSuccess: () => Router.push('/transactions'),
   });
@@ -42,13 +49,25 @@ const Transaction = ({ transaction, accounts }) => {
       ],
     };
 
-    doRequest(body);
+    doUpsert(body);
   };
+
+  const upsertButton = (
+    <button onClick={handleSubmit} className='btn btn-primary'>
+      {isNew ? 'Create' : 'Update'}
+    </button>
+  );
+
+  const deleteButton = !isNew && (
+    <button onClick={doDelete} className='btn btn-secondary'>
+      Delete
+    </button>
+  );
 
   return (
     <div>
       <h3>Transaction</h3>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <Grid container spacing={2}>
           <Grid item xs={9}>
             <label>Transaction Memo</label>
@@ -117,12 +136,11 @@ const Transaction = ({ transaction, accounts }) => {
               ))}
             </select>
           </Grid>
-
           <Grid item xs={8}>
-            <button type='submit' className='btn btn-primary'>
-              Update
-            </button>
-            {errors}
+            {upsertButton}
+            {deleteButton}
+            {upsertErrors}
+            {deleteErrors}
           </Grid>
         </Grid>
       </Form>
