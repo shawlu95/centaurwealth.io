@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Router from 'next/router';
+import { usdFormatter } from '../../utils';
 
 // Not allowed to fetch data in component in server-side render
 const AccountsIndex = ({ accounts }) => {
@@ -13,7 +14,7 @@ const AccountsIndex = ({ accounts }) => {
         return (
           <tr key={account.id}>
             <td width='40%'>{account.name}</td>
-            <td width='40%'>{account.balance}</td>
+            <td width='40%'>{usdFormatter.format(account.balance)}</td>
             <td>
               <Link href='/accounts/[accountId]' as={`/accounts/${account.id}`}>
                 <a>View</a>
@@ -37,7 +38,7 @@ const AccountsIndex = ({ accounts }) => {
             <td width='40%'>
               <b>Subtotal</b>
             </td>
-            <td>{subtotal.toFixed(2)}</td>
+            <td>{usdFormatter.format(subtotal)}</td>
           </tr>
         </tbody>
       </table>
