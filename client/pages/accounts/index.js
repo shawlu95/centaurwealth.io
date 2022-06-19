@@ -2,12 +2,12 @@ import Link from 'next/link';
 import Router from 'next/router';
 
 // Not allowed to fetch data in component in server-side render
-const AccountsPage = ({ currentUser, accounts }) => {
+const AccountsPage = ({ accounts }) => {
   const getSection = (type) => {
     var subtotal = 0;
     const body = accounts
       .filter((account) => account.type == type)
-      .filter((account) => account.balance > 0)
+      .filter((account) => account.balance != 0)
       .map((account) => {
         subtotal += account.balance;
         return (
