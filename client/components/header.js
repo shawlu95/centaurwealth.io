@@ -20,10 +20,12 @@ const Header = ({ currentUser }) => {
   return (
     <nav className='navbar nav-light bg-light'>
       <Link href='/'>
-        <a className='navbar-brand'>Home</a>
+        <a className='navbar-brand' style={{ marginLeft: '15px' }}>
+          Home
+        </a>
       </Link>
       <div className='d-flex justify-content-end'>
-        <ul className='nav d-flex align-items-cent er'>{links}</ul>
+        <ul className='nav d-flex align-items-center'>{links}</ul>
       </div>
     </nav>
   );
