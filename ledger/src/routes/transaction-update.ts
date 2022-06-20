@@ -39,7 +39,7 @@ router.put(
       throw new NotAuthorizedError();
     }
 
-    const deprecated = { ...transaction };
+    const oldEntries = [...transaction.entries];
     transaction.set({
       userId,
       memo,
@@ -54,7 +54,7 @@ router.put(
       memo: transaction.memo,
       date: transaction.date,
       entries: {
-        old: deprecated.entries,
+        old: oldEntries,
         new: transaction.entries,
       },
     });
