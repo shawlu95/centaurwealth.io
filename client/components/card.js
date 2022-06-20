@@ -25,7 +25,6 @@ const data = {
   },
 };
 
-const links = {};
 const Card = ({ type, balance, count }) => {
   return (
     <div className='card'>

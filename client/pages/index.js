@@ -12,7 +12,7 @@ const LandingPage = ({ summary }) => {
 };
 
 LandingPage.getInitialProps = async (context, axios, currentUser) => {
-  if (!currentUser) {
+  if (currentUser === null) {
     context.res.writeHead(302, { Location: '/auth/signin' });
     context.res.end();
   }

@@ -10,12 +10,29 @@ TransactionsCreate.getInitialProps = async (context, axios, currentUser) => {
     data: { accounts },
   } = await axios.get('/api/balance/current');
 
+  // Default accounts are guaranteed to exist
+  const cash = accounts.filter((a) => a.name === 'Cash')[0];
+  const expense = accounts.filter((a) => a.name === 'Expense')[0];
+
   const transaction = {
     memo: '',
     date: new Date().toISOString(),
-    debitAccountId: accounts[0].id,
-    creditAccountId: accounts[0].id,
-    amount: 0,
+    entries: [
+      {
+        amount: 0,
+        type: 'credit',
+        accountName: cash.name,
+        accountType: cash.type,
+        accountId: cash.id,
+      },
+      {
+        amount: 0,
+        type: 'debit',
+        accountName: expense.name,
+        accountType: expense.type,
+        accountId: expense.id,
+      },
+    ],
   };
 
   return { accounts, transaction, currentUser };
