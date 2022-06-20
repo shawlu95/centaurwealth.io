@@ -1,13 +1,14 @@
 import Router from 'next/router';
 import useRequest from '../hooks/use-request';
 import React from 'react';
-import { Grid } from '@mui/material';
 import { useForm, Form } from '../hooks/use-form';
+import { useState } from 'react';
+import Entry from './entry';
 
 const Transaction = ({ transaction, accounts }) => {
   const { values, handleInputChange } = useForm(transaction);
   const isNew = transaction.id === undefined;
-  const getAccount = (id) => accounts.filter((acc) => acc.id === id)[0];
+  const [entries, setEntries] = useState(transaction.entries);
 
   const { doRequest: doUpsert, errors: upsertErrors } = useRequest({
     url: isNew ? '/api/transaction' : `/api/transaction/${transaction.id}`,
@@ -23,126 +24,113 @@ const Transaction = ({ transaction, accounts }) => {
     onSuccess: () => Router.push('/transactions'),
   });
 
+  const addEntry = (e) => {
+    e.preventDefault();
+    const updated = [...entries, entries[entries.length - 1]];
+    setEntries(updated);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const credit = getAccount(values.creditAccountId);
-    const debit = getAccount(values.debitAccountId);
-    const body = {
+    doUpsert({
       ...transaction,
       memo: values.memo,
       date: values.date,
-      entries: [
-        {
-          amount: values.amount,
-          type: 'credit',
-          accountName: credit.name,
-          accountType: credit.type,
-          accountId: credit.id,
-        },
-        {
-          amount: values.amount,
-          type: 'debit',
-          accountName: debit.name,
-          accountType: debit.type,
-          accountId: debit.id,
-        },
-      ],
-    };
-
-    doUpsert(body);
+      entries,
+    });
   };
 
+  const transactionDetail = (
+    <div className='row'>
+      <div className='col-sm-9'>
+        <b>Memo</b>
+        <input
+          className='form-control'
+          name='memo'
+          value={values.memo}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div className='col-sm-3'>
+        <b>Date</b>
+        <input
+          className='form-control'
+          type='date'
+          name='date'
+          value={values.date.split('T')[0]}
+          onChange={handleInputChange}
+        ></input>
+      </div>
+    </div>
+  );
+
+  const header = (
+    <div className='row'>
+      <div className='col-sm-6'>
+        <b>Account</b>
+      </div>
+      <div className='col-sm-2'>
+        <b>DR/CR</b>
+      </div>
+      <div className='col-sm-2'>
+        <b>Amount</b>
+      </div>
+      <div className='col-sm-2'>
+        <button onClick={addEntry} className='btn btn-outline-secondary w-100'>
+          + Entry
+        </button>
+      </div>
+    </div>
+  );
+
+  const entryGroup = entries.map((entry, index) => (
+    <Entry
+      key={index}
+      index={index}
+      accounts={accounts}
+      entry={entry}
+      entries={entries}
+      setEntries={setEntries}
+    />
+  ));
+
   const upsertButton = (
-    <button onClick={handleSubmit} className='btn btn-primary'>
-      {isNew ? 'Create' : 'Update'}
-    </button>
+    <div className='row'>
+      <div className='col-sm-12'>
+        <button
+          onClick={handleSubmit}
+          className='btn btn-primary w-100'
+          style={{ marginRight: '15px' }}
+        >
+          {isNew ? 'Create Transaction' : 'Update Transaction'}
+        </button>
+      </div>
+    </div>
   );
 
   const deleteButton = !isNew && (
-    <button onClick={doDelete} className='btn btn-danger'>
-      Delete
-    </button>
+    <div className='row'>
+      <div className='col-sm-12'>
+        <button onClick={doDelete} className='btn btn-danger w-100'>
+          Delete Transaction
+        </button>
+      </div>
+    </div>
   );
 
   return (
     <div>
       <h3>Transaction</h3>
       <Form>
-        <Grid container spacing={2}>
-          <Grid item xs={9}>
-            <label>Transaction Memo</label>
-            <input
-              className='form-control'
-              name='memo'
-              value={values.memo}
-              onChange={handleInputChange}
-            />
-          </Grid>
-
-          <Grid item xs={3}>
-            <label>Transaction Date</label>
-            <input
-              className='form-control'
-              type='date'
-              name='date'
-              value={values.date.split('T')[0]}
-              onChange={handleInputChange}
-            ></input>
-          </Grid>
-
-          <Grid item xs={9}>
-            <label>Account</label>
-          </Grid>
-
-          <Grid item xs={3}>
-            <label>Amount</label>
-          </Grid>
-
-          <Grid item xs={9}>
-            <select
-              className='form-control'
-              name='debitAccountId'
-              value={values.debitAccountId}
-              onChange={handleInputChange}
-            >
-              {accounts.map((account) => (
-                <option value={account.id} key={account.id}>
-                  {account.name}
-                </option>
-              ))}
-            </select>
-          </Grid>
-
-          <Grid item xs={3}>
-            <input
-              className='form-control'
-              name='amount'
-              value={values.amount === 0 ? '' : values.amount}
-              onChange={handleInputChange}
-            />
-          </Grid>
-
-          <Grid item xs={9}>
-            <select
-              className='form-control'
-              name='creditAccountId'
-              value={values.creditAccountId}
-              onChange={handleInputChange}
-            >
-              {accounts.map((account) => (
-                <option value={account.id} key={account.id}>
-                  {account.name}
-                </option>
-              ))}
-            </select>
-          </Grid>
-          <Grid item xs={8}>
-            {upsertButton}
-            {deleteButton}
-            {upsertErrors}
-            {deleteErrors}
-          </Grid>
-        </Grid>
+        <div className='d-grid gap-2'>
+          {transactionDetail}
+          {header}
+          {entryGroup}
+          {upsertButton}
+          {deleteButton}
+        </div>
+        {upsertErrors}
+        {deleteErrors}
       </Form>
     </div>
   );
