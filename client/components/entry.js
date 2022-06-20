@@ -33,7 +33,7 @@ const Entry = ({ index, accounts, entry, entries, setEntries }) => {
     e.preventDefault();
     const updated = entries.map((_entry, _index) => {
       if (_index === index) {
-        return { ..._entry, amount: parseFloat(e.target.value) };
+        return { ..._entry, amount: e.target.value };
       }
       return _entry;
     });

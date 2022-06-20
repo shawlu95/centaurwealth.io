@@ -12,21 +12,27 @@ const AccountDetails = ({ account, transactions, url, limit }) => {
     onSuccess: () => Router.push('/'),
   });
   return (
-    <div>
+    <div className='d-grid gap-2'>
       <h3>{account.name}</h3>
-      <h5>Balance: {account.balance}</h5>
-      <div className='form-group'>
-        <input
-          className='form-control'
-          value={name}
-          placeholder={'Update Title'}
-          onChange={(e) => setName(e.target.value)}
-        />
+      <div className='row'>
+        <h5>Balance: {account.balance}</h5>
+        <div className='col-sm-4'>
+          <input
+            className='form-control'
+            value={name}
+            placeholder={'Update Title'}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+
+        <div className='col-sm-2'>
+          <button onClick={() => doRequest()} className='btn btn-primary'>
+            Update
+          </button>
+        </div>
       </div>
       {errors}
-      <button onClick={() => doRequest()} className='btn btn-primary'>
-        Update
-      </button>
+
       <Transactions transactions={transactions} url={url} limit={limit} />
     </div>
   );
