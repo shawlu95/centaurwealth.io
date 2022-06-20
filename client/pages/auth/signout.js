@@ -13,7 +13,11 @@ const Signout = () => {
   useEffect(() => {
     doRequest();
   }, []);
-  return <div>Signing out</div>;
+  return (
+    <div className='d-grid gap-2'>
+      <label>Signing out</label>
+    </div>
+  );
 };
 
 export default Signout;
