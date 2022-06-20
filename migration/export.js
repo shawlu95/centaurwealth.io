@@ -18,16 +18,16 @@ const { email, password, host } = require('./config');
       ...options,
       params: { page: 1, limit: 1000000 },
     });
-    fs.writeFileSync(
-      './data/accounts.json',
-      JSON.stringify(acc.data.accounts, null, 2)
-    );
+    const accounts = acc.data.accounts;
+    const transactions = txn.data.transactions.docs;
+    fs.writeFileSync('./data/accounts.json', JSON.stringify(accounts, null, 2));
     fs.writeFileSync(
       './data/transactions.json',
-      JSON.stringify(txn.data.transactions.docs, null, 2)
+      JSON.stringify(transactions, null, 2)
     );
+    console.log('exported accounts:', accounts.length);
+    console.log('exported transactions:', transactions.length);
   } catch (err) {
     console.log(err);
   }
-  console.log('hh');
 })();
