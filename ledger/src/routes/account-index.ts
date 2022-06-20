@@ -3,6 +3,7 @@ import { param, query } from 'express-validator';
 import { Account } from '../model/account';
 import { StatusCodes } from 'http-status-codes';
 import {
+  EntryType,
   NotAuthorizedError,
   NotFoundError,
   requireAuth,
@@ -57,7 +58,14 @@ router.get(
     }
 
     for (var i in transactions?.docs) {
-      transactions.docs[i].id = transactions.docs[i]._id;
+      const transaction = transactions.docs[i];
+      transaction.id = transactions.docs[i]._id;
+      transaction.debit = transaction.entries
+        .filter((e) => e.accountId == accountId && e.type === EntryType.Debit)
+        .reduce((x, y) => x + y.amount, 0);
+      transaction.credit = transaction.entries
+        .filter((e) => e.accountId == accountId && e.type === EntryType.Credit)
+        .reduce((x, y) => x + y.amount, 0);
     }
 
     return res.status(StatusCodes.OK).send({ account, transactions });

@@ -37,9 +37,12 @@ it('returns transactions of signed-in user', async () => {
   expect(transactions.docs[0].memo).toEqual('beer');
   expect(transactions.docs[0].entries.length).toEqual(2);
   expect(transactions.docs[0].entries[0].amount).toEqual(10);
+  expect(transactions.docs[0].amount).toEqual(10);
+  expect(transactions.docs[0].debit).toEqual(10);
+  expect(transactions.docs[0].credit).toEqual(10);
 });
 
-it('returns 404 if account does not belong to user', async () => {
+it('returns 404 if transaction does not belong to user', async () => {
   const { transaction } = await buildTransaction();
 
   await request(app)
@@ -48,7 +51,7 @@ it('returns 404 if account does not belong to user', async () => {
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
-it('return account with matching id', async () => {
+it('return transaction with matching id', async () => {
   const { userId, transaction } = await buildTransaction();
 
   const {

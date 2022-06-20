@@ -54,4 +54,6 @@ it('returns associated transactions of an account', async () => {
   expect(transactions.docs.length).toEqual(1);
   expect(transactions.docs[0].userId).toEqual(userId);
   expect(transactions.docs[0].memo).toEqual(transaction.memo);
+  expect(transactions.docs[0].credit).toEqual(10);
+  expect(transactions.docs[0].debit).toEqual(0);
 });

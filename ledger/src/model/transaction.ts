@@ -27,6 +27,8 @@ interface TransactionDoc extends mongoose.Document {
   date: Date;
   entries: Entry[];
   amount: number;
+  debit: number;
+  credit: number;
 }
 
 const entrySchema = new mongoose.Schema({
@@ -80,15 +82,12 @@ const transactionSchema = new mongoose.Schema(
   {
     toJSON: {
       transform(doc, ret: TransactionDoc) {
+        // for full transaction, credit == debit == amount
+        // if accountId is provided, filter in route handler
+        ret.credit = ret.amount;
+        ret.debit = ret.amount;
         ret.id = ret._id;
         delete ret._id;
-
-        ret.amount = 0;
-        ret.entries.forEach((entry) => {
-          if (entry.type == EntryType.Credit) {
-            ret.amount += entry.amount;
-          }
-        });
       },
     },
   }
