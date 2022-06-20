@@ -29,7 +29,7 @@ const txn = {
   for (var i in lines) {
     const line = lines[i];
     var [seq, date, memo, accountName, type, amount] = line.split(',');
-    // if (parseFloat(seq) <= 4149) {
+    // if (parseFloat(seq) <= 6618) {
     //   continue;
     // }
 
@@ -61,8 +61,8 @@ const txn = {
 
       if (transactions.length == batch) {
         await postTransactionBatch({ transactions, options });
-        await sleep(200);
-        console.log(txn);
+        await sleep(100);
+        console.log(txn.id, txn.date, txn.memo);
         transactions = [];
       }
 
