@@ -42,7 +42,7 @@ export class TransactionCreatedListener extends Listener<TransactionCreatedEvent
 
       if (
         account.type === AccountType.Temporary &&
-        account.credit == account.debit
+        Math.abs(account.credit - account.debit) <= 0.01
       ) {
         new AccountClosedPublisher(natsWrapper.client).publish({
           id: account.id,
