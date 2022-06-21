@@ -5,7 +5,7 @@ import { useForm, Form } from '../hooks/use-form';
 import { useState } from 'react';
 import Entry from './entry';
 
-const Transaction = ({ transaction, accounts }) => {
+const Transaction = ({ transaction, accounts, closing }) => {
   const { values, handleInputChange } = useForm(transaction);
   const isNew = transaction.id === undefined;
   const [entries, setEntries] = useState(transaction.entries);
@@ -57,6 +57,7 @@ const Transaction = ({ transaction, accounts }) => {
           className='form-control'
           type='date'
           name='date'
+          disabled={closing}
           value={values.date.split('T')[0]}
           onChange={handleInputChange}
         ></input>

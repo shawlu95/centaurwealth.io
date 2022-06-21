@@ -17,8 +17,16 @@ const AccountsIndex = ({ accounts }) => {
             <td width='40%'>{usdFormatter.format(account.balance)}</td>
             <td>
               <Link href='/accounts/[accountId]' as={`/accounts/${account.id}`}>
-                <a>View</a>
+                <button className='btn btn-light btn-sm'>View</button>
               </Link>
+              {account.type === 'temporary' && (
+                <Link
+                  href='/accounts/close/[accountId]'
+                  as={`/accounts/close/${account.id}`}
+                >
+                  <button className='btn btn-light btn-sm'>Close</button>
+                </Link>
+              )}
             </td>
           </tr>
         );
