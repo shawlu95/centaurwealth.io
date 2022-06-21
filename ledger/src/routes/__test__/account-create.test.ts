@@ -79,6 +79,26 @@ it('returns 200 with successful account creation', async () => {
   const account = await Account.findById(id);
   expect(account).toBeDefined();
   expect(account!.userId).toEqual(userId);
+  expect(account!.close).toBeUndefined();
+});
+
+it('returns 200 with successful account creation (temporary)', async () => {
+  const userId = new mongoose.Types.ObjectId().toHexString();
+  const {
+    body: { id },
+  } = await request(app)
+    .post('/api/account')
+    .set('Cookie', global.signin(userId))
+    .send({
+      name: 'expense',
+      type: 'temporary',
+    })
+    .expect(StatusCodes.OK);
+
+  const account = await Account.findById(id);
+  expect(account).toBeDefined();
+  expect(account!.userId).toEqual(userId);
+  expect(account!.close).toEqual(new Date('1970-01-01'));
 });
 
 it('emits an account creation event', async () => {

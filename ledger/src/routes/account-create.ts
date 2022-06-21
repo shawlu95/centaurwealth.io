@@ -28,6 +28,7 @@ router.post(
   async (req: Request, res: Response) => {
     const { name, type } = req.body;
     const userId = req.currentUser!.id;
+    const genesis = new Date('1970-01-01');
     const exist = await Account.findOne({ name, userId });
     if (exist) {
       throw new BadRequestError('Account already exists');
@@ -37,6 +38,7 @@ router.post(
       name,
       userId,
       type: type as AccountType,
+      close: type === AccountType.Temporary ? genesis : undefined,
     });
     await account.save();
 

@@ -5,6 +5,7 @@ interface AccountAttrs {
   userId: string;
   name: string;
   type: AccountType;
+  close?: Date;
 }
 
 interface AccountModel extends mongoose.Model<AccountDoc> {
@@ -15,6 +16,7 @@ interface AccountDoc extends mongoose.Document {
   userId: string;
   name: string;
   type: AccountType;
+  close: Date;
 }
 
 const accountSchema = new mongoose.Schema(
@@ -31,6 +33,9 @@ const accountSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: Object.values(AccountType),
+    },
+    close: {
+      type: mongoose.Schema.Types.Date,
     },
   },
   {

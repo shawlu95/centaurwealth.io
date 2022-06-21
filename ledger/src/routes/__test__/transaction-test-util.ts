@@ -15,7 +15,8 @@ export const buildAccountPair = async () => {
   const expense = Account.build({
     userId,
     name: 'expense',
-    type: AccountType.Asset,
+    type: AccountType.Temporary,
+    close: new Date('2022-01-01'),
   });
   await expense.save();
 
@@ -29,7 +30,7 @@ export const buildTransaction = async () => {
   const transaction = Transaction.build({
     userId,
     memo: 'beer',
-    date: new Date(),
+    date: new Date('2022-01-02'),
     entries: [
       {
         amount: 10,
