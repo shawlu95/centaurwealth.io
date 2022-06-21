@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import { natsWrapper } from '../../nats-wrapper';
 import { Account, AccountType } from '../../model/account';
 
-it('returns 400 when not signed in', async () => {
+it('returns 401 when not signed in', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
     .patch(`/api/account/${id}`)
@@ -13,7 +13,7 @@ it('returns 400 when not signed in', async () => {
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
-it('rejects with 401 when name is missing', async () => {
+it('rejects with 400 when name is missing', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
     .patch(`/api/account/${id}`)
@@ -22,7 +22,7 @@ it('rejects with 401 when name is missing', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
-it('rejects with 401 when name is invalid', async () => {
+it('rejects with 400 when name is invalid', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
     .patch(`/api/account/${id}`)
@@ -42,7 +42,7 @@ it('rejects with 404 when account is not found', async () => {
     .expect(StatusCodes.NOT_FOUND);
 });
 
-it('rejects with 401 when colliding with existing account', async () => {
+it('rejects with 400 when colliding with existing account', async () => {
   const userId = new mongoose.Types.ObjectId().toHexString();
   // user creates an asset account
   const account1 = Account.build({
@@ -68,7 +68,7 @@ it('rejects with 401 when colliding with existing account', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
-it('rejects with 400 when account owner is different', async () => {
+it('rejects with 401 when account owner is different', async () => {
   const account = Account.build({
     userId: new mongoose.Types.ObjectId().toHexString(),
     name: 'cash',

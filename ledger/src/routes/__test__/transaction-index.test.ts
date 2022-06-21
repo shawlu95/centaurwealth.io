@@ -1,20 +1,16 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
 import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
-import { EntryType } from '@bookkeeping/common';
-import { Account, AccountType } from '../../model/account';
-import { Transaction } from '../../model/transaction';
 import { buildTransaction } from './transaction-test-util';
 
-it('returns 400 if not signed in', async () => {
+it('returns 401 if not signed in', async () => {
   await request(app)
     .get('/api/transaction')
     .send()
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
-it('returns 400 if not signed in', async () => {
+it('returns 401 if not signed in', async () => {
   await request(app)
     .get('/api/transaction/foo')
     .send()
@@ -42,7 +38,7 @@ it('returns transactions of signed-in user', async () => {
   expect(transactions.docs[0].credit).toEqual(10);
 });
 
-it('returns 404 if transaction does not belong to user', async () => {
+it('returns 401 if transaction does not belong to user', async () => {
   const { transaction } = await buildTransaction();
 
   await request(app)

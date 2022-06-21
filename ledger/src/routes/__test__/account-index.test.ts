@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Account, AccountType } from '../../model/account';
 import { buildTransaction } from './transaction-test-util';
 
-it('returns 400 if not signed in', async () => {
+it('returns 401 if not signed in', async () => {
   await request(app)
     .get('/api/account')
     .send()

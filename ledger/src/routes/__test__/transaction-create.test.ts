@@ -8,14 +8,14 @@ import { EntryType } from '@bookkeeping/common';
 import { Transaction } from '../../model/transaction';
 import { buildAccountPair } from './transaction-test-util';
 
-it('returns 400 when not signed in', async () => {
+it('returns 401 when not signed in', async () => {
   await request(app)
     .post('/api/transaction')
     .send()
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
-it('returns 401 when memo is missing', async () => {
+it('returns 400 when memo is missing', async () => {
   const { userId, cash, expense } = await buildAccountPair();
 
   await request(app)
@@ -43,7 +43,7 @@ it('returns 401 when memo is missing', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
-it('returns 401 if no entry', async () => {
+it('returns 400 if no entry', async () => {
   const { userId, cash, expense } = await buildAccountPair();
   await request(app)
     .post('/api/transaction')
@@ -56,7 +56,7 @@ it('returns 401 if no entry', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
-it('returns 401 if no date', async () => {
+it('returns 400 if no date', async () => {
   const { userId, cash, expense } = await buildAccountPair();
 
   await request(app)
@@ -84,7 +84,7 @@ it('returns 401 if no date', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
-it('returns 400 when trying to use others account', async () => {
+it('returns 401 when trying to use others account', async () => {
   const cash = Account.build({
     userId: new mongoose.Types.ObjectId().toHexString(),
     name: 'cash',
@@ -120,7 +120,7 @@ it('returns 400 when trying to use others account', async () => {
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
-it('returns 401 when debit != credit', async () => {
+it('returns 400 when debit != credit', async () => {
   const { userId, cash, expense } = await buildAccountPair();
 
   await request(app)

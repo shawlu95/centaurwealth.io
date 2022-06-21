@@ -1,22 +1,18 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
 import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
-import { natsWrapper } from '../../nats-wrapper';
-import { Account, AccountType } from '../../model/account';
 import { EntryType } from '@bookkeeping/common';
-import { Transaction } from '../../model/transaction';
 import { buildAccountPair } from './transaction-test-util';
 
-it('returns 400 when not signed in', async () => {
+it('returns 401 when not signed in', async () => {
   await request(app)
     .post('/api/transaction/import')
     .send()
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
-it('returns 401 if no entry', async () => {
-  const { userId, cash, expense } = await buildAccountPair();
+it('returns 400 if no entry', async () => {
+  const { userId } = await buildAccountPair();
   await request(app)
     .post('/api/transaction/import')
     .set('Cookie', global.signin(userId))

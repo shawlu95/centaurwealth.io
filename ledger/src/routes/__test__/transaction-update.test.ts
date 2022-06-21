@@ -8,7 +8,7 @@ import { Account, AccountType } from '../../model/account';
 import { Transaction } from '../../model/transaction';
 import { buildTransaction } from './transaction-test-util';
 
-it('returns 400 if not signed in', async () => {
+it('returns 401 if not signed in', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
     .put(`/api/transaction/${id}`)
@@ -44,7 +44,7 @@ it('returns 404 if missing id', async () => {
     .expect(StatusCodes.NOT_FOUND);
 });
 
-it('returns 401 if missing memo', async () => {
+it('returns 400 if missing memo', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
   await request(app)
     .put(`/api/transaction/${transaction.id}`)
@@ -71,7 +71,7 @@ it('returns 401 if missing memo', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
-it('returns 401 if no entry', async () => {
+it('returns 400 if no entry', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
   await request(app)
     .put(`/api/transaction/${transaction.id}`)
@@ -84,7 +84,7 @@ it('returns 401 if no entry', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
-it('returns 401 if no date', async () => {
+it('returns 400 if no date', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
   await request(app)
     .put(`/api/transaction/${transaction.id}`)
@@ -111,7 +111,7 @@ it('returns 401 if no date', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
-it('returns 400 when trying to use others transaction', async () => {
+it('returns 401 when trying to use others transaction', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
   await request(app)
     .put(`/api/transaction/${transaction.id}`)
@@ -139,7 +139,7 @@ it('returns 400 when trying to use others transaction', async () => {
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
-it('returns 400 when trying to use others account', async () => {
+it('returns 401 when trying to use others account', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
 
   const newCash = Account.build({
@@ -175,7 +175,7 @@ it('returns 400 when trying to use others account', async () => {
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
-it('returns 401 when debit != credit', async () => {
+it('returns 400 when debit != credit', async () => {
   const { userId, cash, expense, transaction } = await buildTransaction();
 
   await request(app)

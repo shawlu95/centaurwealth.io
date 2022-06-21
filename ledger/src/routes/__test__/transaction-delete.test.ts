@@ -6,7 +6,7 @@ import { natsWrapper } from '../../nats-wrapper';
 import { Transaction } from '../../model/transaction';
 import { buildTransaction } from './transaction-test-util';
 
-it('returns 400 if not signed in', async () => {
+it('returns 401 if not signed in', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
     .delete(`/api/transaction/${id}?page=10&limit=10`)
