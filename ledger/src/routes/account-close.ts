@@ -51,6 +51,7 @@ router.get(
         $gt: gt,
         $lte: lte,
       },
+      entries: { $elemMatch: { accountId } },
     });
 
     if (closable.length === 0) {

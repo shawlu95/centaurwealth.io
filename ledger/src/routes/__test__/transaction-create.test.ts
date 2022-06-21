@@ -184,6 +184,46 @@ it('returns 200 with successful transaction', async () => {
   expect(transaction!.userId).toEqual(userId);
 });
 
+it('closes temporary account', async () => {
+  const { userId, cash, expense } = await buildAccountPair();
+
+  const {
+    body: { id },
+  } = await request(app)
+    .post('/api/transaction')
+    .set('Cookie', global.signin(userId))
+    .send({
+      closing: true,
+      memo: 'beer',
+      date: '2022-06-12',
+      entries: [
+        {
+          amount: 10,
+          type: EntryType.Credit,
+          accountId: cash.id,
+          accountName: cash.name,
+          accountType: cash.type,
+        },
+        {
+          amount: 10,
+          type: EntryType.Debit,
+          accountId: expense.id,
+          accountName: expense.name,
+          accountType: expense.type,
+        },
+      ],
+    })
+    .expect(StatusCodes.OK);
+
+  const updatedExpense = await Account.findById(expense.id);
+  expect(updatedExpense).toBeDefined();
+  expect(updatedExpense!.close).toEqual(new Date('2022-06-12'));
+
+  const updatedCash = await Account.findById(cash.id);
+  expect(updatedCash).toBeDefined();
+  expect(updatedCash!.close).toBeUndefined();
+});
+
 it('emits a transaction created event', async () => {
   const { userId, cash, expense } = await buildAccountPair();
 

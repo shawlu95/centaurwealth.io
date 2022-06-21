@@ -13,7 +13,7 @@ const Transaction = ({ transaction, accounts, closing }) => {
   const { doRequest: doUpsert, errors: upsertErrors } = useRequest({
     url: isNew ? '/api/transaction' : `/api/transaction/${transaction.id}`,
     method: isNew ? 'post' : 'put',
-    body: {},
+    body: { closing },
     onSuccess: () => Router.push('/transactions'),
   });
 

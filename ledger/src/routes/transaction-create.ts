@@ -2,9 +2,16 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Transaction } from '../model/transaction';
 import { StatusCodes } from 'http-status-codes';
-import { requireAuth, validateRequest } from '@bookkeeping/common';
+import {
+  AccountType,
+  requireAuth,
+  validateRequest,
+  Entry,
+  NotFoundError,
+} from '@bookkeeping/common';
 import { TransactionCreatedPublisher } from '../events/publishers/transaction-created-publisher';
 import { natsWrapper } from '../nats-wrapper';
+import { Account } from '../model/account';
 
 const router = express.Router();
 
@@ -20,7 +27,7 @@ router.post(
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
-    const { memo, date, entries } = req.body;
+    const { memo, date, entries, closing } = req.body;
     const userId = req.currentUser!.id;
 
     // @ts-ignore
@@ -31,6 +38,20 @@ router.post(
       entries,
     });
     await transaction.save();
+
+    if (closing) {
+      for (var i in entries) {
+        const entry: Entry = entries[i];
+        if (entry.accountType === AccountType.Temporary) {
+          const account = await Account.findById(entry.accountId);
+          if (!account) {
+            throw new NotFoundError();
+          }
+          account.set({ close: date });
+          await account.save();
+        }
+      }
+    }
 
     new TransactionCreatedPublisher(natsWrapper.client).publish({
       id: transaction.id,
