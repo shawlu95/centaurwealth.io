@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { app } from './app';
 import { natsWrapper } from './nats-wrapper';
 import { UserSignupListener } from './events/listeners/user-signup-listener';
+import { AccountClosedListener } from './events/listeners/account-closed-listener';
 
 const start = async () => {
   if (!process.env.jwt) {
@@ -38,6 +39,7 @@ const start = async () => {
     process.on('SIGTERM', () => natsWrapper.client.close());
 
     new UserSignupListener(natsWrapper.client).listen();
+    new AccountClosedListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log('connected to mongodb');
