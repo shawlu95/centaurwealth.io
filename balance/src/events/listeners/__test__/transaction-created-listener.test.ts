@@ -1,8 +1,7 @@
 import { Message } from 'node-nats-streaming';
 import { natsWrapper } from '../../../nats-wrapper';
 import {
-  AccountUpdatedEvent,
-  AccountType,
+  Subjects,
   TransactionCreatedEvent,
   EntryType,
 } from '@bookkeeping/common';
@@ -19,7 +18,7 @@ const setup = async () => {
     id: new mongoose.Types.ObjectId().toHexString(),
     userId,
     memo: 'fun',
-    date: new Date(),
+    date: new Date('2022-01-01'),
     entries: [
       {
         amount: 10,
@@ -60,6 +59,49 @@ it('adds debit and credit amount to accounts', async () => {
 
   expect(updatedExpense?.credit).toEqual(0);
   expect(updatedExpense?.debit).toEqual(10);
+});
+
+it('closes account when expense balance reaches zero', async () => {
+  const { cash: retainedEarning, expense, listener, data, msg } = await setup();
+  await listener.onMessage(data, msg);
+
+  const close: TransactionCreatedEvent['data'] = {
+    id: new mongoose.Types.ObjectId().toHexString(),
+    userId: expense.userId,
+    memo: 'close',
+    date: new Date('2022-01-02'),
+    entries: [
+      {
+        amount: 10,
+        type: EntryType.Credit,
+        accountId: expense.id,
+        accountName: expense.name,
+        accountType: expense.type,
+      },
+      {
+        amount: 10,
+        type: EntryType.Debit,
+        accountId: retainedEarning.id,
+        accountName: retainedEarning.name,
+        accountType: retainedEarning.type,
+      },
+    ],
+  };
+
+  await listener.onMessage(close, msg);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+
+  const [subject, str] = (natsWrapper.client.publish as jest.Mock).mock
+    .calls[0];
+  const accountClosedEvent = JSON.parse(str);
+
+  expect(subject).toEqual(Subjects.AccountClosed);
+  expect(accountClosedEvent.id).toEqual(expense.id);
+  expect(new Date(accountClosedEvent.date)).toEqual(new Date(close.date));
+  expect(accountClosedEvent.userId).toEqual(expense.userId);
+  expect(accountClosedEvent.type).toEqual(expense.type);
+  expect(accountClosedEvent.name).toEqual(expense.name);
 });
 
 it('acks the message', async () => {

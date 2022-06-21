@@ -6,9 +6,12 @@ import {
   NotFoundError,
   TransactionCreatedEvent,
   EntryType,
+  AccountType,
 } from '@bookkeeping/common';
 import { queueGroupName } from './queue-group-name';
 import { Account } from '../../models/account';
+import { AccountClosedPublisher } from '../publishers/account-closed-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 export class TransactionCreatedListener extends Listener<TransactionCreatedEvent> {
   readonly subject = Subjects.TransactionCreated;
@@ -36,6 +39,19 @@ export class TransactionCreatedListener extends Listener<TransactionCreatedEvent
       }
 
       await account.save();
+
+      if (
+        account.type === AccountType.Temporary &&
+        account.credit == account.debit
+      ) {
+        new AccountClosedPublisher(natsWrapper.client).publish({
+          id: account.id,
+          date: data.date,
+          userId: account.userId,
+          name: account.name,
+          type: account.type,
+        });
+      }
     }
 
     msg.ack();
