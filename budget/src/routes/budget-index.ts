@@ -3,6 +3,7 @@ import { query } from 'express-validator';
 import { Expense, ExpenseSummary } from '../models/expense';
 import { Budget } from '../models/budget';
 import { StatusCodes } from 'http-status-codes';
+import dateUtils from './date-util';
 import {
   requireAuth,
   validateRequest,
@@ -19,31 +20,16 @@ const validators = [
   query('page').not().isEmpty().withMessage('Please provide page'),
 ];
 
-const getMonthStart = (date = new Date()): Date => {
-  return new Date(date.setDate(1));
-};
-
-const getQuarterStart = (date = new Date()): Date => {
-  const quarter = Math.floor(date.getMonth() / 3 + 1);
-  return new Date(date.setFullYear(date.getFullYear(), (quarter - 1) * 3, 1));
-};
-
-const getSemiannualStart = (date = new Date()): Date => {
-  const month = date.getMonth() <= 5 ? 0 : 6;
-  return new Date(date.setFullYear(date.getFullYear(), month, 1));
-};
-
-const getYearStart = (date = new Date()): Date => {
-  return new Date(date.setFullYear(date.getFullYear(), 0, 1));
-};
-
-const getSummary = async (userId: string, gte: Date) => {
+const summarize = async (
+  userId: string,
+  gte: Date,
+  lt: Date
+): Promise<Map<string, ExpenseSummary>> => {
   // @ts-ignore
-  const summary = await Expense.summary(userId, gte);
-  await Budget.populate(summary, { path: 'budgetId' });
+  const summary = await Expense.summary(userId, gte, lt);
   return new Map(
     summary.map((budget: ExpenseSummary) => {
-      return [budget.budgetId.id, budget];
+      return [budget.budgetId.toString(), budget];
     })
   );
 };
@@ -55,7 +41,7 @@ router.get(
   validateRequest,
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
-    const budgets = await Budget.find({ userId });
+    const budgets = await Budget.find({ userId }).sort({ name: 1 });
 
     const expenses = await Expense.paginate({
       query: { userId },
@@ -75,13 +61,45 @@ router.get(
       delete expense._id;
     }
 
-    const summary = {
-      monthly: await getSummary(userId, getMonthStart()),
-      quarterly: await getSummary(userId, getQuarterStart()),
-      semiannual: await getSummary(userId, getSemiannualStart()),
-      annual: await getSummary(userId, getYearStart()),
-    };
-    return res.status(StatusCodes.OK).send({ budgets, expenses, summary });
+    // calculate expense summary for different aggregate period
+    const monthly = await summarize(
+      userId,
+      dateUtils.monthStart(),
+      dateUtils.nextMonth()
+    );
+    const quarterly = await summarize(
+      userId,
+      dateUtils.quarterStart(),
+      dateUtils.nextQuarter()
+    );
+    const semiannual = await summarize(
+      userId,
+      dateUtils.halfYearStart(),
+      dateUtils.nextHalfYear()
+    );
+    const annual = await summarize(
+      userId,
+      dateUtils.yearStart(),
+      dateUtils.nextYear()
+    );
+
+    // zip aggregation results into budget object
+    const merged = [];
+    console.log(monthly);
+    for (var i in budgets) {
+      const budget = budgets[i];
+      console.log(budget);
+      merged.push({
+        budget,
+        summary: {
+          monthly: monthly.get(budget.id),
+          quarterly: quarterly.get(budget.id),
+          semiannual: semiannual.get(budget.id),
+          annual: annual.get(budget.id),
+        },
+      });
+    }
+    return res.status(StatusCodes.OK).send({ budgets: merged, expenses });
   }
 );
 

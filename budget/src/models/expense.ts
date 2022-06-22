@@ -12,7 +12,7 @@ interface ExpenseAttrs {
 }
 
 interface ExpenseSummary {
-  budgetId: BudgetDoc;
+  budgetId: mongoose.Schema.Types.ObjectId;
   amount: number;
   recent: Date;
   count: number;
@@ -75,14 +75,19 @@ expenseSchema.statics.build = (attrs: ExpenseAttrs) => {
   });
 };
 
-expenseSchema.statics.summary = async function (userId: string, gte: Date) {
+expenseSchema.statics.summary = async function (
+  userId: string,
+  gte: Date,
+  lt: Date
+) {
   const summary = await this.aggregate([
-    { $match: { userId, date: { $gte: gte } } },
+    { $match: { userId, date: { $gte: gte, $lt: lt } } },
     {
       $group: {
         _id: '$budgetId',
         amount: { $sum: '$amount' },
-        recent: { $max: '$date' },
+        newest: { $max: '$date' },
+        oldest: { $min: '$date' },
         count: { $sum: 1 },
       },
     },
