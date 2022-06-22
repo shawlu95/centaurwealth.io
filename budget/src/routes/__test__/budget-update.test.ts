@@ -1,8 +1,8 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
-import { app } from '../../../app';
+import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
-import { Budget } from '../../../models/budget';
+import { Budget } from '../../models/budget';
 
 const data = {
   name: 'Grocery',

@@ -1,9 +1,9 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
-import { app } from '../../../app';
+import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
-import { Budget } from '../../../models/budget';
-import { Expense } from '../../../models/expense';
+import { Budget } from '../../models/budget';
+import { Expense } from '../../models/expense';
 
 const data = {
   name: 'Grocery',

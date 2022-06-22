@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { param, query } from 'express-validator';
-import { Expense } from '../../models/expense';
-import { Budget } from '../../models/budget';
+import { Expense } from '../models/expense';
+import { Budget } from '../models/budget';
 import { StatusCodes } from 'http-status-codes';
 import {
   NotAuthorizedError,

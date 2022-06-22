@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { param } from 'express-validator';
-import { Budget } from '../../models/budget';
+import { Budget } from '../models/budget';
 import { StatusCodes } from 'http-status-codes';
 import {
   NotAuthorizedError,
