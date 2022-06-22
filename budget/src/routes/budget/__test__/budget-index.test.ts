@@ -21,7 +21,10 @@ const setup = async () => {
 };
 
 it('returns 401 when not signed in', async () => {
-  await request(app).get(`/api/budget`).send().expect(StatusCodes.UNAUTHORIZED);
+  await request(app)
+    .get(`/api/budget?page=1&limit=10`)
+    .send()
+    .expect(StatusCodes.UNAUTHORIZED);
 });
 
 it('returns list of budget for user', async () => {
@@ -38,20 +41,19 @@ it('returns list of budget for user', async () => {
   await expense.save();
 
   const res = await request(app)
-    .get(`/api/budget`)
+    .get(`/api/budget?page=1&limit=10`)
     .set('Cookie', global.signin(budget.userId))
     .send();
-  expect(res.body.budgets.length).toEqual(1);
 
-  const retrieved = res.body.budgets[0];
-  expect(retrieved.id).toEqual(budget.id);
-  expect(retrieved.expenses.length).toEqual(1);
+  expect(res.body.budgets.length).toEqual(1);
+  expect(res.body.budgets[0].id).toEqual(budget.id);
+  expect(res.body.expenses.docs[0].id).toEqual(expense.id);
 });
 
 it('does not return non-owner budget', async () => {
   await setup();
   const res = await request(app)
-    .get(`/api/budget`)
+    .get(`/api/budget?page=1&limit=10`)
     .set('Cookie', global.signin())
     .send();
   expect(res.body.budgets.length).toEqual(0);

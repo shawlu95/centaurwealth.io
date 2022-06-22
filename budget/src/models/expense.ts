@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { mongoosePagination, Pagination } from 'mongoose-paginate-ts';
-import { Budget } from './budget';
+import { BudgetDoc } from './budget';
 
 interface ExpenseAttrs {
   id: string;
@@ -22,6 +22,7 @@ interface ExpenseDoc extends mongoose.Document {
   date: Date;
   amount: number;
   budgetId: string;
+  budget: BudgetDoc;
 }
 
 const expenseSchema = new mongoose.Schema(

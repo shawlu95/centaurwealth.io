@@ -75,4 +75,4 @@ budgetSchema.virtual('expenses', {
 
 const Budget = mongoose.model<BudgetAttrs, BudgetModel>('Budget', budgetSchema);
 
-export { Budget };
+export { Budget, BudgetDoc };

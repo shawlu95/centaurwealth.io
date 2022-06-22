@@ -1,17 +1,19 @@
 import express, { Request, Response } from 'express';
-import { query } from 'express-validator';
+import { param, query } from 'express-validator';
 import { Expense } from '../../models/expense';
 import { Budget } from '../../models/budget';
 import { StatusCodes } from 'http-status-codes';
 import {
+  NotAuthorizedError,
+  NotFoundError,
   requireAuth,
   validateRequest,
-  NotFoundError,
 } from '@bookkeeping/common';
 
 const router = express.Router();
 
 const validators = [
+  param('id').not().isEmpty().withMessage('Please provide budget id'),
   query('limit')
     .not()
     .isEmpty()
@@ -20,16 +22,25 @@ const validators = [
 ];
 
 router.get(
-  '/api/budget',
+  '/api/budget/:id',
   requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
-    const budgets = await Budget.find({ userId });
+    const { id: budgetId } = req.params;
+    const budget = await Budget.findById(budgetId);
+
+    if (!budget) {
+      throw new NotFoundError();
+    }
+
+    if (budget.userId != userId) {
+      throw new NotAuthorizedError();
+    }
 
     const expenses = await Expense.paginate({
-      query: { userId },
+      query: { budgetId },
       sort: { date: -1 },
       page: parseInt(req.query.page as string, 10),
       limit: parseInt(req.query.limit as string, 10),
@@ -42,12 +53,11 @@ router.get(
     for (var i in expenses.docs) {
       const expense = expenses.docs[i];
       expense.id = expense._id;
-      expense.budget = budgets.filter((e) => e.id == expense.budgetId)[0];
       delete expense._id;
     }
 
-    return res.status(StatusCodes.OK).send({ budgets, expenses });
+    return res.status(StatusCodes.OK).send({ budget, expenses });
   }
 );
 
-export { router as budgetIndex };
+export { router as budgetRead };
