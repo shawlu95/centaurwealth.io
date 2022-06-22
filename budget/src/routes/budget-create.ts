@@ -2,7 +2,11 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Budget } from '../models/budget';
 import { StatusCodes } from 'http-status-codes';
-import { requireAuth, validateRequest } from '@bookkeeping/common';
+import {
+  BadRequestError,
+  requireAuth,
+  validateRequest,
+} from '@bookkeeping/common';
 
 const router = express.Router();
 
@@ -27,12 +31,18 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
+
+    const duplicate = await Budget.findOne({ userId, name: req.body.name });
+    if (duplicate) {
+      throw new BadRequestError(`Budget already exists: ${duplicate.name}`);
+    }
+
     const budget = Budget.build({
       ...req.body,
       userId,
     });
     await budget.save();
-    return res.status(StatusCodes.CREATED).send({ userId });
+    return res.status(StatusCodes.CREATED).send({ budget });
   }
 );
 
