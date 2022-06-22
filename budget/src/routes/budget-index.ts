@@ -41,7 +41,6 @@ const getSummary = async (userId: string, gte: Date) => {
   // @ts-ignore
   const summary = await Expense.summary(userId, gte);
   await Budget.populate(summary, { path: 'budgetId' });
-  console.log('summary', summary);
   return new Map(
     summary.map((budget: ExpenseSummary) => {
       return [budget.budgetId.id, budget];

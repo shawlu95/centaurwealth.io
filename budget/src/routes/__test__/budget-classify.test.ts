@@ -12,6 +12,15 @@ it('returns 401 when not signed in', async () => {
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
+it('returns 400 if budget id is not provided', async () => {
+  const expenseId = new mongoose.Types.ObjectId().toHexString();
+  await request(app)
+    .post(`/api/budget/classify`)
+    .set('Cookie', global.signin())
+    .send({ expenseId })
+    .expect(StatusCodes.BAD_REQUEST);
+});
+
 it('returns 400 if expense id is not provided', async () => {
   const budgetId = new mongoose.Types.ObjectId().toHexString();
   await request(app)
@@ -68,16 +77,4 @@ it('returns 200 if successful', async () => {
 
   const updated = await Expense.findById(expense.id);
   expect(updated!.budgetId.toString()).toEqual(budget.id.toString());
-});
-
-it('returns 200 if budget id is unset', async () => {
-  const { expense } = await setup();
-  await request(app)
-    .post(`/api/budget/classify`)
-    .set('Cookie', global.signin(expense.userId))
-    .send({ expenseId: expense.id, budgetId: '' })
-    .expect(StatusCodes.OK);
-
-  const updated = await Expense.findById(expense.id);
-  expect(updated!.budgetId).toBeUndefined();
 });
