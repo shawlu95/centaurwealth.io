@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { app } from './app';
+import { UserSignupListener } from './events/listeners/user-signup-listener';
 import { TransactionCreatedListener } from './events/listeners/transaction-created-listener';
 import { TransactionUpdatedListener } from './events/listeners/transaction-updated-listener';
 import { TransactionDeletedListener } from './events/listeners/transaction-deleted-listener';
@@ -40,6 +41,7 @@ const start = async () => {
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
 
+    new UserSignupListener(natsWrapper.client).listen();
     new TransactionCreatedListener(natsWrapper.client).listen();
     new TransactionUpdatedListener(natsWrapper.client).listen();
     new TransactionDeletedListener(natsWrapper.client).listen();

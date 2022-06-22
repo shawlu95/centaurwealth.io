@@ -11,14 +11,30 @@ import {
 import { TransactionCreatedListener } from '../transaction-created-listener';
 import { TransactionUpdatedListener } from '../transaction-updated-listener';
 import { TransactionDeletedListener } from '../transaction-deleted-listener';
+import { Budget } from '../../../models/budget';
 
 export const randId = () => new mongoose.Types.ObjectId().toHexString();
 
+export const buildDefaultBudget = async (userId: string) => {
+  const budget = Budget.build({
+    userId,
+    name: 'Default',
+    monthly: 10000,
+    quarterly: 30000,
+    semiannual: 60000,
+    annual: 120000,
+  });
+  await budget.save();
+  return budget;
+};
+
 export const buildTransactionCreatedEvent = async () => {
+  const userId = randId();
+  await buildDefaultBudget(userId);
   const listener = new TransactionCreatedListener(natsWrapper.client);
   const data: TransactionCreatedEvent['data'] = {
     id: randId(),
-    userId: randId(),
+    userId,
     memo: 'fun',
     date: new Date(),
     entries: [
@@ -49,10 +65,12 @@ export const buildTransactionCreatedEvent = async () => {
 };
 
 export const buildTransactionUpdatedEvent = async () => {
+  const userId = randId();
+  await buildDefaultBudget(userId);
   const listener = new TransactionUpdatedListener(natsWrapper.client);
   const data: TransactionUpdatedEvent['data'] = {
     id: randId(),
-    userId: randId(),
+    userId,
     memo: 'fun',
     date: new Date(),
     entries: {
@@ -101,10 +119,12 @@ export const buildTransactionUpdatedEvent = async () => {
 };
 
 export const buildTransactionDeletedEvent = async () => {
+  const userId = randId();
+  await buildDefaultBudget(userId);
   const listener = new TransactionDeletedListener(natsWrapper.client);
   const data: TransactionDeletedEvent['data'] = {
     id: randId(),
-    userId: randId(),
+    userId,
     memo: 'fun',
     date: new Date(),
     entries: [
