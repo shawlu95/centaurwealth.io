@@ -6,7 +6,13 @@ import cookieSession from 'cookie-session';
 import { currentUser } from '@bookkeeping/common';
 import { errorHandler, NotFoundError } from '@bookkeeping/common';
 
-import { budgetIndex, budgetRead, budegetCreate, budgetUpdate } from './routes';
+import {
+  budgetIndex,
+  budgetRead,
+  budegetCreate,
+  budgetUpdate,
+  budgetClassify,
+} from './routes';
 
 const app = express();
 app.set('trust proxy', true);
@@ -22,6 +28,7 @@ app.use(budegetCreate);
 app.use(budgetRead);
 app.use(budgetIndex);
 app.use(budgetUpdate);
+app.use(budgetClassify);
 
 app.get('*', async (req, res) => {
   throw new NotFoundError();
