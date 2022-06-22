@@ -11,8 +11,16 @@ interface ExpenseAttrs {
   budgetId?: string; // set manually by user
 }
 
+interface ExpenseSummary {
+  budgetId: BudgetDoc;
+  amount: number;
+  recent: Date;
+  count: number;
+}
+
 interface ExpenseModel extends mongoose.Model<ExpenseDoc> {
   build(attrs: ExpenseAttrs): ExpenseDoc;
+  summary(userId: string): Promise<ExpenseSummary[]>;
 }
 
 interface ExpenseDoc extends mongoose.Document {
@@ -67,9 +75,27 @@ expenseSchema.statics.build = (attrs: ExpenseAttrs) => {
   });
 };
 
+expenseSchema.statics.summary = async function (userId: string, gte: Date) {
+  const summary = await this.aggregate([
+    { $match: { userId, date: { $gte: gte } } },
+    {
+      $group: {
+        _id: '$budgetId',
+        amount: { $sum: '$amount' },
+        recent: { $max: '$date' },
+        count: { $sum: 1 },
+      },
+    },
+    { $set: { budgetId: '$_id' } },
+    { $unset: '_id' },
+  ]);
+
+  return summary;
+};
+
 const Expense: Pagination<ExpenseDoc> = mongoose.model<
   ExpenseAttrs,
   Pagination<ExpenseDoc>
 >('Expense', expenseSchema);
 
-export { Expense };
+export { Expense, ExpenseSummary };
