@@ -3,14 +3,7 @@ import mongoose from 'mongoose';
 import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
 import { Budget } from '../../models/budget';
-
-const data = {
-  name: 'Grocery',
-  monthly: 1000,
-  quarterly: 3000,
-  semiannual: 6000,
-  annual: 12000,
-};
+import { data } from './test-utils';
 
 it('returns 401 when not signed in', async () => {
   await request(app)

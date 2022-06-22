@@ -2,23 +2,8 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
-import { Budget } from '../../models/budget';
 import { Expense } from '../../models/expense';
-
-const data = {
-  name: 'Grocery',
-  monthly: 1000,
-  quarterly: 3000,
-  semiannual: 6000,
-  annual: 12000,
-};
-
-const setup = async () => {
-  const userId = new mongoose.Types.ObjectId().toHexString();
-  const budget = Budget.build({ ...data, userId });
-  await budget.save();
-  return { budget };
-};
+import { setup } from './test-utils';
 
 it('returns 401 when not signed in', async () => {
   const { budget } = await setup();
@@ -48,17 +33,7 @@ it('returns 404 if budget is not found', async () => {
 });
 
 it('returns a single budget and associated expenses', async () => {
-  const { budget } = await setup();
-
-  //@ts-ignore
-  const expense1 = Expense.build({
-    userId: budget.userId,
-    budgetId: budget.id,
-    amount: 10,
-    date: new Date('2022-01-01'),
-    memo: 'something',
-  });
-  await expense1.save();
+  const { budget, expense } = await setup();
 
   //@ts-ignore
   const expense2 = Expense.build({
@@ -78,5 +53,5 @@ it('returns a single budget and associated expenses', async () => {
 
   expect(body.budget.id).toEqual(budget.id);
   expect(body.expenses.docs.length).toEqual(1);
-  expect(body.expenses.docs[0].id).toEqual(expense1.id);
+  expect(body.expenses.docs[0].id).toEqual(expense.id);
 });
