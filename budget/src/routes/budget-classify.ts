@@ -13,7 +13,6 @@ import {
 const router = express.Router();
 
 const validators = [
-  body('budgetId').not().isEmpty().withMessage('Please provide budget id'),
   body('expenseId').not().isEmpty().withMessage('Please provide expense id'),
 ];
 
@@ -25,14 +24,28 @@ router.post(
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
     const { budgetId, expenseId } = req.body;
-    const budget = await Budget.findById(budgetId);
     const expense = await Expense.findById(expenseId);
 
-    if (!budget || !expense) {
+    if (!expense) {
       throw new NotFoundError();
     }
 
-    if (budget.userId != userId || expense.userId != userId) {
+    if (expense.userId != userId) {
+      throw new NotAuthorizedError();
+    }
+
+    if (!budgetId) {
+      expense.set({ budgetId: undefined });
+      await expense.save();
+      return res.status(StatusCodes.OK).send({ expense });
+    }
+
+    const budget = await Budget.findById(budgetId);
+    if (!budget) {
+      throw new NotFoundError();
+    }
+
+    if (budget.userId != userId) {
       throw new NotAuthorizedError();
     }
 
