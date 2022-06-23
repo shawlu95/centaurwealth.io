@@ -14,6 +14,9 @@ const router = express.Router();
 
 const validators = [
   param('id').not().isEmpty().withMessage('Please provide budget id'),
+  body('name').not().isEmpty().withMessage('Please provide budget name'),
+  body('monthly').isNumeric().withMessage('Budget must be a number'),
+  body('monthly').isNumeric().withMessage('Budget must be a number'),
 ];
 
 router.patch(
@@ -25,6 +28,10 @@ router.patch(
     const userId = req.currentUser!.id;
     const { id } = req.params;
     const { name, monthly } = req.body;
+
+    if (parseFloat(monthly) <= 0) {
+      throw new BadRequestError('Budget must be positive');
+    }
 
     const budget = await Budget.findById(id);
 
