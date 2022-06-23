@@ -32,4 +32,13 @@ it('adjusts asset and liability for user', async () => {
   expect(after.length).toEqual(8);
 
   expect(msg.ack).toHaveBeenCalled();
+
+  for (var i in after) {
+    const account = after[i];
+    if (account.name === 'Expense') {
+      expect(account.mutable).toBeFalsy();
+    } else {
+      expect(account.mutable).toBeTruthy();
+    }
+  }
 });

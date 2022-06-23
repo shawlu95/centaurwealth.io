@@ -25,6 +25,14 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: shawlu95/centaur-budget
+      context: budget
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
     - image: shawlu95/centaur-timeline
       context: timeline
       docker:

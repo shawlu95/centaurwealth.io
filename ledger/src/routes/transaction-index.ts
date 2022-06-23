@@ -36,6 +36,7 @@ router.get(
 
     for (var i in transactions?.docs) {
       transactions.docs[i].id = transactions.docs[i]._id;
+      delete transactions.docs[i]._id;
       transactions.docs[i].debit = transactions.docs[i].amount;
       transactions.docs[i].credit = transactions.docs[i].amount;
     }

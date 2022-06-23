@@ -68,6 +68,23 @@ it('rejects with 400 when colliding with existing account', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
+it('rejects with 200 when account is unchanged', async () => {
+  const userId = new mongoose.Types.ObjectId().toHexString();
+
+  const account = Account.build({
+    userId,
+    name: 'cash',
+    type: AccountType.Asset,
+  });
+  await account.save();
+
+  await request(app)
+    .patch(`/api/account/${account.id}`)
+    .set('Cookie', global.signin(userId))
+    .send({ name: account.name })
+    .expect(StatusCodes.OK);
+});
+
 it('rejects with 401 when account owner is different', async () => {
   const account = Account.build({
     userId: new mongoose.Types.ObjectId().toHexString(),
@@ -81,6 +98,22 @@ it('rejects with 401 when account owner is different', async () => {
     .set('Cookie', global.signin())
     .send({ name: 'equipment' })
     .expect(StatusCodes.UNAUTHORIZED);
+});
+
+it('rejects with 400 when trying to update immutable account', async () => {
+  const account = Account.build({
+    userId: new mongoose.Types.ObjectId().toHexString(),
+    name: 'Expense',
+    type: AccountType.Asset,
+    mutable: false,
+  });
+  await account.save();
+
+  await request(app)
+    .patch(`/api/account/${account.id}`)
+    .set('Cookie', global.signin(account.userId))
+    .send({ name: 'equipment' })
+    .expect(StatusCodes.BAD_REQUEST);
 });
 
 it('returns 200 with successful update', async () => {

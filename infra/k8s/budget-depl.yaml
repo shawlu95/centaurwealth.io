@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: budget-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: budget
+  template:
+    metadata:
+      labels:
+        app: budget
+    spec:
+      containers:
+        - name: budget
+          image: shawlu95/centaur-budget
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'centaurwealth'
+            - name: MONGO_URI
+              value: 'mongodb://budget-mongo-srv:27017/budget'
+            - name: jwt
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: budget-srv
+spec:
+  selector:
+    app: budget
+  ports:
+    - name: budget
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

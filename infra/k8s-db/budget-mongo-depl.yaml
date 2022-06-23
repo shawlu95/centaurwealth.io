@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: budget-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: budget-mongo
+  template:
+    metadata:
+      labels:
+        app: budget-mongo
+    spec:
+      containers:
+        - name: budget-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: budget-mongo-srv
+spec:
+  selector:
+    app: budget-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

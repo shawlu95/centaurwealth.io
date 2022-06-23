@@ -60,6 +60,7 @@ router.get(
     for (var i in transactions?.docs) {
       const transaction = transactions.docs[i];
       transaction.id = transactions.docs[i]._id;
+      delete transaction._id;
       transaction.debit = transaction.entries
         .filter((e) => e.accountId == accountId && e.type === EntryType.Debit)
         .reduce((x, y) => x + y.amount, 0);

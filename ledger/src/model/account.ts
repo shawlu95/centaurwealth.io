@@ -6,6 +6,7 @@ interface AccountAttrs {
   name: string;
   type: AccountType;
   close?: Date;
+  mutable?: boolean;
 }
 
 interface AccountModel extends mongoose.Model<AccountDoc> {
@@ -17,6 +18,7 @@ interface AccountDoc extends mongoose.Document {
   name: string;
   type: AccountType;
   close: Date;
+  mutable: boolean;
 }
 
 const accountSchema = new mongoose.Schema(
@@ -36,6 +38,10 @@ const accountSchema = new mongoose.Schema(
     },
     close: {
       type: mongoose.Schema.Types.Date,
+    },
+    mutable: {
+      type: Boolean,
+      default: true,
     },
   },
   {

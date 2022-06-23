@@ -40,6 +40,11 @@ const Transaction = ({ transaction, accounts, closing }) => {
     });
   };
 
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    doDelete();
+  };
+
   const transactionDetail = (
     <div className='row'>
       <div className='col-sm-9'>
@@ -112,7 +117,7 @@ const Transaction = ({ transaction, accounts, closing }) => {
   const deleteButton = !isNew && (
     <div className='row'>
       <div className='col-sm-12'>
-        <button onClick={doDelete} className='btn btn-danger w-100'>
+        <button onClick={handleDelete} className='btn btn-danger w-100'>
           Delete Transaction
         </button>
       </div>
