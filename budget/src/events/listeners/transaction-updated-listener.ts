@@ -16,7 +16,7 @@ export class TransactionUpdatedListener extends Listener<TransactionUpdatedEvent
     const expenseAmount = accumulateExpense(data.entries.new);
 
     if (expenseAmount == 0) {
-      await Expense.findOneAndDelete({ id: data.id });
+      await Expense.findByIdAndDelete(data.id);
     } else {
       var expense = await Expense.findById(data.id);
       if (expense) {

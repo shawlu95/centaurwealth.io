@@ -12,7 +12,7 @@ export class TransactionDeletedListener extends Listener<TransactionDeletedEvent
   queueGroupName = queueGroupName;
 
   async onMessage(data: TransactionDeletedEvent['data'], msg: Message) {
-    await Expense.findOneAndDelete({ id: data.id });
+    await Expense.findByIdAndDelete(data.id);
     msg.ack();
   }
 }
