@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { param } from 'express-validator';
+import { param, body } from 'express-validator';
 import { Budget } from '../models/budget';
 import { StatusCodes } from 'http-status-codes';
 import {
@@ -24,6 +24,7 @@ router.patch(
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
     const { id } = req.params;
+    const { name, monthly } = req.body;
 
     const budget = await Budget.findById(id);
 
@@ -39,12 +40,14 @@ router.patch(
       throw new BadRequestError('Buget is immutable');
     }
 
+    const exist = await Budget.findOne({ userId, name });
+    if (exist) {
+      throw new BadRequestError(`Budget already exists with name: ${name}`);
+    }
+
     budget.set({
-      name: req.body.name || budget.name,
-      monthly: req.body.monthly || budget.monthly,
-      quarterly: req.body.quarterly || budget.quarterly,
-      semiannual: req.body.semiannual || budget.semiannual,
-      annual: req.body.annual || budget.annual,
+      name: name || budget.name,
+      monthly: monthly || budget.monthly,
     });
     await budget.save();
 

@@ -36,8 +36,23 @@ it('returns 400 if budget is duplicate name', async () => {
   await request(app)
     .post('/api/budget')
     .set('Cookie', global.signin(userId))
-    .send({ ...data, annual: undefined })
+    .send({ ...data })
     .expect(StatusCodes.BAD_REQUEST);
+});
+
+it.only('returns 400 if budget is duplicate name', async () => {
+  const userId = new mongoose.Types.ObjectId().toHexString();
+  const budget = Budget.build({ ...data, userId });
+  await budget.save();
+
+  await request(app)
+    .post('/api/budget')
+    .set('Cookie', global.signin(userId))
+    .send({ ...data, name: 'grocery' })
+    .expect(StatusCodes.BAD_REQUEST);
+
+  const updated = await Budget.findOne({ userId });
+  console.log(updated);
 });
 
 it('returns 201 if successful', async () => {

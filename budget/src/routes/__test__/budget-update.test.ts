@@ -58,6 +58,23 @@ it('returns 200 after updating budget name', async () => {
   expect(updated!.annual).toEqual(12000);
 });
 
+it('returns 400 if budget is duplicate name', async () => {
+  const { budget } = await setup();
+
+  const budgetB = Budget.build({
+    name: 'budgetB',
+    monthly: 10,
+    userId: budget.userId,
+  });
+  await budgetB.save();
+
+  await request(app)
+    .patch(`/api/budget/${budget.id}`)
+    .set('Cookie', global.signin(budget.userId))
+    .send({ name: 'budgetB' })
+    .expect(StatusCodes.BAD_REQUEST);
+});
+
 it('returns 400 if trying to update immutable budget', async () => {
   const userId = new mongoose.Types.ObjectId().toHexString();
   const budget = Budget.build({

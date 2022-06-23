@@ -22,15 +22,17 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
+    const { name, monthly } = req.body;
 
-    const duplicate = await Budget.findOne({ userId, name: req.body.name });
-    if (duplicate) {
-      throw new BadRequestError(`Budget already exists: ${duplicate.name}`);
+    const exist = await Budget.findOne({ userId, name });
+    if (exist) {
+      throw new BadRequestError(`Budget already exists: ${name}`);
     }
 
     const budget = Budget.build({
-      ...req.body,
       userId,
+      name,
+      monthly,
     });
     await budget.save();
     return res.status(StatusCodes.CREATED).send({ budget });
