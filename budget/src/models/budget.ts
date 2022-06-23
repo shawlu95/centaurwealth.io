@@ -4,6 +4,7 @@ interface BudgetAttrs {
   userId: string;
   name: string;
   monthly: number;
+  mutable?: boolean;
 }
 
 interface BudgetModel extends mongoose.Model<BudgetDoc> {
@@ -17,6 +18,7 @@ interface BudgetDoc extends mongoose.Document {
   quarterly: number;
   semiannual: number;
   annual: number;
+  mutable: boolean;
 }
 
 const budgetSchema = new mongoose.Schema(
@@ -32,6 +34,10 @@ const budgetSchema = new mongoose.Schema(
     monthly: {
       type: Number,
       default: 0,
+    },
+    mutable: {
+      type: Boolean,
+      default: true,
     },
   },
   {

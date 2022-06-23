@@ -58,6 +58,27 @@ it('returns 200 after updating budget name', async () => {
   expect(updated!.annual).toEqual(12000);
 });
 
+it('returns 400 if trying to update immutable budget', async () => {
+  const userId = new mongoose.Types.ObjectId().toHexString();
+  const budget = Budget.build({
+    userId,
+    name: 'Default',
+    monthly: 10000,
+    mutable: false,
+  });
+  await budget.save();
+
+  await request(app)
+    .patch(`/api/budget/${budget.id}`)
+    .set('Cookie', global.signin(budget.userId))
+    .send({ name: 'Grocery' })
+    .expect(StatusCodes.BAD_REQUEST);
+
+  const updated = await Budget.findById(budget.id);
+  expect(updated).toBeDefined();
+  expect(updated!.name).toEqual('Default');
+});
+
 it('returns 200 after updating monthly budget', async () => {
   const { budget } = await setup();
   await request(app)

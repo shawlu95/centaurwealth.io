@@ -12,6 +12,7 @@ export class UserSignupListener extends Listener<UserSignupEvent> {
       userId: data.id,
       name: 'Default',
       monthly: 10000,
+      mutable: false,
     });
     await budget.save();
     msg.ack();

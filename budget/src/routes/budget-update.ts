@@ -3,6 +3,7 @@ import { param } from 'express-validator';
 import { Budget } from '../models/budget';
 import { StatusCodes } from 'http-status-codes';
 import {
+  BadRequestError,
   NotAuthorizedError,
   NotFoundError,
   requireAuth,
@@ -32,6 +33,10 @@ router.patch(
 
     if (budget.userId != userId) {
       throw new NotAuthorizedError();
+    }
+
+    if (!budget.mutable) {
+      throw new BadRequestError('Buget is immutable');
     }
 
     budget.set({
