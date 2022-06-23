@@ -41,7 +41,7 @@ router.patch(
     }
 
     const exist = await Budget.findOne({ userId, name });
-    if (exist) {
+    if (exist && exist.id !== id) {
       throw new BadRequestError(`Budget already exists with name: ${name}`);
     }
 
