@@ -68,6 +68,23 @@ it('rejects with 400 when colliding with existing account', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
+it('rejects with 200 when account is unchanged', async () => {
+  const userId = new mongoose.Types.ObjectId().toHexString();
+
+  const account = Account.build({
+    userId,
+    name: 'cash',
+    type: AccountType.Asset,
+  });
+  await account.save();
+
+  await request(app)
+    .patch(`/api/account/${account.id}`)
+    .set('Cookie', global.signin(userId))
+    .send({ name: account.name })
+    .expect(StatusCodes.OK);
+});
+
 it('rejects with 401 when account owner is different', async () => {
   const account = Account.build({
     userId: new mongoose.Types.ObjectId().toHexString(),
