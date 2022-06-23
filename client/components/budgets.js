@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { usdFormatter } from '../utils';
+import { usd } from '../utils';
 
 const Budgets = ({ budgets }) => {
   return (
@@ -31,21 +31,21 @@ const Budgets = ({ budgets }) => {
                   </Link>
                 </td>
                 <td width='20%'>Budget</td>
-                <td width='20%'>{usdFormatter.format(budget.monthly)}</td>
-                <td width='20%'>{usdFormatter.format(budget.quarterly)}</td>
-                <td width='20%'>{usdFormatter.format(budget.annual)}</td>
+                <td width='20%'>{usd.format(budget.monthly)}</td>
+                <td width='20%'>{usd.format(budget.quarterly)}</td>
+                <td width='20%'>{usd.format(budget.annual)}</td>
               </tr>
               <tr>
                 <td width='20%'></td>
                 <td width='10%'>Spent</td>
                 <td width='20%'>
-                  {usdFormatter.format(budget.summary.monthly?.amount || 0)}
+                  {usd.format(budget.summary.monthly?.amount || 0)}
                 </td>
                 <td width='20%'>
-                  {usdFormatter.format(budget.summary.quarterly?.amount || 0)}
+                  {usd.format(budget.summary.quarterly?.amount || 0)}
                 </td>
                 <td width='20%'>
-                  {usdFormatter.format(budget.summary.annual?.amount || 0)}
+                  {usd.format(budget.summary.annual?.amount || 0)}
                 </td>
               </tr>
             </React.Fragment>

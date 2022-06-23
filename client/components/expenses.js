@@ -1,7 +1,7 @@
 import React from 'react';
 import useRequest from '../hooks/use-request';
 import Link from 'next/link';
-import { usdFormatter } from '../utils';
+import { usd } from '../utils';
 
 const OFFSET = 5;
 
@@ -64,7 +64,7 @@ const Expenses = ({
       <tr key={expense.id}>
         <td width='20%'>{expense.date.split('T')[0]}</td>
         <td width='40%'>{expense.memo}</td>
-        <td width='20%'>{usdFormatter.format(expense.amount)}</td>
+        <td width='20%'>{usd.format(expense.amount)}</td>
         <td width='20%'>
           <select
             name='budgetId'

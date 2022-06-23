@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usdFormatter } from '../utils';
+import { usd } from '../utils';
 
 const OFFSET = 5;
 
@@ -73,8 +73,8 @@ const Transactions = ({ transactions: { docs, totalPages }, url, limit }) => {
       <tr key={transaction.id}>
         <td width='20%'>{transaction.date.split('T')[0]}</td>
         <td width='40%'>{transaction.memo}</td>
-        <td width='20%'>{usdFormatter.format(debit)}</td>
-        <td width='20%'>{usdFormatter.format(credit)}</td>
+        <td width='20%'>{usd.format(debit)}</td>
+        <td width='20%'>{usd.format(credit)}</td>
         <td>
           <Link
             href='/transaction/[transactionId]'
