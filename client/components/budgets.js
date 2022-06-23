@@ -2,11 +2,14 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usdFormatter } from '../utils';
-
 const Budgets = ({ budgets, fetchPage }) => {
   return (
     <div>
       <h4>My Budgets</h4>
+
+      <Link href='/budget/create'>
+        <button className='btn btn-primary'>Create Budget</button>
+      </Link>
       <table className='table'>
         <thead>
           <tr>
@@ -23,6 +26,9 @@ const Budgets = ({ budgets, fetchPage }) => {
               <tr>
                 <td width='20%'>
                   <b>{budget.name}</b>
+                  <Link href='/budget/[budgetId]' as={`/budget/${budget.id}`}>
+                    <button className='btn btn-light btn-sm'>Edit</button>
+                  </Link>
                 </td>
                 <td width='20%'>Budget</td>
                 <td width='20%'>{usdFormatter.format(budget.monthly)}</td>
