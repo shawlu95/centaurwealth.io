@@ -34,6 +34,10 @@ router.patch(
       throw new NotFoundError();
     }
 
+    if (!account.mutable) {
+      throw new BadRequestError('Account is immutable');
+    }
+
     const colliding = await Account.findOne({ userId, name });
     if (colliding) {
       throw new BadRequestError('Collide with existing account');

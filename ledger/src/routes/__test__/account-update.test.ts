@@ -83,6 +83,22 @@ it('rejects with 401 when account owner is different', async () => {
     .expect(StatusCodes.UNAUTHORIZED);
 });
 
+it('rejects with 400 when trying to update immutable account', async () => {
+  const account = Account.build({
+    userId: new mongoose.Types.ObjectId().toHexString(),
+    name: 'Expense',
+    type: AccountType.Asset,
+    mutable: false,
+  });
+  await account.save();
+
+  await request(app)
+    .patch(`/api/account/${account.id}`)
+    .set('Cookie', global.signin(account.userId))
+    .send({ name: 'equipment' })
+    .expect(StatusCodes.BAD_REQUEST);
+});
+
 it('returns 200 with successful update', async () => {
   const userId = new mongoose.Types.ObjectId().toHexString();
   const account = Account.build({

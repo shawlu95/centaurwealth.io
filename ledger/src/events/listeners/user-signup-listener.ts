@@ -17,6 +17,8 @@ const defaultAccounts = {
   temporary: ['Expense', 'Salary'],
 };
 
+const immutable = new Set(['Expense']);
+
 export class UserSignupListener extends Listener<UserSignupEvent> {
   readonly subject = Subjects.UserSignup;
   queueGroupName = queueGroupName;
@@ -27,10 +29,12 @@ export class UserSignupListener extends Listener<UserSignupEvent> {
 
     for (const [type, names] of Object.entries(defaultAccounts)) {
       for (var i in names) {
+        const name = names[i];
         const account = Account.build({
           userId,
-          name: names[i],
+          name,
           type: type as AccountType,
+          mutable: !immutable.has(name),
         });
         await account.save();
 
