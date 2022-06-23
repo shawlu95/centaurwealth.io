@@ -20,9 +20,6 @@ export const buildDefaultBudget = async (userId: string) => {
     userId,
     name: 'Default',
     monthly: 10000,
-    quarterly: 30000,
-    semiannual: 60000,
-    annual: 120000,
   });
   await budget.save();
   return budget;

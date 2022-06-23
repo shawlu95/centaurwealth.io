@@ -28,30 +28,6 @@ it('returns 400 if monthly budget is not provided', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
-it('returns 400 if quarterly budget is not provided', async () => {
-  await request(app)
-    .post('/api/budget')
-    .set('Cookie', global.signin())
-    .send({ ...data, quarterly: undefined })
-    .expect(StatusCodes.BAD_REQUEST);
-});
-
-it('returns 400 if semiannual budget is not provided', async () => {
-  await request(app)
-    .post('/api/budget')
-    .set('Cookie', global.signin())
-    .send({ ...data, semiannual: undefined })
-    .expect(StatusCodes.BAD_REQUEST);
-});
-
-it('returns 400 if annual budget is not provided', async () => {
-  await request(app)
-    .post('/api/budget')
-    .set('Cookie', global.signin())
-    .send({ ...data, annual: undefined })
-    .expect(StatusCodes.BAD_REQUEST);
-});
-
 it('returns 400 if budget is duplicate name', async () => {
   const userId = new mongoose.Types.ObjectId().toHexString();
   const budget = Budget.build({ ...data, userId });
@@ -77,6 +53,5 @@ it('returns 201 if successful', async () => {
   expect(budget!.name).toEqual('Grocery');
   expect(budget!.monthly).toEqual(1000);
   expect(budget!.quarterly).toEqual(3000);
-  expect(budget!.semiannual).toEqual(6000);
   expect(budget!.annual).toEqual(12000);
 });

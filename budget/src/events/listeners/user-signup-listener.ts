@@ -8,15 +8,10 @@ export class UserSignupListener extends Listener<UserSignupEvent> {
   queueGroupName = queueGroupName;
 
   async onMessage(data: UserSignupEvent['data'], msg: Message) {
-    const userId = data.id;
-
     const budget = Budget.build({
       userId: data.id,
       name: 'Default',
       monthly: 10000,
-      quarterly: 30000,
-      semiannual: 60000,
-      annual: 120000,
     });
     await budget.save();
     msg.ack();

@@ -1,13 +1,9 @@
 import mongoose from 'mongoose';
-import { Expense } from './expense';
 
 interface BudgetAttrs {
   userId: string;
   name: string;
   monthly: number;
-  quarterly: number;
-  semiannual: number;
-  annual: number;
 }
 
 interface BudgetModel extends mongoose.Model<BudgetDoc> {
@@ -37,24 +33,11 @@ const budgetSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    quarterly: {
-      type: Number,
-      required: true,
-    },
-    semiannual: {
-      type: Number,
-      required: true,
-    },
-    annual: {
-      type: Number,
-      required: true,
-    },
   },
   {
     toJSON: {
       virtuals: true,
       transform(doc, ret) {
-        ret.id = ret._id;
         delete ret._id;
       },
     },
@@ -66,11 +49,12 @@ budgetSchema.statics.build = (attrs: BudgetAttrs) => {
   return new Budget(attrs);
 };
 
-budgetSchema.virtual('expenses', {
-  ref: 'Expense',
-  localField: '_id',
-  foreignField: 'budgetId',
-  justOne: false,
+budgetSchema.virtual('quarterly').get(function () {
+  return this.monthly! * 3;
+});
+
+budgetSchema.virtual('annual').get(function () {
+  return this.monthly! * 12;
 });
 
 const Budget = mongoose.model<BudgetAttrs, BudgetModel>('Budget', budgetSchema);

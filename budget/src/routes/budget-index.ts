@@ -85,12 +85,16 @@ router.get(
 
     // zip aggregation results into budget object
     const merged = [];
-    console.log(monthly);
     for (var i in budgets) {
       const budget = budgets[i];
-      console.log(budget);
       merged.push({
-        budget,
+        id: budget.id,
+        userId: budget.userId,
+        name: budget.name,
+        monthly: budget.monthly,
+        quarterly: budget.quarterly,
+        semiannual: budget.semiannual,
+        annual: budget.annual,
         summary: {
           monthly: monthly.get(budget.id),
           quarterly: quarterly.get(budget.id),

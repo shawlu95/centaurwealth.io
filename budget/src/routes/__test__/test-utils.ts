@@ -5,9 +5,6 @@ import { Expense } from '../../models/expense';
 export const data = {
   name: 'Grocery',
   monthly: 1000,
-  quarterly: 3000,
-  semiannual: 6000,
-  annual: 12000,
 };
 
 export const setup = async () => {

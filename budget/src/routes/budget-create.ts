@@ -13,15 +13,6 @@ const router = express.Router();
 const validators = [
   body('name').not().isEmpty().withMessage('Please provide budget name'),
   body('monthly').not().isEmpty().withMessage('Please provide monthly budget'),
-  body('quarterly')
-    .not()
-    .isEmpty()
-    .withMessage('Please provide quarterly budget'),
-  body('semiannual')
-    .not()
-    .isEmpty()
-    .withMessage('Please provide semiannual budget'),
-  body('annual').not().isEmpty().withMessage('Please provide annual budget'),
 ];
 
 router.post(

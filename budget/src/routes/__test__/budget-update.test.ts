@@ -55,7 +55,6 @@ it('returns 200 after updating budget name', async () => {
   expect(updated!.name).toEqual('Travel');
   expect(updated!.monthly).toEqual(1000);
   expect(updated!.quarterly).toEqual(3000);
-  expect(updated!.semiannual).toEqual(6000);
   expect(updated!.annual).toEqual(12000);
 });
 
@@ -71,58 +70,6 @@ it('returns 200 after updating monthly budget', async () => {
   expect(updated).toBeDefined();
   expect(updated!.name).toEqual('Grocery');
   expect(updated!.monthly).toEqual(10);
-  expect(updated!.quarterly).toEqual(3000);
-  expect(updated!.semiannual).toEqual(6000);
-  expect(updated!.annual).toEqual(12000);
-});
-
-it('returns 200 after updating quarterly budget', async () => {
-  const { budget } = await setup();
-  await request(app)
-    .patch(`/api/budget/${budget.id}`)
-    .set('Cookie', global.signin(budget.userId))
-    .send({ quarterly: 10 })
-    .expect(StatusCodes.OK);
-
-  const updated = await Budget.findById(budget.id);
-  expect(updated).toBeDefined();
-  expect(updated!.name).toEqual('Grocery');
-  expect(updated!.monthly).toEqual(1000);
-  expect(updated!.quarterly).toEqual(10);
-  expect(updated!.semiannual).toEqual(6000);
-  expect(updated!.annual).toEqual(12000);
-});
-
-it('returns 200 after updating semiannual budget', async () => {
-  const { budget } = await setup();
-  await request(app)
-    .patch(`/api/budget/${budget.id}`)
-    .set('Cookie', global.signin(budget.userId))
-    .send({ semiannual: 10 })
-    .expect(StatusCodes.OK);
-
-  const updated = await Budget.findById(budget.id);
-  expect(updated).toBeDefined();
-  expect(updated!.name).toEqual('Grocery');
-  expect(updated!.monthly).toEqual(1000);
-  expect(updated!.quarterly).toEqual(3000);
-  expect(updated!.semiannual).toEqual(10);
-  expect(updated!.annual).toEqual(12000);
-});
-
-it('returns 200 after updating annual budget', async () => {
-  const { budget } = await setup();
-  await request(app)
-    .patch(`/api/budget/${budget.id}`)
-    .set('Cookie', global.signin(budget.userId))
-    .send({ annual: 10 })
-    .expect(StatusCodes.OK);
-
-  const updated = await Budget.findById(budget.id);
-  expect(updated).toBeDefined();
-  expect(updated!.name).toEqual('Grocery');
-  expect(updated!.monthly).toEqual(1000);
-  expect(updated!.quarterly).toEqual(3000);
-  expect(updated!.semiannual).toEqual(6000);
-  expect(updated!.annual).toEqual(10);
+  expect(updated!.quarterly).toEqual(30);
+  expect(updated!.annual).toEqual(120);
 });
