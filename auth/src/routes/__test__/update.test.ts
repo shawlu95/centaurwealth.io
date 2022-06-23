@@ -15,7 +15,7 @@ it('returns 400 when not signed in', async () => {
     .post('/api/auth/update')
     .send(data)
     .expect(StatusCodes.UNAUTHORIZED);
-}, 10000);
+});
 
 it('returns 401 when using same email', async () => {
   const user = User.build(data);
@@ -25,7 +25,7 @@ it('returns 401 when using same email', async () => {
     .set('Cookie', global.signin(data.id))
     .send(data)
     .expect(StatusCodes.BAD_REQUEST);
-}, 10000);
+});
 
 it('returns 401 when using wrong password', async () => {
   const user = User.build(data);
@@ -38,7 +38,7 @@ it('returns 401 when using wrong password', async () => {
       password: 'wrong',
     })
     .expect(StatusCodes.BAD_REQUEST);
-}, 10000);
+});
 
 it('returns 401 when updating to existing email', async () => {
   const user = User.build(data);
@@ -55,7 +55,7 @@ it('returns 401 when updating to existing email', async () => {
     .set('Cookie', global.signin(data.id))
     .send(another)
     .expect(StatusCodes.BAD_REQUEST);
-}, 10000);
+});
 
 it('returns 200 if successful', async () => {
   const user = User.build(data);
@@ -71,4 +71,4 @@ it('returns 200 if successful', async () => {
 
   const updated = await User.findById(user.id);
   expect(updated!.email).toEqual('test2@test.com');
-}, 10000);
+});
