@@ -2,7 +2,7 @@ import Router from 'next/router';
 import Transactions from '../../components/transactions';
 
 // Not allowed to fetch data in component in server-side render
-const TransactionsIndex = ({ transactions, url, limit }) => {
+const TransactionIndex = ({ transactions, url, limit }) => {
   return (
     <div>
       <h3>Transactions</h3>
@@ -17,7 +17,7 @@ const TransactionsIndex = ({ transactions, url, limit }) => {
   );
 };
 
-TransactionsIndex.getInitialProps = async (context, axios, currentUser) => {
+TransactionIndex.getInitialProps = async (context, axios, currentUser) => {
   const limit = 25;
   const url = '/api/transaction';
   const {
@@ -28,4 +28,4 @@ TransactionsIndex.getInitialProps = async (context, axios, currentUser) => {
   return { transactions, url, limit };
 };
 
-export default TransactionsIndex;
+export default TransactionIndex;

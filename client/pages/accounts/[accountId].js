@@ -3,7 +3,7 @@ import Router from 'next/router';
 import useRequest from '../../hooks/use-request';
 import Transactions from '../../components/transactions';
 
-const AccountDetails = ({ account, mutable, transactions, url, limit }) => {
+const AccountEdit = ({ account, mutable, transactions, url, limit }) => {
   const [name, setName] = useState('');
   const { doRequest, errors } = useRequest({
     url: `/api/account/${account.id}`,
@@ -43,7 +43,7 @@ const AccountDetails = ({ account, mutable, transactions, url, limit }) => {
   );
 };
 
-AccountDetails.getInitialProps = async (context, axios) => {
+AccountEdit.getInitialProps = async (context, axios) => {
   const { accountId } = context.query;
   const limit = 25;
   const {
@@ -63,4 +63,4 @@ AccountDetails.getInitialProps = async (context, axios) => {
   return { account, mutable, transactions, url, limit };
 };
 
-export default AccountDetails;
+export default AccountEdit;

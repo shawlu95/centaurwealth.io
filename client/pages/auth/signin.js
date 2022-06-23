@@ -2,8 +2,7 @@ import { useState } from 'react';
 import useRequest from '../../hooks/use-request';
 import Router from 'next/router';
 
-// Accessible at https://ticketing.dev/auth/signup
-const Signup = () => {
+const Signin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { doRequest, errors } = useRequest({
@@ -47,4 +46,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Signin;

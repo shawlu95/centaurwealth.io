@@ -1,5 +1,4 @@
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import useRequest from '../hooks/use-request';
 import Link from 'next/link';
 import { usdFormatter } from '../utils';

@@ -1,6 +1,6 @@
 import Transaction from '../../components/transaction';
 
-const TransactionDetails = ({ accounts, transaction }) => {
+const TransactionEdit = ({ accounts, transaction }) => {
   return (
     <div>
       <Transaction transaction={transaction} accounts={accounts} />
@@ -8,7 +8,7 @@ const TransactionDetails = ({ accounts, transaction }) => {
   );
 };
 
-TransactionDetails.getInitialProps = async (context, axios) => {
+TransactionEdit.getInitialProps = async (context, axios) => {
   const { transactionId } = context.query;
 
   const {
@@ -21,4 +21,4 @@ TransactionDetails.getInitialProps = async (context, axios) => {
   return { accounts, transaction };
 };
 
-export default TransactionDetails;
+export default TransactionEdit;

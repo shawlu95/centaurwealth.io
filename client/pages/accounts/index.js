@@ -3,7 +3,7 @@ import Router from 'next/router';
 import { usdFormatter } from '../../utils';
 
 // Not allowed to fetch data in component in server-side render
-const AccountsIndex = ({ accounts }) => {
+const AccountIndex = ({ accounts }) => {
   const getSection = (type) => {
     var subtotal = 0;
     const body = accounts
@@ -74,9 +74,9 @@ const AccountsIndex = ({ accounts }) => {
   );
 };
 
-AccountsIndex.getInitialProps = async (context, axios, currentUser) => {
+AccountIndex.getInitialProps = async (context, axios, currentUser) => {
   const { data } = await axios.get('/api/balance/current');
   return { accounts: data.accounts, currentUser };
 };
 
-export default AccountsIndex;
+export default AccountIndex;

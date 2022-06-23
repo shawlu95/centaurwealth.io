@@ -1,6 +1,3 @@
-import { Grid } from '@mui/material';
-import { useState } from 'react';
-
 const Entry = ({ index, accounts, entry, entries, setEntries }) => {
   const getAccount = (id) => accounts.filter((acc) => acc.id === id)[0];
 
