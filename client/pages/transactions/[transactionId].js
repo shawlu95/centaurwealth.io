@@ -15,22 +15,8 @@ TransactionDetails.getInitialProps = async (context, axios) => {
     data: { accounts },
   } = await axios.get('/api/balance/current');
 
-  var transaction = {
-    memo: '',
-    date: new Date().toISOString(),
-    entries: [],
-  };
-
-  try {
-    const res = await axios.get(`/api/transaction/${transactionId}`);
-    transaction = res.data.transaction;
-  } catch (err) {
-    //TODO: this getInitialProps is triggered when transaction is deleted
-    // for now, server redirects to /transactions page
-    // try not to trigger the reload
-    context.res.writeHead(302, { Location: '/transactions' });
-    context.res.end();
-  }
+  const res = await axios.get(`/api/transaction/${transactionId}`);
+  const transaction = res.data.transaction;
 
   return { accounts, transaction };
 };
