@@ -6,7 +6,7 @@ const Signin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { doRequest, errors } = useRequest({
-    url: '/api/users/signin',
+    url: '/api/auth/signin',
     method: 'post',
     body: { email, password },
     onSuccess: () => Router.push('/'),

@@ -8,7 +8,7 @@ it('returns a 201 on successful signup', async () => {
   // cookie is not managed automatically by the follow up request
   // need to attach cookie manually
   const res = await request(app)
-    .get('/api/users/currentuser')
+    .get('/api/auth/currentuser')
     .set('Cookie', cookie)
     .send()
     .expect(StatusCodes.OK);
@@ -17,7 +17,7 @@ it('returns a 201 on successful signup', async () => {
 
 it('responds with null if not authenticated', async () => {
   const res = await request(app)
-    .get('/api/users/currentuser')
+    .get('/api/auth/currentuser')
     .send()
     .expect(StatusCodes.OK);
   expect(res.body.currentUser).toBeNull();

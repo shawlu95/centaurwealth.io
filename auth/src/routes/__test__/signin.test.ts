@@ -4,7 +4,7 @@ import { app } from '../../app';
 
 it('fails when email does not exists', async () => {
   await request(app)
-    .post('/api/users/signin')
+    .post('/api/auth/signin')
     .send({
       email: 'test@test.com',
       password: 'password',
@@ -14,7 +14,7 @@ it('fails when email does not exists', async () => {
 
 it('fails when incorrect password is supplied', async () => {
   await request(app)
-    .post('/api/users/signup')
+    .post('/api/auth/signup')
     .send({
       email: 'test@test.com',
       password: 'password',
@@ -22,7 +22,7 @@ it('fails when incorrect password is supplied', async () => {
     .expect(StatusCodes.CREATED);
 
   await request(app)
-    .post('/api/users/signin')
+    .post('/api/auth/signin')
     .send({
       email: 'test@test.com',
       password: 'password2',
@@ -32,7 +32,7 @@ it('fails when incorrect password is supplied', async () => {
 
 it('responds with a cookie when given valid credential', async () => {
   await request(app)
-    .post('/api/users/signup')
+    .post('/api/auth/signup')
     .send({
       email: 'test@test.com',
       password: 'password',
@@ -40,7 +40,7 @@ it('responds with a cookie when given valid credential', async () => {
     .expect(StatusCodes.CREATED);
 
   const res = await request(app)
-    .post('/api/users/signin')
+    .post('/api/auth/signin')
     .send({
       email: 'test@test.com',
       password: 'password',

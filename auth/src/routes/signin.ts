@@ -15,7 +15,7 @@ const validators = [
 ];
 
 router.post(
-  '/api/users/signin',
+  '/api/auth/signin',
   validators,
   validateRequest,
   async (req: Request, res: Response) => {

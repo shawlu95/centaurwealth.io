@@ -12,7 +12,7 @@ const data = {
 
 it('returns 400 when not signed in', async () => {
   await request(app)
-    .post('/api/users/update')
+    .post('/api/auth/update')
     .send(data)
     .expect(StatusCodes.UNAUTHORIZED);
 });
@@ -21,7 +21,7 @@ it('returns 401 when using same email', async () => {
   const user = User.build(data);
   await user.save();
   await request(app)
-    .post('/api/users/update')
+    .post('/api/auth/update')
     .set('Cookie', global.signin(data.id))
     .send(data)
     .expect(StatusCodes.BAD_REQUEST);
@@ -31,7 +31,7 @@ it('returns 401 when using wrong password', async () => {
   const user = User.build(data);
   await user.save();
   await request(app)
-    .post('/api/users/update')
+    .post('/api/auth/update')
     .set('Cookie', global.signin(data.id))
     .send({
       email: 'test2@test.com',
@@ -51,7 +51,7 @@ it('returns 401 when updating to existing email', async () => {
   await another.save();
 
   await request(app)
-    .post('/api/users/update')
+    .post('/api/auth/update')
     .set('Cookie', global.signin(data.id))
     .send(another)
     .expect(StatusCodes.BAD_REQUEST);
@@ -61,7 +61,7 @@ it('returns 200 if successful', async () => {
   const user = User.build(data);
   await user.save();
   await request(app)
-    .post('/api/users/update')
+    .post('/api/auth/update')
     .set('Cookie', global.signin(data.id))
     .send({
       email: 'test2@test.com',

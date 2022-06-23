@@ -4,7 +4,7 @@ import { currentUser } from '@bookkeeping/common';
 
 const router = express.Router();
 
-router.get('/api/users/currentuser', currentUser, (req, res) => {
+router.get('/api/auth/currentuser', currentUser, (req, res) => {
   // if undefined, send back null
   return res.send({ currentUser: req.currentUser || null });
 });

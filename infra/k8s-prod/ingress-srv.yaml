@@ -10,7 +10,7 @@ spec:
     - host: www.centaurwealth.io
       http:
         paths:
-          - path: /api/users/?(.*)
+          - path: /api/auth/?(.*)
             pathType: Prefix
             backend:
               service:
