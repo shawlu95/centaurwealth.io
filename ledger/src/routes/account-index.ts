@@ -21,6 +21,7 @@ router.get('/api/account', requireAuth, async (req: Request, res: Response) => {
 
 const validators = [
   param('id').not().isEmpty().withMessage('Please provide account id'),
+  param('id').isMongoId().withMessage('Please provide valid account id'),
   query('limit').not().isEmpty().withMessage('Please provide page size'),
   query('page').not().isEmpty().withMessage('Please provide page'),
 ];

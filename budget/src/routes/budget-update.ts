@@ -14,6 +14,7 @@ const router = express.Router();
 
 const validators = [
   param('id').not().isEmpty().withMessage('Please provide budget id'),
+  param('id').isMongoId().withMessage('Please provide valid budget id'),
   body('name').not().isEmpty().withMessage('Please provide budget name'),
   body('monthly').isNumeric().withMessage('Budget must be a number'),
   body('monthly').isNumeric().withMessage('Budget must be a number'),

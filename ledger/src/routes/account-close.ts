@@ -18,6 +18,7 @@ const router = express.Router();
 
 const validators = [
   param('id').not().isEmpty().withMessage('Please provide account id'),
+  param('id').isMongoId().withMessage('Please provide valid account id'),
   query('lte').not().isEmpty().withMessage('Please provide end of close date'),
 ];
 

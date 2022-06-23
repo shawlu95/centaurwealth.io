@@ -15,6 +15,7 @@ const router = express.Router();
 
 const validators = [
   param('id').not().isEmpty().withMessage('Please provide transaction id'),
+  param('id').isMongoId().withMessage('Please provide valid transaction id'),
 ];
 
 router.delete(
