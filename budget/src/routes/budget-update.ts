@@ -36,8 +36,9 @@ router.patch(
       throw new NotAuthorizedError();
     }
 
-    if (!budget.mutable) {
-      throw new BadRequestError('Buget is immutable');
+    // allow changing immutable budget amount, but not name
+    if (!budget.mutable && name && budget.name !== name) {
+      throw new BadRequestError(`Buget name is immutable: ${budget.name}`);
     }
 
     const exist = await Budget.findOne({ userId, name });

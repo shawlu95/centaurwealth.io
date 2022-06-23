@@ -84,7 +84,7 @@ it('returns 200 if budget is same name as itself', async () => {
     .expect(StatusCodes.OK);
 });
 
-it('returns 400 if trying to update immutable budget', async () => {
+it('returns 400 if trying to update immutable budget name', async () => {
   const userId = new mongoose.Types.ObjectId().toHexString();
   const budget = Budget.build({
     userId,
@@ -103,6 +103,27 @@ it('returns 400 if trying to update immutable budget', async () => {
   const updated = await Budget.findById(budget.id);
   expect(updated).toBeDefined();
   expect(updated!.name).toEqual('Default');
+});
+
+it('returns 200 if trying to update immutable budget amount', async () => {
+  const userId = new mongoose.Types.ObjectId().toHexString();
+  const budget = Budget.build({
+    userId,
+    name: 'Default',
+    monthly: 10000,
+    mutable: false,
+  });
+  await budget.save();
+
+  await request(app)
+    .patch(`/api/budget/${budget.id}`)
+    .set('Cookie', global.signin(budget.userId))
+    .send({ monthly: 10 })
+    .expect(StatusCodes.OK);
+
+  const updated = await Budget.findById(budget.id);
+  expect(updated).toBeDefined();
+  expect(updated!.monthly).toEqual(10);
 });
 
 it('returns 200 after updating monthly budget', async () => {

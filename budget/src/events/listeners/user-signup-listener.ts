@@ -11,7 +11,7 @@ export class UserSignupListener extends Listener<UserSignupEvent> {
     const budget = Budget.build({
       userId: data.id,
       name: 'Default',
-      monthly: 10000,
+      monthly: 0,
       mutable: false,
     });
     await budget.save();
