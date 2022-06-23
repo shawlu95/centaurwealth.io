@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Budget = ({ budget, post }) => {
+const Budget = ({ budget, post, errors }) => {
   const isNew = budget === undefined;
   const [name, setName] = useState(isNew ? '' : budget.name);
   const [monthly, setMonthly] = useState(isNew ? 0 : budget.monthly);
@@ -42,6 +42,7 @@ const Budget = ({ budget, post }) => {
             />
           </div>
           {isNew ? createButton : updateButton}
+          {errors}
         </div>
       </form>
     </div>
