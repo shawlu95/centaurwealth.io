@@ -7,6 +7,7 @@ declare global {
 }
 
 jest.mock('../nats-wrapper');
+jest.useRealTimers();
 
 let mongo: any;
 beforeAll(async () => {
