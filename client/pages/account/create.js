@@ -12,7 +12,7 @@ const AccountCreate = () => {
       name,
       type,
     },
-    onSuccess: () => Router.push('/'),
+    onSuccess: () => Router.push('/account'),
   });
 
   const onSubmit = (e) => {

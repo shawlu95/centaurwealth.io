@@ -16,13 +16,13 @@ const AccountIndex = ({ accounts }) => {
             <td width='40%'>{account.name}</td>
             <td width='40%'>{usdFormatter.format(account.balance)}</td>
             <td>
-              <Link href='/accounts/[accountId]' as={`/accounts/${account.id}`}>
+              <Link href='/account/[accountId]' as={`/account/${account.id}`}>
                 <button className='btn btn-light btn-sm'>View</button>
               </Link>
               {account.type === 'temporary' && (
                 <Link
-                  href='/accounts/close/[accountId]'
-                  as={`/accounts/close/${account.id}`}
+                  href='/account/close/[accountId]'
+                  as={`/account/close/${account.id}`}
                 >
                   <button className='btn btn-light btn-sm'>Close</button>
                 </Link>
@@ -62,7 +62,7 @@ const AccountIndex = ({ accounts }) => {
       <h3>Balance Sheet</h3>
       <button
         className='btn btn-primary'
-        onClick={() => Router.push('/accounts/create')}
+        onClick={() => Router.push('/account/create')}
       >
         New Account
       </button>

@@ -80,8 +80,8 @@ const Expenses = ({
         </td>
         <td>
           <Link
-            href='/transactions/[transactionId]'
-            as={`/transactions/${expense.id}`}
+            href='/transaction/[transactionId]'
+            as={`/transaction/${expense.id}`}
           >
             <a>View</a>
           </Link>

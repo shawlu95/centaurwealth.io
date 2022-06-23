@@ -3,8 +3,8 @@ const Header = ({ currentUser }) => {
   const links = [
     !currentUser && { label: 'Sign up', href: '/auth/signup' },
     !currentUser && { label: 'Sign in', href: '/auth/signin' },
-    currentUser && { label: 'Accounts', href: '/accounts' },
-    currentUser && { label: 'Transactions', href: '/transactions' },
+    currentUser && { label: 'Accounts', href: '/account' },
+    currentUser && { label: 'Transactions', href: '/transaction' },
     currentUser && { label: 'Budgets', href: '/budget' },
     currentUser && { label: 'Sign out', href: '/auth/signout' },
   ]
