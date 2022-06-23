@@ -73,7 +73,7 @@ BudgetIndex.getInitialProps = async (context, axios, currentUser) => {
     data: { budgets, expenses },
   } = await axios.get('/api/budget', { params: { page: 1, limit } });
 
-  return { budgets, expenses, limit, currentUser };
+  return { budgets, expenses, limit };
 };
 
 export default BudgetIndex;
