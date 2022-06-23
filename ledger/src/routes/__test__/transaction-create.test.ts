@@ -6,7 +6,7 @@ import { natsWrapper } from '../../nats-wrapper';
 import { Account, AccountType } from '../../model/account';
 import { EntryType } from '@bookkeeping/common';
 import { Transaction } from '../../model/transaction';
-import { buildAccountPair } from './transaction-test-util';
+import { buildAccountPair } from './test-utils';
 
 it('returns 401 when not signed in', async () => {
   await request(app)

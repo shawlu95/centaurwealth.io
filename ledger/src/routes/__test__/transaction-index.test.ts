@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
-import { buildTransaction } from './transaction-test-util';
+import { buildTransaction } from './test-utils';
 
 it('returns 401 if not signed in', async () => {
   await request(app)

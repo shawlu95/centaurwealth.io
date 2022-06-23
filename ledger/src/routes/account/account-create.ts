@@ -1,14 +1,14 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { Account, AccountType } from '../model/account';
+import { Account, AccountType } from '../../model/account';
 import { StatusCodes } from 'http-status-codes';
 import {
   BadRequestError,
   requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
-import { AccountCreatedPublisher } from '../events/publishers/account-created-publisher';
-import { natsWrapper } from '../nats-wrapper';
+import { AccountCreatedPublisher } from '../../events/publishers/account-created-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 

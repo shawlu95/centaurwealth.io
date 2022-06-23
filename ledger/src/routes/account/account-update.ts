@@ -1,6 +1,6 @@
 import { param, body } from 'express-validator';
 import express, { Request, Response } from 'express';
-import { Account } from '../model/account';
+import { Account } from '../../model/account';
 import { StatusCodes } from 'http-status-codes';
 import {
   BadRequestError,
@@ -9,8 +9,8 @@ import {
   requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
-import { AccountUpdatedPublisher } from '../events/publishers/account-updated-publisher';
-import { natsWrapper } from '../nats-wrapper';
+import { AccountUpdatedPublisher } from '../../events/publishers/account-updated-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 

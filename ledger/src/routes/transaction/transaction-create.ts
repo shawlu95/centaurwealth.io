@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { Transaction } from '../model/transaction';
+import { Transaction } from '../../model/transaction';
 import { StatusCodes } from 'http-status-codes';
 import {
   AccountType,
@@ -9,9 +9,9 @@ import {
   Entry,
   NotFoundError,
 } from '@bookkeeping/common';
-import { TransactionCreatedPublisher } from '../events/publishers/transaction-created-publisher';
-import { natsWrapper } from '../nats-wrapper';
-import { Account } from '../model/account';
+import { TransactionCreatedPublisher } from '../../events/publishers/transaction-created-publisher';
+import { natsWrapper } from '../../nats-wrapper';
+import { Account } from '../../model/account';
 
 const router = express.Router();
 

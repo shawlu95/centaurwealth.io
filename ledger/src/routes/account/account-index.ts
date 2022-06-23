@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { param, query } from 'express-validator';
-import { Account } from '../model/account';
+import { Account } from '../../model/account';
 import { StatusCodes } from 'http-status-codes';
 import {
   EntryType,
@@ -9,7 +9,7 @@ import {
   requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
-import { Transaction } from '../model/transaction';
+import { Transaction } from '../../model/transaction';
 
 const router = express.Router();
 

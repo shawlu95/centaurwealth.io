@@ -7,9 +7,9 @@ import {
   requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
-import { Transaction } from '../model/transaction';
-import { TransactionDeletedPublisher } from '../events/publishers/transaction-deleted-publisher';
-import { natsWrapper } from '../nats-wrapper';
+import { Transaction } from '../../model/transaction';
+import { TransactionDeletedPublisher } from '../../events/publishers/transaction-deleted-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 

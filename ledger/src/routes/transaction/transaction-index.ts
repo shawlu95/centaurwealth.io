@@ -7,7 +7,7 @@ import {
   requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
-import { Transaction } from '../model/transaction';
+import { Transaction } from '../../model/transaction';
 
 const router = express.Router();
 
