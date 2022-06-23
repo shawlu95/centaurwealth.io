@@ -8,7 +8,6 @@ import { errorHandler, NotFoundError } from '@bookkeeping/common';
 
 import {
   budgetIndex,
-  budgetRead,
   budegetCreate,
   budgetUpdate,
   budgetClassify,
@@ -25,7 +24,6 @@ app.use(
 );
 app.use(currentUser);
 app.use(budegetCreate);
-app.use(budgetRead);
 app.use(budgetIndex);
 app.use(budgetUpdate);
 app.use(budgetClassify);

@@ -40,7 +40,7 @@ it('returns 400 if budget is duplicate name', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
-it.only('returns 400 if budget is duplicate name', async () => {
+it.skip('returns 400 if budget is duplicate name', async () => {
   const userId = new mongoose.Types.ObjectId().toHexString();
   const budget = Budget.build({ ...data, userId });
   await budget.save();

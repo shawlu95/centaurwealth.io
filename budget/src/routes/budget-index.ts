@@ -8,6 +8,7 @@ import {
   requireAuth,
   validateRequest,
   NotFoundError,
+  NotAuthorizedError,
 } from '@bookkeeping/common';
 
 const router = express.Router();
@@ -42,9 +43,27 @@ router.get(
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
     const budgets = await Budget.find({ userId }).sort({ name: 1 });
+    const budgetId = req.query.budgetId;
+
+    var query;
+    if (budgetId !== undefined) {
+      const budget = await Budget.findById(budgetId);
+
+      if (!budget) {
+        throw new NotFoundError();
+      }
+
+      if (budget.userId !== userId) {
+        throw new NotAuthorizedError();
+      }
+
+      query = { userId, budgetId };
+    } else {
+      query = { userId };
+    }
 
     const expenses = await Expense.paginate({
-      query: { userId },
+      query,
       sort: { date: -1 },
       page: parseInt(req.query.page as string, 10),
       limit: parseInt(req.query.limit as string, 10),
@@ -72,11 +91,6 @@ router.get(
       dateUtils.quarterStart(),
       dateUtils.nextQuarter()
     );
-    const semiannual = await summarize(
-      userId,
-      dateUtils.halfYearStart(),
-      dateUtils.nextHalfYear()
-    );
     const annual = await summarize(
       userId,
       dateUtils.yearStart(),
@@ -93,12 +107,10 @@ router.get(
         name: budget.name,
         monthly: budget.monthly,
         quarterly: budget.quarterly,
-        semiannual: budget.semiannual,
         annual: budget.annual,
         summary: {
           monthly: monthly.get(budget.id),
           quarterly: quarterly.get(budget.id),
-          semiannual: semiannual.get(budget.id),
           annual: annual.get(budget.id),
         },
       });
