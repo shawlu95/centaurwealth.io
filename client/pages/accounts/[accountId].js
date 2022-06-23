@@ -3,7 +3,7 @@ import Router from 'next/router';
 import useRequest from '../../hooks/use-request';
 import Transactions from '../../components/transactions';
 
-const AccountDetails = ({ account, transactions, url, limit }) => {
+const AccountDetails = ({ account, mutable, transactions, url, limit }) => {
   const [name, setName] = useState('');
   const { doRequest, errors } = useRequest({
     url: `/api/account/${account.id}`,
@@ -20,13 +20,18 @@ const AccountDetails = ({ account, transactions, url, limit }) => {
           <input
             className='form-control'
             value={name}
+            disabled={!mutable}
             placeholder={'Update Title'}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
 
         <div className='col-sm-2'>
-          <button onClick={() => doRequest()} className='btn btn-primary'>
+          <button
+            onClick={() => doRequest()}
+            className='btn btn-primary'
+            disabled={!mutable}
+          >
             Update
           </button>
         </div>
@@ -47,12 +52,15 @@ AccountDetails.getInitialProps = async (context, axios) => {
 
   const url = `/api/account/${accountId}`;
   const {
-    data: { transactions },
+    data: {
+      transactions,
+      account: { mutable },
+    },
   } = await axios.get(url, {
     params: { page: 1, limit },
   });
 
-  return { account, transactions, url, limit };
+  return { account, mutable, transactions, url, limit };
 };
 
 export default AccountDetails;
