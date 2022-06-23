@@ -24,14 +24,14 @@ const Budgets = ({ budgets, fetchPage }) => {
                 <td width='20%'>
                   <b>{budget.name}</b>
                 </td>
-                <td width='20%'>Plan</td>
+                <td width='20%'>Budget</td>
                 <td width='20%'>{usdFormatter.format(budget.monthly)}</td>
                 <td width='20%'>{usdFormatter.format(budget.quarterly)}</td>
                 <td width='20%'>{usdFormatter.format(budget.annual)}</td>
               </tr>
               <tr>
                 <td width='20%'></td>
-                <td width='10%'>Expense</td>
+                <td width='10%'>Spent</td>
                 <td width='20%'>
                   {usdFormatter.format(budget.summary.monthly?.amount || 0)}
                 </td>
