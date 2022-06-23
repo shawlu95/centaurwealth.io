@@ -5,6 +5,7 @@ const Header = ({ currentUser }) => {
     !currentUser && { label: 'Sign in', href: '/auth/signin' },
     currentUser && { label: 'Accounts', href: '/accounts' },
     currentUser && { label: 'Transactions', href: '/transactions' },
+    currentUser && { label: 'Budgets', href: '/budget' },
     currentUser && { label: 'Sign out', href: '/auth/signout' },
   ]
     .filter((config) => config)
