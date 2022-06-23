@@ -9,6 +9,7 @@ import { errorHandler, NotFoundError } from '@bookkeeping/common';
 import {
   budgetIndex,
   budegetCreate,
+  budgetGet,
   budgetUpdate,
   budgetClassify,
 } from './routes';
@@ -25,6 +26,7 @@ app.use(
 app.use(currentUser);
 app.use(budegetCreate);
 app.use(budgetIndex);
+app.use(budgetGet);
 app.use(budgetUpdate);
 app.use(budgetClassify);
 
