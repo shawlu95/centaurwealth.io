@@ -110,9 +110,6 @@ const Timeline = () => {
 
   useEffect(() => {
     fetchData();
-    return () => {
-      console.log('Cleanup chart');
-    };
   }, [range]);
 
   const data = buildDatasets(points);

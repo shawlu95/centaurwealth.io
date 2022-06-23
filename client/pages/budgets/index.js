@@ -36,7 +36,6 @@ const BudgetIndex = ({
   };
 
   const setBudgetFilter = async (budgetId) => {
-    console.log('Apply filter', budgetId);
     setBudgetId(budgetId);
   };
 

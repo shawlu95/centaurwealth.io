@@ -22,7 +22,6 @@ const BudgetIndex = ({
   }, [page, budgetId]);
 
   const fetchPage = async () => {
-    console.log('fetch page');
     setLoading(true);
     const params = { page, limit };
     if (budgetId) {
@@ -37,7 +36,6 @@ const BudgetIndex = ({
   };
 
   const setBudgetFilter = async (budgetId) => {
-    console.log('Apply filter', budgetId);
     setBudgetId(budgetId);
   };
 

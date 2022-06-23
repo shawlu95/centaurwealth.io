@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usdFormatter } from '../utils';
 
 const OFFSET = 5;
-const LIMIT = 25;
 
 const Expenses = ({
   expenses: { docs, totalPages },
@@ -17,7 +16,6 @@ const Expenses = ({
     url: '/api/budget/classify',
     method: 'post',
     body: {},
-    onSuccess: () => console.log('classified expense'),
   });
 
   const nextPage = () => {
