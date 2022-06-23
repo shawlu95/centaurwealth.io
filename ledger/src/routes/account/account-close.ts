@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { param, query } from 'express-validator';
-import { Account } from '../model/account';
+import { Account } from '../../model/account';
 import { StatusCodes } from 'http-status-codes';
 import {
   AccountType,
@@ -12,12 +12,13 @@ import {
   requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
-import { Transaction } from '../model/transaction';
+import { Transaction } from '../../model/transaction';
 
 const router = express.Router();
 
 const validators = [
   param('id').not().isEmpty().withMessage('Please provide account id'),
+  param('id').isMongoId().withMessage('Please provide valid account id'),
   query('lte').not().isEmpty().withMessage('Please provide end of close date'),
 ];
 

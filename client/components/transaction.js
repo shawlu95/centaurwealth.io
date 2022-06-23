@@ -14,14 +14,14 @@ const Transaction = ({ transaction, accounts, closing }) => {
     url: isNew ? '/api/transaction' : `/api/transaction/${transaction.id}`,
     method: isNew ? 'post' : 'put',
     body: { closing },
-    onSuccess: () => Router.push('/transactions'),
+    onSuccess: () => Router.push('/transaction'),
   });
 
   const { doRequest: doDelete, errors: deleteErrors } = useRequest({
     url: `/api/transaction/${transaction.id}`,
     method: 'delete',
     body: {},
-    onSuccess: () => Router.push('/transactions'),
+    onSuccess: () => Router.push('/transaction'),
   });
 
   const addEntry = (e) => {

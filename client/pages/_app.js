@@ -21,7 +21,7 @@ const AppComponent = ({ Component, pageProps, currentUser }) => {
 
 AppComponent.getInitialProps = async (appContext) => {
   const axios = buildClient(appContext.ctx);
-  const { data } = await axios.get('/api/users/currentuser');
+  const { data } = await axios.get('/api/auth/currentuser');
 
   let pageProps;
   if (appContext.Component.getInitialProps) {

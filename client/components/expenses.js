@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usdFormatter } from '../utils';
 
 const OFFSET = 5;
-const LIMIT = 25;
 
 const Expenses = ({
   expenses: { docs, totalPages },
@@ -17,7 +16,6 @@ const Expenses = ({
     url: '/api/budget/classify',
     method: 'post',
     body: {},
-    onSuccess: () => console.log('classified expense'),
   });
 
   const nextPage = () => {
@@ -82,8 +80,8 @@ const Expenses = ({
         </td>
         <td>
           <Link
-            href='/transactions/[transactionId]'
-            as={`/transactions/${expense.id}`}
+            href='/transaction/[transactionId]'
+            as={`/transaction/${expense.id}`}
           >
             <a>View</a>
           </Link>

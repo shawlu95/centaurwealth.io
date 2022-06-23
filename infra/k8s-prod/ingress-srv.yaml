@@ -7,10 +7,10 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   rules:
-    - host: www.centaurmoney.com
+    - host: www.centaurwealth.io
       http:
         paths:
-          - path: /api/users/?(.*)
+          - path: /api/auth/?(.*)
             pathType: Prefix
             backend:
               service:
@@ -58,7 +58,7 @@ kind: Service
 metadata:
   annotations:
     service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: 'true'
-    service.beta.kubernetes.io/do-loadbalancer-hostname: 'www.centaurmoney.com'
+    service.beta.kubernetes.io/do-loadbalancer-hostname: 'www.centaurwealth.io'
   labels:
     helm.sh/chart: ingress-nginx-2.0.3
     app.kubernetes.io/name: ingress-nginx

@@ -1,7 +1,6 @@
 import Transaction from '../../../components/transaction';
 
 const TransactionDetails = ({ accounts, transaction }) => {
-  console.log(transaction);
   return (
     <div>
       <Transaction

@@ -23,7 +23,7 @@ const validators = [
 ];
 
 router.post(
-  '/api/users/update',
+  '/api/auth/update',
   currentUser,
   requireAuth,
   validators,

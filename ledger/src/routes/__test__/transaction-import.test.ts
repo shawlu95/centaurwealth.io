@@ -2,7 +2,7 @@ import request from 'supertest';
 import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
 import { EntryType } from '@bookkeeping/common';
-import { buildAccountPair } from './transaction-test-util';
+import { buildAccountPair } from './test-utils';
 
 it('returns 401 when not signed in', async () => {
   await request(app)

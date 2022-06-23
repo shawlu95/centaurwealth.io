@@ -28,6 +28,30 @@ it('returns 400 if monthly budget is not provided', async () => {
     .expect(StatusCodes.BAD_REQUEST);
 });
 
+it('returns 400 if monthly budget is zero', async () => {
+  await request(app)
+    .post('/api/budget')
+    .set('Cookie', global.signin())
+    .send({ ...data, monthly: 0 })
+    .expect(StatusCodes.BAD_REQUEST);
+});
+
+it('returns 400 if monthly budget is negative', async () => {
+  await request(app)
+    .post('/api/budget')
+    .set('Cookie', global.signin())
+    .send({ ...data, monthly: -10 })
+    .expect(StatusCodes.BAD_REQUEST);
+});
+
+it('returns 400 if monthly budget is not number', async () => {
+  await request(app)
+    .post('/api/budget')
+    .set('Cookie', global.signin())
+    .send({ ...data, monthly: 'foo' })
+    .expect(StatusCodes.BAD_REQUEST);
+});
+
 it('returns 400 if budget is duplicate name', async () => {
   const userId = new mongoose.Types.ObjectId().toHexString();
   const budget = Budget.build({ ...data, userId });

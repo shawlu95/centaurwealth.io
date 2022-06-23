@@ -3,15 +3,20 @@ require('express-async-errors');
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 
-import { accountCreate } from './routes/account-create';
-import { accountRead } from './routes/account-index';
-import { accountUpdate } from './routes/account-update';
-import { accountClose } from './routes/account-close';
-import { transactionCreate } from './routes/transaction-create';
-import { transactionRead } from './routes/transaction-index';
-import { transactionUpdate } from './routes/transaction-update';
-import { transactionDelete } from './routes/transaction-delete';
-import { transactionImport } from './routes/transaction-import';
+import {
+  accountCreate,
+  accountRead,
+  accountUpdate,
+  accountClose,
+} from './routes/account';
+
+import {
+  transactionCreate,
+  transactionRead,
+  transactionUpdate,
+  transactionDelete,
+  transactionImport,
+} from './routes/transaction';
 
 import { currentUser } from '@bookkeeping/common';
 import { errorHandler, NotFoundError } from '@bookkeeping/common';

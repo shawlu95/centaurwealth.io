@@ -77,8 +77,8 @@ const Transactions = ({ transactions: { docs, totalPages }, url, limit }) => {
         <td width='20%'>{usdFormatter.format(credit)}</td>
         <td>
           <Link
-            href='/transactions/[transactionId]'
-            as={`/transactions/${transaction.id}`}
+            href='/transaction/[transactionId]'
+            as={`/transaction/${transaction.id}`}
           >
             <a>View</a>
           </Link>

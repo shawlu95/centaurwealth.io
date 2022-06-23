@@ -4,7 +4,7 @@ import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
 import { natsWrapper } from '../../nats-wrapper';
 import { Transaction } from '../../model/transaction';
-import { buildTransaction } from './transaction-test-util';
+import { buildTransaction } from './test-utils';
 
 it('returns 401 if not signed in', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();

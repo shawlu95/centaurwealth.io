@@ -2,8 +2,7 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
-import { Account, AccountType } from '../../model/account';
-import { buildTransaction } from './transaction-test-util';
+import { buildTransaction } from './test-utils';
 import { EntryType } from '@bookkeeping/common';
 
 it('returns 401 if not signed in', async () => {

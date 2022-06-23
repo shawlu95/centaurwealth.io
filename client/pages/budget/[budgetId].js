@@ -19,7 +19,6 @@ const BudgetEdit = ({ budget }) => {
 
 BudgetEdit.getInitialProps = async (context, axios) => {
   const { budgetId } = context.query;
-  console.log(`/api/budget/${budgetId}`);
   const res = await axios.get(`/api/budget/${budgetId}`);
   const budget = res.data.budget;
 

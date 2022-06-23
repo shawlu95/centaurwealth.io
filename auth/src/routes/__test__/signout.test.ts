@@ -4,7 +4,7 @@ import { app } from '../../app';
 
 it('clears cookie after signing out', async () => {
   await request(app)
-    .post('/api/users/signup')
+    .post('/api/auth/signup')
     .send({
       email: 'test@test.com',
       password: 'password',
@@ -12,7 +12,7 @@ it('clears cookie after signing out', async () => {
     .expect(StatusCodes.CREATED);
 
   const res = await request(app)
-    .post('/api/users/signout')
+    .post('/api/auth/signout')
     .send({})
     .expect(StatusCodes.OK);
   expect(res.get('Set-Cookie')[0]).toEqual(

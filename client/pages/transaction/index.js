@@ -8,7 +8,7 @@ const TransactionIndex = ({ transactions, url, limit }) => {
       <h3>Transactions</h3>
       <button
         className='btn btn-primary'
-        onClick={() => Router.push('/transactions/create')}
+        onClick={() => Router.push('/transaction/create')}
       >
         New Transaction
       </button>

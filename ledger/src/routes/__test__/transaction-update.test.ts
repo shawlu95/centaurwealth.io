@@ -6,7 +6,7 @@ import { natsWrapper } from '../../nats-wrapper';
 import { EntryType } from '@bookkeeping/common';
 import { Account, AccountType } from '../../model/account';
 import { Transaction } from '../../model/transaction';
-import { buildTransaction } from './transaction-test-util';
+import { buildTransaction } from './test-utils';
 
 it('returns 401 if not signed in', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();

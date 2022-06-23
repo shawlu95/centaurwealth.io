@@ -1,6 +1,6 @@
 import { param, body } from 'express-validator';
 import express, { Request, Response } from 'express';
-import { Account } from '../model/account';
+import { Account } from '../../model/account';
 import { StatusCodes } from 'http-status-codes';
 import {
   BadRequestError,
@@ -9,13 +9,14 @@ import {
   requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
-import { AccountUpdatedPublisher } from '../events/publishers/account-updated-publisher';
-import { natsWrapper } from '../nats-wrapper';
+import { AccountUpdatedPublisher } from '../../events/publishers/account-updated-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
 const validators = [
   param('id').not().isEmpty().withMessage('Please provide account id'),
+  param('id').isMongoId().withMessage('Please provide valid account id'),
   body('name').not().isEmpty().withMessage('Please provide account name'),
 ];
 

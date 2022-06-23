@@ -6,7 +6,7 @@ import { natsWrapper } from '../../nats-wrapper';
 
 it('returns a 201 on successful signup', async () => {
   return request(app)
-    .post('/api/users/signup')
+    .post('/api/auth/signup')
     .send({
       email: 'test@test.com',
       password: 'password',
@@ -16,7 +16,7 @@ it('returns a 201 on successful signup', async () => {
 
 it('returns a 400 with invalid email', async () => {
   return request(app)
-    .post('/api/users/signup')
+    .post('/api/auth/signup')
     .send({
       email: 'testtest.com',
       password: 'password',
@@ -26,7 +26,7 @@ it('returns a 400 with invalid email', async () => {
 
 it('returns a 400 with short password', async () => {
   return request(app)
-    .post('/api/users/signup')
+    .post('/api/auth/signup')
     .send({
       email: 'test@test.com',
       password: 'p',
@@ -36,14 +36,14 @@ it('returns a 400 with short password', async () => {
 
 it('returns a 400 with missing email and password', async () => {
   await request(app)
-    .post('/api/users/signup')
+    .post('/api/auth/signup')
     .send({
       email: 'test@test.com',
     })
     .expect(StatusCodes.BAD_REQUEST);
 
   return await request(app)
-    .post('/api/users/signup')
+    .post('/api/auth/signup')
     .send({
       password: 'password',
     })
@@ -58,7 +58,7 @@ it('disallows duplicate emails', async () => {
   await user.save();
 
   return await request(app)
-    .post('/api/users/signup')
+    .post('/api/auth/signup')
     .send({
       email: 'test@test.com',
       password: 'password',
@@ -70,7 +70,7 @@ it('sets a cookie after successful signup', async () => {
   expect(natsWrapper.client.publish).not.toHaveBeenCalled();
 
   const res = await request(app)
-    .post('/api/users/signup')
+    .post('/api/auth/signup')
     .send({
       email: 'test@test.com',
       password: 'password',

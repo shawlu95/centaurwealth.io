@@ -7,14 +7,15 @@ import {
   requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
-import { Transaction } from '../model/transaction';
-import { TransactionUpdatedPublisher } from '../events/publishers/transaction-updated-publisher';
-import { natsWrapper } from '../nats-wrapper';
+import { Transaction } from '../../model/transaction';
+import { TransactionUpdatedPublisher } from '../../events/publishers/transaction-updated-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 const router = express.Router();
 
 const validators = [
   param('id').not().isEmpty().withMessage('Please provide transaction id'),
+  param('id').isMongoId().withMessage('Please provide valid transaction id'),
   body('memo').not().isEmpty().withMessage('Please provide transaction memo'),
   body('date').not().isEmpty().withMessage('Please provide transaction date'),
   body('entries').not().isEmpty().withMessage('Please provide entries'),

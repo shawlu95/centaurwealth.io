@@ -66,7 +66,7 @@ const getAccounts = async ({ id, options }) => {
 
 const signin = async ({ email, password }) => {
   try {
-    const res = await axios.post(host + '/api/users/signin', {
+    const res = await axios.post(host + '/api/auth/signin', {
       email,
       password,
     });
@@ -78,7 +78,7 @@ const signin = async ({ email, password }) => {
 
 const signup = async ({ email, password }) => {
   try {
-    const res = await axios.post(host + '/api/users/signup', {
+    const res = await axios.post(host + '/api/auth/signup', {
       email,
       password,
     });

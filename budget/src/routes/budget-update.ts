@@ -14,6 +14,10 @@ const router = express.Router();
 
 const validators = [
   param('id').not().isEmpty().withMessage('Please provide budget id'),
+  param('id').isMongoId().withMessage('Please provide valid budget id'),
+  body('name').not().isEmpty().withMessage('Please provide budget name'),
+  body('monthly').isNumeric().withMessage('Budget must be a number'),
+  body('monthly').isNumeric().withMessage('Budget must be a number'),
 ];
 
 router.patch(
@@ -26,6 +30,10 @@ router.patch(
     const { id } = req.params;
     const { name, monthly } = req.body;
 
+    if (parseFloat(monthly) <= 0) {
+      throw new BadRequestError('Budget must be positive');
+    }
+
     const budget = await Budget.findById(id);
 
     if (!budget) {
@@ -36,8 +44,9 @@ router.patch(
       throw new NotAuthorizedError();
     }
 
-    if (!budget.mutable) {
-      throw new BadRequestError('Buget is immutable');
+    // allow changing immutable budget amount, but not name
+    if (!budget.mutable && name && budget.name !== name) {
+      throw new BadRequestError(`Buget name is immutable: ${budget.name}`);
     }
 
     const exist = await Budget.findOne({ userId, name });

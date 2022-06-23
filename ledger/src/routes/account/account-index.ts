@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { param, query } from 'express-validator';
-import { Account } from '../model/account';
+import { Account } from '../../model/account';
 import { StatusCodes } from 'http-status-codes';
 import {
   EntryType,
@@ -9,7 +9,7 @@ import {
   requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
-import { Transaction } from '../model/transaction';
+import { Transaction } from '../../model/transaction';
 
 const router = express.Router();
 
@@ -21,6 +21,7 @@ router.get('/api/account', requireAuth, async (req: Request, res: Response) => {
 
 const validators = [
   param('id').not().isEmpty().withMessage('Please provide account id'),
+  param('id').isMongoId().withMessage('Please provide valid account id'),
   query('limit').not().isEmpty().withMessage('Please provide page size'),
   query('page').not().isEmpty().withMessage('Please provide page'),
 ];
