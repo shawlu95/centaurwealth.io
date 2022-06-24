@@ -44,10 +44,19 @@ const readJson = (path) => {
       const entry = transaction.entries[j];
       const account = accounts[entry.accountName];
       entry.accountId = account.id;
+
+      if (entry.type == 'debit') {
+        account.debit += entry.amount;
+        account.balance += entry.amount;
+      } else if (entry.type === 'credit') {
+        account.credit -= entry.amount;
+        account.balance -= entry.amount;
+      }
     }
     postTransaction({ txn: transaction, options });
-    console.log('transaction:', transaction.date);
-    await sleep(100);
+    console.log(`transaction: ${transaction.date} ${i}/${transactions.length}`);
+    await sleep(200);
   }
   console.log('transactions:', transactions.length);
+  console.log(accounts);
 })();
