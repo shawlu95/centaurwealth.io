@@ -38,7 +38,7 @@ const readJson = (path) => {
 
   accounts = await getAccounts({ options });
   const transactions = readJson('./data/transactions.json');
-  for (var i = transactions.length - 1; i >= 0; i--) {
+  for (var i = 0; i < transactions.length; i++) {
     const transaction = transactions[i];
     for (var j in transaction.entries) {
       const entry = transaction.entries[j];

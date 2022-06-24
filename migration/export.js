@@ -23,7 +23,7 @@ const { email, password, host } = require('./config');
     fs.writeFileSync('./data/accounts.json', JSON.stringify(accounts, null, 2));
     fs.writeFileSync(
       './data/transactions.json',
-      JSON.stringify(transactions, null, 2)
+      JSON.stringify(transactions.reverse(), null, 2)
     );
     console.log('exported accounts:', accounts.length);
     console.log('exported transactions:', transactions.length);
