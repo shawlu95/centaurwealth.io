@@ -1,6 +1,9 @@
-# [centaurwealth.io](www.centaurwealth.io)
+# [centaurwealth.io](http://www.centaurwealth.io)
 
 This is an accounting app to help individuals and busiensses manage finance and export financial statements using the classic [double-entry bookkeeping method](https://en.wikipedia.org/wiki/Double-entry_bookkeeping). Say good bye to [mint](mint.com) and [acorns](acorns.com). Life is too short for amateur finance.
+
+- Live app: www.centaurwealth.io
+- Test account: test@centaurwealth.io (password 1234)
 
 ## Microservice Design
 
