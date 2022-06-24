@@ -6,7 +6,7 @@ const readJson = (path) => {
 };
 
 (async () => {
-  var accounts = readJson('./data/good/accounts.json');
+  var accounts = readJson('./data/accounts.json');
   const accountsMap = {};
   for (var i in accounts) {
     const account = accounts[i];
@@ -17,7 +17,7 @@ const readJson = (path) => {
   }
   console.log('accounts:', accounts.length);
 
-  const transactions = readJson('./data/good/transactions.json');
+  const transactions = readJson('./data/transactions.json');
   for (var i = transactions.length - 1; i >= 0; i--) {
     const transaction = transactions[i];
     for (var j in transaction.entries) {

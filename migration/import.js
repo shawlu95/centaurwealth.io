@@ -19,7 +19,9 @@ const readJson = (path) => {
 
 (async () => {
   await signup({ email, password });
+  await sleep(100);
   const cookie = await signin({ email, password });
+  await sleep(100);
 
   const options = {
     headers: {
@@ -46,6 +48,7 @@ const readJson = (path) => {
       monthly: budgets[i].monthly,
       options,
     });
+    await sleep(100);
   }
 
   const expenses = readJson('./data/expenses.json');
@@ -59,6 +62,10 @@ const readJson = (path) => {
 
   const transactions = readJson('./data/transactions.json');
   for (var i = 0; i < transactions.length; i++) {
+    // skip some transactions, if connection broke
+    // if (i <= 4428) {
+    //   continue;
+    // }
     const transaction = transactions[i];
     for (var j in transaction.entries) {
       const entry = transaction.entries[j];
@@ -75,7 +82,7 @@ const readJson = (path) => {
     }
     const transactionId = await postTransaction({ txn: transaction, options });
     console.log(`transaction: ${transaction.date} ${i}/${transactions.length}`);
-    await sleep(100);
+    await sleep(200);
 
     const budget = expensesMap[transaction.id];
     if (budget) {
@@ -86,7 +93,7 @@ const readJson = (path) => {
       });
 
       console.log(`transaction grouped into: ${budget}`);
-      await sleep(100);
+      await sleep(200);
     }
   }
   console.log('transactions:', transactions.length);
