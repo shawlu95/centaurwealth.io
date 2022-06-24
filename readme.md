@@ -1,22 +1,27 @@
-# Double-Entry Bookkeeping
+# [centaurwealth.io](www.centaurwealth.io)
 
-This is an accounting app to help individuals and busiensses manage their wealth and export financial statements with the classic double-entry bookkeeping method. Say good bye to [mint](mint.com) and [acorns](acorns.com). Life is too short for amateur finance.
+This is an accounting app to help individuals and busiensses manage finance and export financial statements using the classic [double-entry bookkeeping method](https://en.wikipedia.org/wiki/Double-entry_bookkeeping). Say good bye to [mint](mint.com) and [acorns](acorns.com). Life is too short for amateur finance.
 
 ## Microservice Design
 
-This is a read-heavy app because each transaction is written o``nly once, but accessed many times when user retrieves a list of transaction or requests a chart or table that aggregates over transactions.
+This is a read-heavy app because each transaction is written only once, but accessed many times when user retrieves a list of transaction or requests a chart or table that aggregates over transactions.
 
-- [auth service](./auth/): handle user account creation, login, logout
-- [ledger service](./ledger/): handle double-entry bookkeeping record
-- [timeline service](./timeline/): calculate asset, liability on a fixed interval
+- [auth service](./auth/): handle user account creation, login, logout.
+- [ledger service](./ledger/): handle double-entry bookkeeping record, adding and updating accounts, transactions.
+- [timeline service](./timeline/): calculate asset, liability, networth over the lifetime of the user account.
 - [balance service](./balance/): listens to write event and automatically update current/historic balance sheet
 - [budget service](./budget/): listens to expense event from ledger service and group expense into category. Support budget planning
+
+---
 
 ## Learning Experience
 
 - Docker & Kubernetes
+- React with NextJs
 - Test-driven development
 - Continuous integration
+
+---
 
 ### Deployment
 
