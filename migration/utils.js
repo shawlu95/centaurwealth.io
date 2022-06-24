@@ -39,6 +39,7 @@ const postTransaction = async ({ txn, options }) => {
 };
 
 const createBudget = async ({ name, monthly, options }) => {
+  console.log(name, monthly);
   try {
     const res = await axios.post(
       host + '/api/budget',
@@ -48,7 +49,8 @@ const createBudget = async ({ name, monthly, options }) => {
       },
       options
     );
-    return res.data.id;
+    console.log(res.data.budget);
+    return res.data.budget;
   } catch (err) {
     console.log(err.response.data);
   }
