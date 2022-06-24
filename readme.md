@@ -1,16 +1,16 @@
 # Double-Entry Bookkeeping
 
-This is an accounting app to help individuals and busiensses manage their wealth and export financial statements in the most professional style. Say good bye to [mint](mint.com) and [acorns](acorns.com). Life is too short for amateur finance.
+This is an accounting app to help individuals and busiensses manage their wealth and export financial statements with the classic double-entry bookkeeping method. Say good bye to [mint](mint.com) and [acorns](acorns.com). Life is too short for amateur finance.
 
 ## Microservice Design
 
 This is a read-heavy app because each transaction is written o``nly once, but accessed many times when user retrieves a list of transaction or requests a chart or table that aggregates over transactions.
 
-- auth service: handle user account creation, login, logout
-- ledger service: handle double-entry bookkeeping record
-- networth service: calculate asset, liability on a fixed interval
-- balance sheet service: listens to write event and automatically update current/historic balance sheet
-- budget service: listens to expense event from ledger service and group expense into category. Support budget planning
+- [auth service](./auth/): handle user account creation, login, logout
+- [ledger service](./ledger/): handle double-entry bookkeeping record
+- [timeline service](./timeline/): calculate asset, liability on a fixed interval
+- [balance service](./balance/): listens to write event and automatically update current/historic balance sheet
+- [budget service](./budget/): listens to expense event from ledger service and group expense into category. Support budget planning
 
 ## Learning Experience
 
@@ -20,12 +20,12 @@ This is a read-heavy app because each transaction is written o``nly once, but ac
 
 ### Deployment
 
-We use Digital Ocean to deploy the app.
+The web app is deployed in Digital Ocean
 
-1. Create cluster on web console
-2. Add context to local
+1. Create kubernetes cluster on web console
+2. Add kubernetes context to local
 3. To setup ingress-nginx, use the [digital ocean](https://kubernetes.github.io/ingress-nginx/deploy/#digital-ocean) command from documentation.
-4. Set up secret
+4. Set up kubernetes secret (jwt key)
 5. Manually execute deploy (see [deploy-manifests.yaml](./.github/workflows/deploy-manifests.yaml))
 
 ```bash
