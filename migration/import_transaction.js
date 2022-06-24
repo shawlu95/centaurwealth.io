@@ -1,7 +1,14 @@
 const fs = require('fs');
-const { signin, getAccounts, postTransactionBatch, sleep } = require('./utils');
+const {
+  signin,
+  getAccounts,
+  indexBudget,
+  postTransaction,
+  classifyTransaction,
+  sleep,
+} = require('./utils');
 const { AccountType } = require('@bookkeeping/common');
-const { email, password, file } = require('./config');
+const { email, password, file, names } = require('./config');
 
 const batch = 1;
 const txn = {
@@ -9,6 +16,7 @@ const txn = {
   date: null,
   memo: null,
   entries: [],
+  budget: null,
 };
 
 (async function processLineByLine() {
@@ -22,13 +30,14 @@ const txn = {
   };
 
   const accounts = await getAccounts({ options });
+  const budgets = await indexBudget({ options });
 
   const lines = fs.readFileSync(file, 'utf-8').split(/\r?\n/);
-  var transactions = [];
 
   for (var i in lines) {
     const line = lines[i];
-    var [seq, date, memo, accountName, type, amount] = line.split(',');
+    var [seq, date, memo, accountName, type, amount, budget] = line.split(',');
+    budget = names[budget];
     // if (parseFloat(seq) <= 6618) {
     //   continue;
     // }
@@ -37,6 +46,7 @@ const txn = {
     if (!txn.id) txn.id = seq;
     if (!txn.date) txn.date = date.split(' ')[0];
     if (!txn.memo) txn.memo = memo.slice(2, memo.length - 1);
+    if (!txn.budget) txn.budget = budget;
 
     const account = accounts[accountName.trim()];
 
@@ -57,20 +67,33 @@ const txn = {
           accountId: accounts['Error'].id,
         });
       }
-      transactions.push({ ...txn });
 
-      if (transactions.length == batch) {
-        await postTransactionBatch({ transactions, options });
+      const transactionId = await postTransaction({ txn, options });
+      await sleep(100);
+      if (txn.budget !== 'Default') {
+        await classifyTransaction({
+          expenseId: transactionId,
+          budgetId: budgets[txn.budget].id,
+          options,
+        });
         await sleep(100);
-        console.log(txn.id, txn.date, txn.memo);
-        transactions = [];
       }
+
+      console.log(
+        txn.id,
+        txn.date,
+        txn.memo,
+        transactionId,
+        txn.budget,
+        budgets[txn.budget].id
+      );
 
       // new transaction
       txn.id = seq;
       txn.date = date.split(' ')[0];
       txn.memo = memo.slice(2, memo.length - 1);
       txn.entries = [];
+      txn.budget = budget;
     }
 
     txn.entries.push({
@@ -83,6 +106,5 @@ const txn = {
   }
 
   // last transaction
-  transactions.push({ ...txn });
-  await postTransactionBatch({ transactions, options });
+  await postTransaction({ txn, options });
 })();

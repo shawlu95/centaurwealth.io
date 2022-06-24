@@ -4,8 +4,11 @@ const {
   signin,
   getAccounts,
   postAccount,
+  createBudget,
   sleep,
   postTransaction,
+  classifyTransaction,
+  indexBudget,
 } = require('./utils');
 const { email, password, file } = require('./config');
 
@@ -36,18 +39,56 @@ const readJson = (path) => {
   }
   console.log('accounts:', accounts.length);
 
+  var budgets = readJson('./data/budgets.json');
+  for (var i in budgets) {
+    await createBudget({
+      name: budgets[i].name,
+      monthly: budgets[i].monthly,
+      options,
+    });
+  }
+
+  const expenses = readJson('./data/expenses.json');
+  const expensesMap = {};
+  for (var i in expenses) {
+    expensesMap[expenses[i].id] = expenses[i].budget.name;
+  }
+
   accounts = await getAccounts({ options });
+  budgets = await indexBudget({ options });
+
   const transactions = readJson('./data/transactions.json');
-  for (var i = transactions.length - 1; i >= 0; i--) {
+  for (var i = 0; i < transactions.length; i++) {
     const transaction = transactions[i];
     for (var j in transaction.entries) {
       const entry = transaction.entries[j];
       const account = accounts[entry.accountName];
       entry.accountId = account.id;
+
+      if (entry.type == 'debit') {
+        account.debit += entry.amount;
+        account.balance += entry.amount;
+      } else if (entry.type === 'credit') {
+        account.credit -= entry.amount;
+        account.balance -= entry.amount;
+      }
     }
-    postTransaction({ txn: transaction, options });
-    console.log('transaction:', transaction.date);
+    const transactionId = await postTransaction({ txn: transaction, options });
+    console.log(`transaction: ${transaction.date} ${i}/${transactions.length}`);
     await sleep(100);
+
+    const budget = expensesMap[transaction.id];
+    if (budget) {
+      await classifyTransaction({
+        expenseId: transactionId,
+        budgetId: budgets[budget].id,
+        options,
+      });
+
+      console.log(`transaction grouped into: ${budget}`);
+      await sleep(100);
+    }
   }
   console.log('transactions:', transactions.length);
+  console.log(accounts);
 })();
