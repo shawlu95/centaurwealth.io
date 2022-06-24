@@ -53,7 +53,7 @@ const typeMap = {
 
   for (var i in lines) {
     const line = lines[i];
-    var [seq, date, memo, account, type, amount] = line.split(',');
+    var [seq, date, memo, account, type, amount, type] = line.split(',');
     account = account.trim();
 
     if (!accounts[account]) {

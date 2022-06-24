@@ -38,6 +38,51 @@ const postTransaction = async ({ txn, options }) => {
   }
 };
 
+const createBudget = async ({ name, monthly, options }) => {
+  try {
+    const res = await axios.post(
+      host + '/api/budget',
+      {
+        name,
+        monthly,
+      },
+      options
+    );
+    return res.data.id;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+const indexBudget = async ({ options }) => {
+  try {
+    const res = await axios.get(host + '/api/budget?page=1&limit=10', options);
+    const budgets = {};
+    res.data.budgets.forEach((budget) => {
+      budgets[budget.name] = budget;
+    });
+    return budgets;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+const classifyTransaction = async ({ expenseId, budgetId, options }) => {
+  try {
+    const res = await axios.post(
+      host + '/api/budget/classify',
+      {
+        expenseId,
+        budgetId,
+      },
+      options
+    );
+    return res.data.id;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
 const postTransactionBatch = async ({ transactions, options }) => {
   try {
     const res = await axios.post(
@@ -51,11 +96,14 @@ const postTransactionBatch = async ({ transactions, options }) => {
   }
 };
 
-const getAccounts = async ({ id, options }) => {
+const getAccounts = async ({ options }) => {
   try {
     const res = await axios.get(host + '/api/account', options);
     const accounts = {};
     res.data.accounts.forEach((account) => {
+      account.debit = 0;
+      account.credit = 0;
+      account.balance = 0;
       accounts[account.name] = account;
     });
     return accounts;
@@ -94,6 +142,9 @@ module.exports = {
   signup,
   getAccounts,
   postAccount,
+  createBudget,
+  indexBudget,
+  classifyTransaction,
   postTransaction,
   postTransactionBatch,
 };
