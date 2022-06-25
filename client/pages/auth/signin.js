@@ -12,14 +12,22 @@ const Signin = () => {
     onSuccess: () => Router.push('/'),
   });
 
-  const onSubmit = async (event) => {
+  const signin = async (event) => {
     // Do not reload page
     event.preventDefault();
     await doRequest();
   };
 
+  const signinDemo = async (event) => {
+    event.preventDefault();
+    await doRequest({
+      email: 'test@centaurwealth.io',
+      password: '1234',
+    });
+  };
+
   return (
-    <form onSubmit={onSubmit}>
+    <form>
       <div className='d-grid gap-2'>
         <h1>Sign In</h1>
         <div className='form-group'>
@@ -40,7 +48,12 @@ const Signin = () => {
           />
         </div>
         {errors}
-        <button className='btn btn-primary'>Sign In</button>
+        <button className='btn btn-primary' onClick={signin}>
+          Sign In
+        </button>
+        <button className='btn btn-secondary' onClick={signinDemo}>
+          Demo Account
+        </button>
       </div>
     </form>
   );
