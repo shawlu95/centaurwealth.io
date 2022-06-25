@@ -29,7 +29,7 @@ const Signin = () => {
   return (
     <form>
       <div className='d-grid gap-2'>
-        <h1>Sign In</h1>
+        <h3>Sign In</h3>
         <div className='form-group'>
           <label>Email Address</label>
           <input

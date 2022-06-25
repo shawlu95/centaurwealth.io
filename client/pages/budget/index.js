@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import Budgets from '../../components/budgets';
 import Expenses from '../../components/expenses';
@@ -41,6 +42,10 @@ const BudgetIndex = ({
 
   return (
     <div>
+      <h3>My Budgets</h3>
+      <Link href='/budget/create'>
+        <button className='btn btn-primary'>Create Budget</button>
+      </Link>
       <Budgets budgets={budgets} fetchPage={fetchPage} />
       <select
         name='budget'

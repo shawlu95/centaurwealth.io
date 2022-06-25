@@ -2,7 +2,12 @@ import React from 'react';
 import Transaction from '../../components/transaction';
 
 const TransactionCreate = ({ accounts, transaction }) => {
-  return <Transaction transaction={transaction} accounts={accounts} />;
+  return (
+    <div>
+      <h4>New Transaction</h4>
+      <Transaction transaction={transaction} accounts={accounts} />
+    </div>
+  );
 };
 
 TransactionCreate.getInitialProps = async (context, axios, currentUser) => {

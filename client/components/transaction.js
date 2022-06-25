@@ -108,7 +108,7 @@ const Transaction = ({ transaction, accounts, closing }) => {
           className='btn btn-primary w-100'
           style={{ marginRight: '15px' }}
         >
-          {isNew ? 'Create Transaction' : 'Update Transaction'}
+          {isNew ? 'Create' : 'Update'}
         </button>
       </div>
     </div>
@@ -118,7 +118,7 @@ const Transaction = ({ transaction, accounts, closing }) => {
     <div className='row'>
       <div className='col-sm-12'>
         <button onClick={handleDelete} className='btn btn-danger w-100'>
-          Delete Transaction
+          Delete
         </button>
       </div>
     </div>
@@ -126,7 +126,6 @@ const Transaction = ({ transaction, accounts, closing }) => {
 
   return (
     <div>
-      <h3>Transaction</h3>
       <Form>
         <div className='d-grid gap-2'>
           {transactionDetail}

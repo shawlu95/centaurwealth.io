@@ -3,6 +3,7 @@ import Transaction from '../../../components/transaction';
 const TransactionDetails = ({ accounts, transaction }) => {
   return (
     <div>
+      <h4>Closing Temporary Account</h4>
       <Transaction
         transaction={transaction}
         accounts={accounts}

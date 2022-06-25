@@ -12,6 +12,7 @@ const BudgetEdit = ({ budget }) => {
 
   return (
     <div>
+      <h4>Update Budget</h4>
       <Budget budget={budget} post={doRequest} errors={errors} />
     </div>
   );

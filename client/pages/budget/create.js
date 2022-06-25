@@ -11,7 +11,12 @@ const BudgetCreate = () => {
     onSuccess: () => Router.push('/budget'),
   });
 
-  return <Budget post={doRequest} errors={errors} />;
+  return (
+    <div>
+      <h4>New Budget</h4>
+      <Budget post={doRequest} errors={errors} />
+    </div>
+  );
 };
 
 export default BudgetCreate;

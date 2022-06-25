@@ -3,6 +3,7 @@ import Transaction from '../../components/transaction';
 const TransactionEdit = ({ accounts, transaction }) => {
   return (
     <div>
+      <h4>Update Transaction</h4>
       <Transaction transaction={transaction} accounts={accounts} />
     </div>
   );

@@ -5,11 +5,6 @@ import { usd } from '../utils';
 const Budgets = ({ budgets }) => {
   return (
     <div>
-      <h4>My Budgets</h4>
-
-      <Link href='/budget/create'>
-        <button className='btn btn-primary'>Create Budget</button>
-      </Link>
       <table className='table'>
         <thead>
           <tr>

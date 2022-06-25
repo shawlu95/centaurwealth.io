@@ -21,7 +21,7 @@ const Signup = () => {
   return (
     <form onSubmit={onSubmit}>
       <div className='d-grid gap-2'>
-        <h1>Sign Up</h1>
+        <h3>Sign Up</h3>
         <div className='form-group'>
           <label>Email Address</label>
           <input
