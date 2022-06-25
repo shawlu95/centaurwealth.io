@@ -25,6 +25,7 @@ export class UserSignupListener extends Listener<UserSignupEvent> {
 
   async onMessage(data: UserSignupEvent['data'], msg: Message) {
     const userId = data.id;
+    const genesis = new Date('1970-01-01');
     const publisher = new AccountCreatedPublisher(natsWrapper.client);
 
     for (const [type, names] of Object.entries(defaultAccounts)) {
@@ -35,6 +36,7 @@ export class UserSignupListener extends Listener<UserSignupEvent> {
           name,
           type: type as AccountType,
           mutable: !immutable.has(name),
+          close: type === AccountType.Temporary ? genesis : undefined,
         });
         await account.save();
 
