@@ -9,7 +9,7 @@ const Signup = () => {
     url: '/api/auth/signup',
     method: 'post',
     body: { email, password },
-    onSuccess: () => Router.push('/'),
+    onSuccess: () => Router.push('/account'),
   });
 
   const onSubmit = async (event) => {
