@@ -52,7 +52,7 @@ const Expenses = ({
   ).map((key) => (
     <button
       key={key}
-      className={`page-btn ${page == key && 'btn-primary'}`}
+      className={`btn btn-sm ${page == key ? 'btn-primary' : 'btn-light'}`}
       onClick={() => setPage(key)}
     >
       {key}
@@ -104,11 +104,11 @@ const Expenses = ({
         <tbody>{expenseList}</tbody>
       </table>
       <div className='btn-container'>
-        <button className='prev-btn' onClick={prevPage}>
+        <button className='btn btn-light btn-sm' onClick={prevPage}>
           Prev
         </button>
         {buttons}
-        <button className='prev-btn' onClick={nextPage}>
+        <button className='btn btn-light btn-sm' onClick={nextPage}>
           Next
         </button>
       </div>
