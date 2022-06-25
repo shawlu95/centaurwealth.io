@@ -1,43 +1,23 @@
-import { useState } from 'react';
-import Router from 'next/router';
-import useRequest from '../../hooks/use-request';
+import Link from 'next/link';
 import Transactions from '../../components/transactions';
 import { usd } from '../../utils';
 
-const AccountEdit = ({ account, mutable, transactions, url, limit }) => {
-  const [name, setName] = useState('');
-  const { doRequest, errors } = useRequest({
-    url: `/api/account/${account.id}`,
-    method: 'patch',
-    body: { id: account.id, name: name },
-    onSuccess: () => Router.push('/'),
-  });
+const AccountEdit = ({ account, transactions, url, limit }) => {
   return (
-    <div className='d-grid gap-2'>
-      <h3>{account.name}</h3>
+    <div>
       <div className='row'>
-        <h5>Balance: {usd.format(account.balance)}</h5>
-        <div className='col-sm-4'>
-          <input
-            className='form-control'
-            value={name}
-            disabled={!mutable}
-            placeholder={'Update Title'}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-
-        <div className='col-sm-2'>
-          <button
-            onClick={() => doRequest()}
-            className='btn btn-primary'
-            disabled={!mutable}
-          >
-            Update
-          </button>
-        </div>
+        <h4>{account.name}</h4>
+        <b>Balance: {usd.format(account.balance)}</b>
       </div>
-      {errors}
+
+      <Link
+        href='/account/update/[accountId]'
+        as={`/account/update/${account.id}`}
+      >
+        <button className='btn btn-primary' disabled={!account.mutable}>
+          Update Account
+        </button>
+      </Link>
 
       <Transactions transactions={transactions} url={url} limit={limit} />
     </div>
@@ -61,7 +41,8 @@ AccountEdit.getInitialProps = async (context, axios) => {
     params: { page: 1, limit },
   });
 
-  return { account, mutable, transactions, url, limit };
+  account.mutable = mutable;
+  return { account, transactions, url, limit };
 };
 
 export default AccountEdit;
