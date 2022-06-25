@@ -15,6 +15,8 @@ This is a read-heavy app because each transaction is written only once, but acce
 - [balance service](./balance/): listens to write event and automatically update current/historic balance sheet
 - [budget service](./budget/): listens to expense event from ledger service and group expense into category. Support budget planning
 
+![alt-text](./.github/markdown/event_flow.png)
+
 ---
 
 ## Learning Experience
