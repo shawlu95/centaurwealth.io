@@ -62,7 +62,7 @@ const Transaction = ({ transaction, accounts, closing }) => {
           className='form-control'
           type='date'
           name='date'
-          disabled={closing}
+          disabled={closing || !isNew}
           value={values.date.split('T')[0]}
           onChange={handleInputChange}
         ></input>
