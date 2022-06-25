@@ -129,7 +129,7 @@ const Timeline = () => {
           <option value='all'>All-time</option>
         </select>
       </div>
-      <Line data={data} width={400} height={200} />
+      <Line data={data} width={400} height={300} />
     </div>
   );
 };

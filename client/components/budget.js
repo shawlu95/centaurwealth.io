@@ -31,7 +31,7 @@ const Budget = ({ budget, post, errors }) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className='form-control'
-              disabled={!budget.mutable}
+              disabled={budget && !budget.mutable}
             />
           </div>
           <div className='form-group'>
