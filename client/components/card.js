@@ -29,14 +29,16 @@ const Card = ({ type, balance, count }) => {
   return (
     <div className='card'>
       <div className='card-body'>
-        <h5 className='card-title'>{capitalize(type)}</h5>
+        <h5
+          data-toggle='tooltip'
+          className='card-title'
+          title={data[type].intro}
+        >
+          {capitalize(type)}
+        </h5>
         <h6 className='card-subtitle mb-2 text-muted'>
           Balance: {usd.format(balance)} | {count} Accounts
         </h6>
-        <p className='card-text'>{data[type].intro}</p>
-        <a href={data[type].link} className='card-link'>
-          Read More
-        </a>
       </div>
     </div>
   );
