@@ -1,6 +1,7 @@
 import { param, body } from 'express-validator';
 import express, { Request, Response } from 'express';
 import { Account } from '../../model/account';
+import { Transaction } from '../../model/transaction';
 import { StatusCodes } from 'http-status-codes';
 import {
   BadRequestError,
@@ -50,6 +51,21 @@ router.patch(
 
     account.set({ name });
     await account.save();
+
+    // update denormalized account names on all transaction entries
+    const transactions = await Transaction.find({
+      entries: { $elemMatch: { accountId: id } },
+    });
+    for (var i in transactions) {
+      const transaction = transactions[i];
+      const entries = transaction.entries.filter(
+        (entry) => entry.accountId === id
+      );
+      for (var j in entries) {
+        entries[j].accountName = name;
+      }
+      await transaction.save();
+    }
 
     new AccountUpdatedPublisher(natsWrapper.client).publish({
       id: account.id,

@@ -4,6 +4,8 @@ import { app } from '../../app';
 import { StatusCodes } from 'http-status-codes';
 import { natsWrapper } from '../../nats-wrapper';
 import { Account, AccountType } from '../../model/account';
+import { buildTransaction } from './test-utils';
+import { Transaction } from '../../model/transaction';
 
 it('returns 401 when not signed in', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
@@ -134,6 +136,26 @@ it('returns 200 with successful update', async () => {
   const updated = await Account.findById(account.id);
   expect(updated?.userId).toEqual(userId);
   expect(updated?.name).toEqual('equipment');
+});
+
+it('returns 200 and updates all transactions of related to the account', async () => {
+  const { userId, cash, expense, transaction } = await buildTransaction();
+
+  await request(app)
+    .patch(`/api/account/${expense.id}`)
+    .set('Cookie', global.signin(userId))
+    .send({ name: 'equipment' })
+    .expect(StatusCodes.OK);
+
+  const equipment = await Account.findById(expense.id);
+  expect(equipment!.userId).toEqual(userId);
+  expect(equipment!.name).toEqual('equipment');
+
+  const updated = await Transaction.findById(transaction.id);
+  const entry = updated!.entries.filter(
+    (entry) => entry.accountId === equipment!.id
+  )[0];
+  expect(entry.accountName).toEqual('equipment');
 });
 
 it('emits an account update event', async () => {
