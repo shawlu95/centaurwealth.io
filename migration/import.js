@@ -81,7 +81,7 @@ const readJson = (path) => {
       }
     }
     const transactionId = await postTransaction({ txn: transaction, options });
-    console.log(`transaction: ${transaction.date} ${i}/${transactions.length}`);
+    console.log(`${transaction.date} ${i}: ${transaction.memo}`);
     await sleep(200);
 
     const budget = expensesMap[transaction.id];
