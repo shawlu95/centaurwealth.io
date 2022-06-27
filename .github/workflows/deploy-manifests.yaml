@@ -16,6 +16,5 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - run: doctl kubernetes cluster kubeconfig save centaur
-      - run: kubectl apply -f infra/k8s-db
       - run: kubectl apply -f infra/k8s
       - run: kubectl apply -f infra/k8s-prod
