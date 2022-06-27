@@ -10,7 +10,7 @@ const {
   classifyTransaction,
   indexBudget,
 } = require('./utils');
-const { email, password, file } = require('./config');
+const { email, password } = require('./config');
 
 const readJson = (path) => {
   let data = fs.readFileSync(path);

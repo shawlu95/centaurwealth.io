@@ -138,6 +138,58 @@ const signup = async ({ email, password }) => {
   }
 };
 
+const getDelta = (type, entries) => {
+  var sign = 0;
+  if (type === 'asset') sign = 1;
+  if (type === 'liability') sign = -1;
+  var delta = 0;
+
+  for (var i in entries) {
+    const entry = entries[i];
+    if (entry.accountType === type) {
+      if (entry.type === 'debit') {
+        delta += sign * entry.amount;
+      } else if (entry.type === 'credit') {
+        delta -= sign * entry.amount;
+      }
+    }
+  }
+  return Math.round(delta * 100) / 100;
+};
+
+const getTimeline = async ({ start, options }) => {
+  try {
+    const res = await axios.get(host + '/api/timeline', {
+      params: { start },
+      ...options,
+    });
+    const points = {};
+    res.data.points.forEach((x) => {
+      points[x.date] = x;
+    });
+    return points;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+const updateTimeline = async ({ date, asset, liability, options }) => {
+  try {
+    const res = await axios.patch(
+      host + '/api/timeline',
+      {
+        date,
+        asset,
+        liability,
+      },
+      options
+    );
+    console.log('updated', res.data.point);
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
 module.exports = {
   sleep,
   signin,
@@ -149,4 +201,7 @@ module.exports = {
   classifyTransaction,
   postTransaction,
   postTransactionBatch,
+  getDelta,
+  getTimeline,
+  updateTimeline,
 };
