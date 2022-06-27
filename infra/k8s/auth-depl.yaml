@@ -24,8 +24,13 @@ spec:
               value: 'http://nats-srv:4222'
             - name: NATS_CLUSTER_ID
               value: 'centaurwealth'
-            - name: MONGO_URI
-              value: 'mongodb://auth-mongo-srv:27017/auth'
+            - name: MONGO_DB
+              value: 'auth'
+            - name: MONGO_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-pass
+                  key: mongo_pass
             - name: jwt
               valueFrom:
                 secretKeyRef:

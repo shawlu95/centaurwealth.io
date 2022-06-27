@@ -11,8 +11,12 @@ const start = async () => {
     throw new Error('JWT key is undefined');
   }
 
-  if (!process.env.MONGO_URI) {
-    throw new Error('MONGO_URI is undefined');
+  if (!process.env.MONGO_PASS) {
+    throw new Error('MONGO_PASS is undefined');
+  }
+
+  if (!process.env.MONGO_DB) {
+    throw new Error('MONGO_DB is undefined');
   }
 
   if (!process.env.NATS_CLIENT_ID) {
@@ -44,7 +48,11 @@ const start = async () => {
     new TransactionUpdatedListener(natsWrapper.client).listen();
     new TransactionDeletedListener(natsWrapper.client).listen();
 
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(
+      `mongodb+srv://root:${process.env.MONGO_PASS}@` +
+        `centaur.5xb07.mongodb.net/${process.env.MONGO_DB}?` +
+        'retryWrites=true&w=majority'
+    );
     console.log('connected to mongodb');
   } catch (err) {
     console.error(err);
