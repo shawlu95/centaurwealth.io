@@ -42,7 +42,7 @@ router.get(
   validateRequest,
   async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
-    const budgets = await Budget.find({ userId }).sort({ name: 1 });
+    const budgets = await Budget.find({ userId }).sort({ monthly: -1 });
     const budgetId = req.query.budgetId;
 
     var query;
