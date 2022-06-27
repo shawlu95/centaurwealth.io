@@ -92,18 +92,13 @@ pointSchema.statics.updateCurrent = async (attrs: PointAttrs) => {
 };
 
 pointSchema.statics.updateFuture = async (attrs: PointAttrs) => {
-  const points = await Point.find({
-    userId: attrs.userId,
-    date: { $gt: attrs.date },
-  });
-  for (var i in points) {
-    const point = points[i];
-    point.set({
-      asset: point.asset + attrs.asset,
-      liability: point.liability + attrs.liability,
-    });
-    await point.save();
-  }
+  await Point.updateMany(
+    {
+      userId: attrs.userId,
+      date: { $gt: attrs.date },
+    },
+    { $inc: { asset: attrs.asset, liability: attrs.liability } }
+  );
 };
 
 const Point = mongoose.model<PointAttrs, PointModel>('Point', pointSchema);
