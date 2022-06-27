@@ -7,6 +7,7 @@ import { currentUser } from '@bookkeeping/common';
 import { errorHandler, NotFoundError } from '@bookkeeping/common';
 
 import { timelineRouter } from './routes/timeline-index';
+import { timelineUpdateRouter } from './routes/timeline-update';
 
 const app = express();
 app.set('trust proxy', true);
@@ -20,6 +21,7 @@ app.use(
 app.use(currentUser);
 
 app.use(timelineRouter);
+app.use(timelineUpdateRouter);
 
 app.get('*', async (req, res) => {
   throw new NotFoundError();
