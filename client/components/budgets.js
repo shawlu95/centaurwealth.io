@@ -21,8 +21,14 @@ const Budgets = ({ budgets }) => {
               <tr>
                 <td width='20%'>
                   <b>{budget.name}</b>
-                  <Link href='/budget/[budgetId]' as={`/budget/${budget.id}`}>
+                  <Link
+                    href='/budget/update/[budgetId]'
+                    as={`/budget/update/${budget.id}`}
+                  >
                     <button className='btn btn-light btn-sm'>Edit</button>
+                  </Link>
+                  <Link href='/budget/[budgetId]' as={`/budget/${budget.id}`}>
+                    <button className='btn btn-light btn-sm'>View</button>
                   </Link>
                 </td>
                 <td width='20%'>Budget</td>
