@@ -21,7 +21,11 @@ const Header = ({ currentUser }) => {
       );
     });
   return (
-    <div>
+    <div
+      style={{
+        marginBottom: '20px',
+      }}
+    >
       <nav className='navbar nav-light bg-light'>
         <Head>
           <title>Centaur</title>
