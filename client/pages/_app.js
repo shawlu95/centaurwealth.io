@@ -2,6 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import buildClient from '../api/build-client';
 import Header from '../components/header';
+import Footer from '../components/footer';
 
 /**
  * @dev NextJS will wrap component in custom wrap component
@@ -15,6 +16,7 @@ const AppComponent = ({ Component, pageProps, currentUser }) => {
       <div className='container'>
         <Component currentUser={currentUser} {...pageProps} />
       </div>
+      <Footer />
     </div>
   );
 };
