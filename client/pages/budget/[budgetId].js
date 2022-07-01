@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import Budgets from '../../components/budgets';
+import BudgetTotal from '../../components/budgetTotal';
 import Expenses from '../../components/expenses';
 
 // Not allowed to fetch data in component in server-side render
@@ -55,7 +55,7 @@ const BudgetIndex = ({
           ))}
         </select>
       </div>
-      <Budgets budgets={[selectedBudget]} fetchPage={fetchPage} />
+      <BudgetTotal budgets={[selectedBudget]} />
       <Expenses
         budgets={budgets}
         expenses={expenses}

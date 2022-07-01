@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import Budgets from '../../components/budgets';
+import BudgetTotal from '../../components/budgetTotal';
 
 // Not allowed to fetch data in component in server-side render
 const BudgetIndex = ({ budgets }) => {
@@ -11,6 +12,7 @@ const BudgetIndex = ({ budgets }) => {
         <button className='btn btn-primary'>Create Budget</button>
       </Link>
       <Budgets budgets={budgets} />
+      <BudgetTotal budgets={budgets} />
     </div>
   );
 };
