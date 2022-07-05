@@ -118,7 +118,7 @@ transactionSchema.pre('save', async function (this: TransactionDoc, done) {
       }
     }
 
-    if (debit != credit) {
+    if (Math.abs(debit - credit) >= 0.01) {
       throw new BadRequestError('Debit must equal to credit');
     }
     this.set('amount', debit);
