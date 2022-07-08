@@ -1,4 +1,5 @@
 // global css files must be imported here
+import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import buildClient from '../api/build-client';
 import Header from '../components/header';
@@ -13,7 +14,7 @@ const AppComponent = ({ Component, pageProps, currentUser }) => {
   return (
     <div>
       <Header currentUser={currentUser} />
-      <div className='container'>
+      <div className='container page-100'>
         <Component currentUser={currentUser} {...pageProps} />
       </div>
       <Footer />

@@ -23,7 +23,7 @@ const Header = ({ currentUser }) => {
   return (
     <div
       style={{
-        marginBottom: '20px',
+        marginBottom: '2rem',
       }}
     >
       <nav className='navbar nav-light bg-light'>
