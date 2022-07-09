@@ -51,29 +51,35 @@ const accountSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    balance: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     toJSON: {
       transform(doc, ret) {
-        injectBalance(ret);
+        ret.id = ret._id;
+        delete ret._id;
+
+        ret.credit = parseFloat(ret.credit.toFixed(2));
+        ret.debit = parseFloat(ret.debit.toFixed(2));
       },
     },
   }
 );
 
-const injectBalance = (ret: any) => {
-  ret.id = ret._id;
-  delete ret._id;
-  const delta = parseFloat((ret.debit - ret.credit).toFixed(2));
-
-  if (ret.type == AccountType.Asset) {
-    ret.balance = delta;
-  } else {
-    ret.balance = -delta;
+accountSchema.pre('save', async function (this: AccountDoc, done) {
+  if (this.isModified('credit') || this.isModified('debit')) {
+    const delta = parseFloat((this.debit - this.credit).toFixed(2));
+    if (this.type == AccountType.Asset) {
+      this.set('balance', delta);
+    } else {
+      this.set('balance', -delta);
+    }
   }
-  ret.credit = parseFloat(ret.credit.toFixed(2));
-  ret.debit = parseFloat(ret.debit.toFixed(2));
-};
+  done();
+});
 
 accountSchema.statics.build = (attrs: AccountAttrs) => {
   return new Account({
@@ -99,7 +105,13 @@ accountSchema.statics.summary = async function (userId: string) {
   ]);
 
   for (var i in summary) {
-    injectBalance(summary[i]);
+    const item = summary[i];
+    const delta = parseFloat((item.debit - item.credit).toFixed(2));
+    if (item.type === AccountType.Asset) {
+      item.balance = delta;
+    } else {
+      item.balance = -delta;
+    }
   }
   return summary;
 };
