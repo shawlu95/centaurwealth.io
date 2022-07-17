@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const Account = ({ account, post, errors }) => {
   const isNew = account === undefined;
   const [name, setName] = useState(isNew ? '' : account.name);
   const [type, setType] = useState('asset');
+  const router = useRouter();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -41,6 +43,13 @@ const Account = ({ account, post, errors }) => {
             </select>
           </div>
           {isNew ? createButton : updateButton}
+          <button
+            type='button'
+            className='btn btn-secondary w-100'
+            onClick={() => router.back()}
+          >
+            Cancel
+          </button>
           {errors}
         </div>
       </form>

@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Router from 'next/router';
 import useRequest from '../hooks/use-request';
 import React from 'react';
@@ -8,6 +10,7 @@ import Entry from './entry';
 const Transaction = ({ transaction, accounts, closing }) => {
   const { values, handleInputChange } = useForm(transaction);
   const isNew = transaction.id === undefined;
+  const router = useRouter();
   const [entries, setEntries] = useState(transaction.entries);
 
   const { doRequest: doUpsert, errors: upsertErrors } = useRequest({
@@ -124,6 +127,20 @@ const Transaction = ({ transaction, accounts, closing }) => {
     </div>
   );
 
+  const cancelButton = (
+    <div className='row'>
+      <div className='col-sm-12'>
+        <button
+          type='button'
+          className='btn btn-secondary w-100'
+          onClick={() => router.back()}
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div>
       <Form>
@@ -133,6 +150,7 @@ const Transaction = ({ transaction, accounts, closing }) => {
           {entryGroup}
           {upsertButton}
           {deleteButton}
+          {cancelButton}
         </div>
         {upsertErrors}
         {deleteErrors}

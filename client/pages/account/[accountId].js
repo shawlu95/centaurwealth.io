@@ -4,22 +4,32 @@ import { usd } from '../../utils';
 
 const AccountEdit = ({ account, transactions, url, limit }) => {
   return (
-    <div>
+    <div className='d-grid gap-2'>
       <div className='row'>
         <h4>{account.name}</h4>
         <b>Balance: {usd.format(account.balance)}</b>
       </div>
 
-      <Link
-        href='/account/update/[accountId]'
-        as={`/account/update/${account.id}`}
-      >
-        <button className='btn btn-primary' disabled={!account.mutable}>
-          Update Account
-        </button>
-      </Link>
+      <div className='row'>
+        <Transactions transactions={transactions} url={url} limit={limit} />
+      </div>
 
-      <Transactions transactions={transactions} url={url} limit={limit} />
+      <div className='row'>
+        <Link
+          href='/account/update/[accountId]'
+          as={`/account/update/${account.id}`}
+        >
+          <button className='btn btn-primary w-100' disabled={!account.mutable}>
+            Update Account
+          </button>
+        </Link>
+      </div>
+
+      <div className='row'>
+        <Link href='/transaction/create'>
+          <button className='btn btn-secondary w-100'>New Transaction</button>
+        </Link>
+      </div>
     </div>
   );
 };

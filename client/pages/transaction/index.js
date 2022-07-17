@@ -4,15 +4,16 @@ import Transactions from '../../components/transactions';
 // Not allowed to fetch data in component in server-side render
 const TransactionIndex = ({ transactions, url, limit }) => {
   return (
-    <div>
+    <div className='d-grid gap-2'>
       <h3>Transactions</h3>
+
+      <Transactions transactions={transactions} url={url} limit={limit} />
       <button
-        className='btn btn-primary'
+        className='btn btn-primary w-100'
         onClick={() => Router.push('/transaction/create')}
       >
         New Transaction
       </button>
-      <Transactions transactions={transactions} url={url} limit={limit} />
     </div>
   );
 };
