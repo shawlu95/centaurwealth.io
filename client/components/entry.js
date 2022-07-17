@@ -63,7 +63,7 @@ const Entry = ({ index, accounts, entry, entries, setEntries }) => {
       </div>
 
       <div className='col-sm-2'>
-        <span>{usd.format(getAccount(entry.accountId).balance)}</span>
+        <span>{usd.format(getAccount(entry.accountId)?.balance || 0)}</span>
       </div>
 
       <div className='col-sm-2'>

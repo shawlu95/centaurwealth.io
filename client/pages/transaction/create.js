@@ -11,9 +11,11 @@ const TransactionCreate = ({ accounts, transaction }) => {
 };
 
 TransactionCreate.getInitialProps = async (context, axios, currentUser) => {
-  const {
+  let {
     data: { accounts },
   } = await axios.get('/api/balance/current');
+
+  accounts = accounts.sort((a, b) => a.name.localeCompare(b.name));
 
   // Default accounts are guaranteed to exist
   const expense = accounts.filter((a) => a.name === 'Expense')[0];
@@ -25,6 +27,9 @@ TransactionCreate.getInitialProps = async (context, axios, currentUser) => {
       {
         amount: 0,
         type: 'credit',
+        accountName: accounts[0]?.name || '',
+        accountType: accounts[0]?.type || '',
+        accountId: accounts[0]?.id || '',
       },
       {
         amount: 0,
