@@ -1,3 +1,5 @@
+import { usd } from '../utils';
+
 const Entry = ({ index, accounts, entry, entries, setEntries }) => {
   const getAccount = (id) => accounts.filter((acc) => acc.id === id)[0];
 
@@ -45,7 +47,7 @@ const Entry = ({ index, accounts, entry, entries, setEntries }) => {
 
   return (
     <div className='row'>
-      <div className='col-sm-6'>
+      <div className='col-sm-4'>
         <select
           className='form-control'
           name='accountId'
@@ -58,6 +60,10 @@ const Entry = ({ index, accounts, entry, entries, setEntries }) => {
             </option>
           ))}
         </select>
+      </div>
+
+      <div className='col-sm-2'>
+        <span>{usd.format(getAccount(entry.accountId).balance)}</span>
       </div>
 
       <div className='col-sm-2'>

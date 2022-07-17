@@ -75,8 +75,11 @@ const Transaction = ({ transaction, accounts, closing }) => {
 
   const header = (
     <div className='row'>
-      <div className='col-sm-6'>
+      <div className='col-sm-4'>
         <b>Account</b>
+      </div>
+      <div className='col-sm-2'>
+        <b>Current Balance</b>
       </div>
       <div className='col-sm-2'>
         <b>DR/CR</b>
