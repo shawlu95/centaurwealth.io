@@ -60,16 +60,16 @@ const AccountIndex = ({ accounts }) => {
   return (
     <div>
       <h3>Balance Sheet</h3>
-      <button
-        className='btn btn-primary'
-        onClick={() => Router.push('/account/create')}
-      >
-        New Account
-      </button>
       {asset}
       {liability}
       {equity}
       {temporary}
+      <button
+        className='btn btn-primary w-100'
+        onClick={() => Router.push('/account/create')}
+      >
+        New Account
+      </button>
     </div>
   );
 };

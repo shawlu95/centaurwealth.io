@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import BudgetTotal from '../../components/budgetTotal';
@@ -39,7 +40,7 @@ const BudgetIndex = ({
   const selectedBudget = budgets.filter((x) => x.id === budgetId)[0];
 
   return (
-    <div>
+    <div className='d-grid gap-2'>
       <h3>My Budget</h3>
       <div className='d-grid gap-2'>
         <select
@@ -63,6 +64,9 @@ const BudgetIndex = ({
         page={page}
         setPage={setPage}
       />
+      <Link href='/budget/update/[budgetId]' as={`/budget/update/${budgetId}`}>
+        <button className='btn btn-primary w-100'>Update Budget</button>
+      </Link>
     </div>
   );
 };

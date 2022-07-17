@@ -6,13 +6,13 @@ import BudgetTotal from '../../components/budgetTotal';
 // Not allowed to fetch data in component in server-side render
 const BudgetIndex = ({ budgets }) => {
   return (
-    <div>
+    <div className='d-grid gap-2'>
       <h3>My Budgets</h3>
+      <Budgets budgets={budgets} />
+      <BudgetTotal budgets={budgets} />
       <Link href='/budget/create'>
         <button className='btn btn-primary'>Create Budget</button>
       </Link>
-      <Budgets budgets={budgets} />
-      <BudgetTotal budgets={budgets} />
     </div>
   );
 };
