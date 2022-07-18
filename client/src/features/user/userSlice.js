@@ -10,7 +10,7 @@ import { signinUserThunk, signupUserThunk } from './userThunk';
 const initialState = {
   isLoading: false,
   isSidebarOpen: false,
-  user: null,
+  user: getUserFromLocalStorage(),
 };
 
 export const signinUser = createAsyncThunk('user/signinUser', signinUserThunk);
