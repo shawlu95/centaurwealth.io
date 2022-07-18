@@ -21,3 +21,13 @@ export const getAccountThunk = async (accountId, thunkApi) => {
     return error.response.data.msg;
   }
 };
+
+export const createAccountThunk = async (_, thunkApi) => {
+  try {
+    const { account } = thunkApi.getState().account;
+    const res = await axios.post(`/account`, account);
+    return res.data;
+  } catch (err) {
+    return error.response.data.msg;
+  }
+};

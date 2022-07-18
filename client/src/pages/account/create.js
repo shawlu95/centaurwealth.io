@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Account from '../../components/account';
-import { clearAccount } from '../../features/account/accountSlice';
+import {
+  clearAccount,
+  createAccount,
+} from '../../features/account/accountSlice';
 
 const AccountCreate = () => {
   const navigate = useNavigate();
@@ -22,13 +25,21 @@ const AccountCreate = () => {
         <div className='container d-grid gap-2'>
           <Account />
           <button
+            className='btn btn-primary'
+            onClick={() => {
+              dispatch(createAccount());
+              navigate(-1);
+            }}
+          >
+            Create
+          </button>
+          <button
             type='button'
             className='btn btn-secondary w-100'
             onClick={() => navigate(-1)}
           >
             Cancel
           </button>
-          <button className='btn btn-primary'>Create</button>;
         </div>
       </form>
     </div>

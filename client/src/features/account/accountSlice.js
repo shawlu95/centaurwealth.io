@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { getAccountsThunk, getAccountThunk } from './accountThunk';
+import {
+  getAccountsThunk,
+  getAccountThunk,
+  createAccountThunk,
+} from './accountThunk';
 
 const defaultAccount = {
   name: '',
@@ -46,6 +50,11 @@ export const getAccount = createAsyncThunk(
   getAccountThunk
 );
 
+export const createAccount = createAsyncThunk(
+  'account/createAccount',
+  createAccountThunk
+);
+
 const accountSlice = createSlice({
   name: 'account',
   initialState,
@@ -88,6 +97,18 @@ const accountSlice = createSlice({
       state.transactions = transactions;
     },
     [getAccount.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    },
+    [createAccount.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [createAccount.fulfilled]: (state, { payload }) => {
+      const { name } = state.account;
+      state.account = { ...state.account, id: payload.id };
+      toast.success(`Created account: ${name}`);
+    },
+    [createAccount.rejected]: (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload);
     },
