@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getTransactionsThunk } from './transactionThunk';
 import { toast } from 'react-toastify';
 
 const defaultTransactions = {
@@ -23,6 +24,11 @@ const initialState = {
   transactions: { ...defaultTransactions },
 };
 
+export const getTransactions = createAsyncThunk(
+  'transaction/getTransactions',
+  getTransactionsThunk
+);
+
 const transactionSlice = createSlice({
   name: 'transaction',
   initialState,
@@ -32,6 +38,18 @@ const transactionSlice = createSlice({
     },
     setTransaction: (state, { payload }) => {
       state.transactions = payload;
+    },
+  },
+  extraReducers: {
+    [getTransactions.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [getTransactions.fulfilled]: (state, { payload }) => {
+      state.transactions = payload.transactions;
+    },
+    [getTransactions.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
     },
   },
 });
