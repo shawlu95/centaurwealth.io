@@ -24,12 +24,18 @@ const AccountIndex = () => {
             <td width='40%'>{account.name}</td>
             <td width='40%'>{usd.format(account.balance)}</td>
             <td>
-              <Link to={`/account/${account.id}`}>
-                <button className='btn btn-light btn-sm'>View</button>
+              <Link
+                to={`/account/${account.id}`}
+                className='btn btn-light btn-sm'
+              >
+                View
               </Link>
               {account.type === 'temporary' && (
-                <Link to={`/account/close/${account.id}`}>
-                  <button className='btn btn-light btn-sm'>Close</button>
+                <Link
+                  to={`/account/close/${account.id}`}
+                  className='btn btn-light btn-sm'
+                >
+                  Close
                 </Link>
               )}
             </td>
