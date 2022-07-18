@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useContext, useReducer } from 'react';
 import reducer from '../reducers/reducer';
-import { LOAD_USER } from '../utils';
+import { USER_LOAD, USER_SIGNIN } from '../utils';
 
 const initialState = {
   accounts: [],
@@ -17,13 +17,24 @@ export const ContextProvider = ({ children }) => {
   useEffect(() => {
     const getUser = async () => {
       const { data } = await axios.get('/api/auth/currentuser');
-      dispatch({ type: LOAD_USER, payload: { currentUser: data.currentUser } });
+      dispatch({ type: USER_LOAD, payload: data.currentUser });
     };
     getUser();
   }, []);
 
+  const signin = async ({ email, password }) => {
+    const res = await axios.post('/api/auth/signin', {
+      email,
+      password,
+    });
+
+    dispatch({ type: USER_SIGNIN, payload: res.data });
+  };
+
   return (
-    <AppContext.Provider value={{ ...state }}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{ ...state, signin }}>
+      {children}
+    </AppContext.Provider>
   );
 };
 

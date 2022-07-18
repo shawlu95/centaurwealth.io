@@ -7,7 +7,7 @@ const HomePage = () => {
   useEffect(() => {
     const getUser = async () => {
       const { data } = await axios.get('/api/auth/currentuser');
-      // dispatch({ type: LOAD_USER, payload: { currentUser: data.currentUser } });
+      // dispatch({ type: USER_LOAD, payload: { currentUser: data.currentUser } });
       console.log(data);
     };
     getUser();

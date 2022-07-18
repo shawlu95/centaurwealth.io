@@ -3,4 +3,5 @@ export const usd = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-export const LOAD_USER = 'LOAD_USER';
+export const USER_LOAD = 'USER_LOAD';
+export const USER_SIGNIN = 'USER_SIGNIN';
