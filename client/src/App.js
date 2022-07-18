@@ -4,13 +4,14 @@ import Header from './components/header';
 import Footer from './components/footer';
 import Home from './pages';
 import { Signin, Signup, Signout } from './pages/auth';
-import Account from './pages/account';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import AccountHistory from './pages/account/history';
-import AccountDetail from './pages/account/detail';
-import AccountCreate from './pages/account/create';
+import Account, {
+  AccountCreate,
+  AccountDetail,
+  AccountHistory,
+} from './pages/account';
 
 function App() {
   const { user } = useSelector((store) => store.user);

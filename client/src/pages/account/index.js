@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { usd } from '../../utils';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAccounts, clearAccount } from '../../features/account/accountSlice';
+import { getAccounts } from '../../features/account/accountSlice';
 
 // Not allowed to fetch data in component in server-side render
 const AccountIndex = () => {
@@ -89,3 +89,8 @@ AccountIndex.getInitialProps = async (context, axios, currentUser) => {
 };
 
 export default AccountIndex;
+
+import AccountCreate from './create';
+import AccountDetail from './detail';
+import AccountHistory from './history';
+export { AccountCreate, AccountDetail, AccountHistory };
