@@ -6,6 +6,12 @@ const initialState = {
   isLoading: false,
   account: null,
   accounts: [],
+  summary: [
+    { type: 'asset', balance: 0, count: 0 },
+    { type: 'liability', balance: 0, count: 0 },
+    { type: 'equity', balance: 0, count: 0 },
+    { type: 'temporary', balance: 0, count: 0 },
+  ],
 };
 
 export const getAccounts = createAsyncThunk(
@@ -22,8 +28,10 @@ const accountSlice = createSlice({
       state.isLoading = true;
     },
     [getAccounts.fulfilled]: (state, { payload }) => {
+      const { accounts, summary } = payload;
       state.isLoading = false;
-      state.accounts = payload;
+      state.accounts = accounts;
+      state.summary = summary;
     },
     [getAccounts.rejected]: (state, { payload }) => {
       state.isLoading = false;
