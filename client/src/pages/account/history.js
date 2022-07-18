@@ -28,7 +28,7 @@ const AccountHistory = () => {
 
       <div className='row'>
         <Link
-          to={`/account/update/${account.id}`}
+          to={`/account/detail/${account.id}`}
           className='btn btn-primary w-100'
           disabled={!account.mutable}
         >

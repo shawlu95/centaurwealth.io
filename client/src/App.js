@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AccountHistory from './pages/account/history';
-
+import AccountDetail from './pages/account/detail';
 function App() {
   const { user } = useSelector((store) => store.user);
   return (
@@ -22,6 +22,7 @@ function App() {
         <Route path='/auth/signout' element={<Signout />} />
         <Route path='/account' element={<Account />} />
         <Route path='/account/:accountId' element={<AccountHistory />} />
+        <Route path='/account/detail/:accountId' element={<AccountDetail />} />
       </Routes>
       <ToastContainer position='top-center' />
       <Footer />

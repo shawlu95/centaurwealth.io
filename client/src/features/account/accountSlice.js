@@ -66,10 +66,11 @@ const accountSlice = createSlice({
     },
     [getAccount.fulfilled]: (state, { payload }) => {
       const { transactions, account } = payload;
-      state.isLoading = false;
-      state.account = state.accounts.filter(
+      const balance = state.accounts.filter(
         (item) => item.id === account.id
       )[0];
+      state.isLoading = false;
+      state.account = { ...balance, ...account };
       state.transactions = transactions;
     },
     [getAccount.rejected]: (state, { payload }) => {

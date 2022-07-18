@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const Account = () => {
+const AccountDetail = () => {
   const navigate = useNavigate();
   const { account } = useSelector((store) => store.account);
 
@@ -19,7 +19,7 @@ const Account = () => {
   return (
     <div>
       <form onSubmit={onSubmit}>
-        <div className='d-grid gap-2'>
+        <div className='container d-grid gap-2'>
           <div className='form-group'>
             <label>Account Name</label>
             <input
@@ -57,4 +57,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default AccountDetail;
