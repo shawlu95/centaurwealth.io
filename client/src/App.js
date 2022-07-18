@@ -21,8 +21,11 @@ function App() {
         <Route path='/auth/signup' element={<Signup />} />
         <Route path='/auth/signout' element={<Signout />} />
         <Route path='/account' element={<Account />} />
-        <Route path='/account/:accountId' element={<AccountHistory />} />
-        <Route path='/account/detail/:accountId' element={<AccountDetail />} />
+        <Route
+          path='/account/history/:accountId'
+          element={<AccountHistory />}
+        />
+        <Route path='/account/detail' element={<AccountDetail />} />
       </Routes>
       <ToastContainer position='top-center' />
       <Footer />

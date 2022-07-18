@@ -11,7 +11,8 @@ export const getAccountsThunk = async (user, thunkApi) => {
 
 export const getAccountThunk = async (accountId, thunkApi) => {
   try {
-    const { page, limit } = thunkApi.getState().account.transactions;
+    const account = thunkApi.getState().account;
+    const { page, limit } = account.transactions;
     const res = await axios.get(`/account/${accountId}`, {
       params: { page, limit },
     });

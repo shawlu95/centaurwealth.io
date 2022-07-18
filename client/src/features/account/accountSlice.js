@@ -2,31 +2,38 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { getAccountsThunk, getAccountThunk } from './accountThunk';
 
+const defaultAccount = {
+  name: '',
+  mutable: true,
+  balance: 0,
+  type: 'asset',
+};
+
+const defaultTransactions = {
+  docs: [],
+  hasMore: false,
+  hasNextPage: false,
+  hasPrevPage: false,
+  limit: 25,
+  page: 1,
+  pagingCounter: 1,
+  totalDocs: 3,
+  totalPages: 1,
+};
+
+const defaultSummary = [
+  { type: 'asset', balance: 0, count: 0 },
+  { type: 'liability', balance: 0, count: 0 },
+  { type: 'equity', balance: 0, count: 0 },
+  { type: 'temporary', balance: 0, count: 0 },
+];
+
 const initialState = {
   isLoading: false,
-  account: {
-    name: '',
-    balance: 0,
-    type: 'asset',
-  },
+  account: { ...defaultAccount },
   accounts: [],
-  transactions: {
-    docs: [],
-    hasMore: false,
-    hasNextPage: false,
-    hasPrevPage: false,
-    limit: 25,
-    page: 1,
-    pagingCounter: 1,
-    totalDocs: 3,
-    totalPages: 1,
-  },
-  summary: [
-    { type: 'asset', balance: 0, count: 0 },
-    { type: 'liability', balance: 0, count: 0 },
-    { type: 'equity', balance: 0, count: 0 },
-    { type: 'temporary', balance: 0, count: 0 },
-  ],
+  transactions: { ...defaultTransactions },
+  summary: [...defaultSummary],
 };
 
 export const getAccounts = createAsyncThunk(
@@ -45,6 +52,9 @@ const accountSlice = createSlice({
   reducers: {
     changePage: (state, { payload }) => {
       state.transactions.page = payload;
+    },
+    clearAccount: (state) => {
+      state.account = { ...defaultAccount };
     },
   },
   extraReducers: {
@@ -80,5 +90,5 @@ const accountSlice = createSlice({
   },
 });
 
-export const { changePage } = accountSlice.actions;
+export const { changePage, clearAccount } = accountSlice.actions;
 export default accountSlice.reducer;

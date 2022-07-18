@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { usd } from '../../utils';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAccounts } from '../../features/account/accountSlice';
+import { getAccounts, clearAccount } from '../../features/account/accountSlice';
 
 // Not allowed to fetch data in component in server-side render
 const AccountIndex = () => {
@@ -25,7 +25,7 @@ const AccountIndex = () => {
             <td width='40%'>{usd.format(account.balance)}</td>
             <td>
               <Link
-                to={`/account/${account.id}`}
+                to={`/account/history/${account.id}`}
                 className='btn btn-light btn-sm'
               >
                 View
@@ -76,8 +76,10 @@ const AccountIndex = () => {
       {equity}
       {temporary}
 
-      <Link to='/account/create' className='btn btn-primary w-100'>
-        New Account
+      <Link to='/account/detail'>
+        <button className='btn btn-primary w-100' onClick={clearAccount}>
+          New Account
+        </button>
       </Link>
     </div>
   );
