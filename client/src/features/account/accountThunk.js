@@ -31,3 +31,13 @@ export const createAccountThunk = async (_, thunkApi) => {
     return error.response.data.msg;
   }
 };
+
+export const updateAccountThunk = async (_, thunkApi) => {
+  try {
+    const { account } = thunkApi.getState().account;
+    const res = await axios.patch(`/account/${account.id}`, account);
+    return res.data;
+  } catch (err) {
+    return error.response.data.msg;
+  }
+};

@@ -4,6 +4,7 @@ import {
   getAccountsThunk,
   getAccountThunk,
   createAccountThunk,
+  updateAccountThunk,
 } from './accountThunk';
 
 const defaultAccount = {
@@ -53,6 +54,11 @@ export const getAccount = createAsyncThunk(
 export const createAccount = createAsyncThunk(
   'account/createAccount',
   createAccountThunk
+);
+
+export const updateAccount = createAsyncThunk(
+  'account/updateAccount',
+  updateAccountThunk
 );
 
 const accountSlice = createSlice({
@@ -109,6 +115,17 @@ const accountSlice = createSlice({
       toast.success(`Created account: ${name}`);
     },
     [createAccount.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    },
+    [updateAccount.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [updateAccount.fulfilled]: (state, { payload }) => {
+      const { name } = state.account;
+      toast.success(`Updated account: ${name}`);
+    },
+    [updateAccount.rejected]: (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload);
     },
