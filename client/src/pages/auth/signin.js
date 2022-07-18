@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppContext } from '../../contexts/context';
+import { signinUser } from '../../features/user/userSlice';
+import { useDispatch } from 'react-redux';
 
 const Signin = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { signin } = useAppContext();
 
   const handleSignin = async ({ event, email, password }) => {
     // Do not reload page
     event.preventDefault();
-    signin({ email, password });
+    dispatch(signinUser({ email, password }));
     navigate('/', { replace: true });
   };
 

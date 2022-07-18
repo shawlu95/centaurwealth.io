@@ -4,11 +4,12 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './api/axios';
 import App from './App';
-import { ContextProvider } from './contexts/context';
+import { store } from './store';
+import { Provider } from 'react-redux';
 
 const root = createRoot(document.getElementById('root'));
 root.render(
-  <ContextProvider>
+  <Provider store={store}>
     <App />
-  </ContextProvider>
+  </Provider>
 );
