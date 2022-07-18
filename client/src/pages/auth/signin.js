@@ -27,7 +27,7 @@ const Signin = () => {
 
   return (
     <form>
-      <div className='container d-grid gap-2 '>
+      <div className='container d-grid gap-2'>
         <h3>Sign In</h3>
         <div className='form-group'>
           <label>Email Address</label>

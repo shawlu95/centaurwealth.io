@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import Router from 'next/router';
 import useRequest from '../../hooks/use-request';
 
 const Signout = () => {
@@ -7,14 +6,14 @@ const Signout = () => {
     url: '/api/auth/signout',
     method: 'post',
     body: {},
-    onSuccess: () => Router.push('/auth/signin'),
+    onSuccess: () => console.log('signout'),
   });
 
   useEffect(() => {
     doRequest();
   }, []);
   return (
-    <div className='d-grid gap-2'>
+    <div className='container d-grid gap-2'>
       <label>Signing out</label>
     </div>
   );

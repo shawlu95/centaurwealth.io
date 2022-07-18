@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import useRequest from '../../hooks/use-request';
-import Router from 'next/router';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -9,7 +8,7 @@ const Signup = () => {
     url: '/api/auth/signup',
     method: 'post',
     body: { email, password },
-    onSuccess: () => Router.push('/account'),
+    onSuccess: () => console.log('signup'),
   });
 
   const onSubmit = async (event) => {
@@ -20,7 +19,7 @@ const Signup = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <div className='d-grid gap-2'>
+      <div className='container d-grid gap-2'>
         <h3>Sign Up</h3>
         <div className='form-group'>
           <label>Email Address</label>
