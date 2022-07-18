@@ -1,28 +1,18 @@
 import { useState } from 'react';
-import useRequest from '../../hooks/use-request';
+import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../contexts/context';
 
 const Signin = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { doRequest, errors } = useRequest({
-    url: '/api/auth/signin',
-    method: 'post',
-    body: { email, password },
-    onSuccess: () => console.log('success'),
-  });
+  const { signin } = useAppContext();
 
-  const signin = async (event) => {
+  const handleSignin = async ({ event, email, password }) => {
     // Do not reload page
     event.preventDefault();
-    await doRequest();
-  };
-
-  const signinDemo = async (event) => {
-    event.preventDefault();
-    await doRequest({
-      email: 'test@centaurwealth.io',
-      password: '1234',
-    });
+    signin({ email, password });
+    navigate('/', { replace: true });
   };
 
   return (
@@ -46,11 +36,22 @@ const Signin = () => {
             className='form-control'
           />
         </div>
-        {errors}
-        <button className='btn btn-primary' onClick={signin}>
+        <button
+          className='btn btn-primary'
+          onClick={(event) => handleSignin({ event, email, password })}
+        >
           Sign In
         </button>
-        <button className='btn btn-secondary' onClick={signinDemo}>
+        <button
+          className='btn btn-secondary'
+          onClick={(event) => {
+            handleSignin({
+              event,
+              email: 'test@centaurwealth.io',
+              password: '1234',
+            });
+          }}
+        >
           Demo Account
         </button>
       </div>
