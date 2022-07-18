@@ -6,13 +6,15 @@ import Home from './pages';
 import Signin from './pages/auth/signin';
 import Signup from './pages/auth/signup';
 import Signout from './pages/auth/signout';
+import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
+  const { user } = useSelector((store) => store.user);
   return (
     <Router>
-      <Header />
+      <Header currentUser={user} />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/auth/signin' element={<Signin />} />
