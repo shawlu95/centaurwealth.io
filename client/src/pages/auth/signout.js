@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
-import useRequest from '../../hooks/use-request';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { signoutUser } from '../../features/user/userSlice';
 
 const Signout = () => {
-  const { doRequest } = useRequest({
-    url: '/api/auth/signout',
-    method: 'post',
-    body: {},
-    onSuccess: () => console.log('signout'),
-  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    doRequest();
+    dispatch(signoutUser());
+    navigate('/auth/signin');
   }, []);
+
   return (
     <div className='container d-grid gap-2'>
       <label>Signing out</label>

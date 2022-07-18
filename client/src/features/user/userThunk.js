@@ -17,3 +17,12 @@ export const signinUserThunk = async (user, thunkApi) => {
     return error.response.data.msg;
   }
 };
+
+export const signoutUserThunk = async (user, thunkApi) => {
+  try {
+    const res = await axios.post('/auth/signout', user);
+    return res.data;
+  } catch (err) {
+    return error.response.data.msg;
+  }
+};

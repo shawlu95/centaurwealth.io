@@ -5,7 +5,11 @@ import {
   getUserFromLocalStorage,
   removeUserFromLocalStorage,
 } from '../../utils/localStorage';
-import { signinUserThunk, signupUserThunk } from './userThunk';
+import {
+  signinUserThunk,
+  signupUserThunk,
+  signoutUserThunk,
+} from './userThunk';
 
 const initialState = {
   isLoading: false,
@@ -17,20 +21,17 @@ export const signinUser = createAsyncThunk('user/signinUser', signinUserThunk);
 
 export const signupUser = createAsyncThunk('user/signupUser', signupUserThunk);
 
+export const signoutUser = createAsyncThunk(
+  'user/signoutUser',
+  signoutUserThunk
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     toggleSidebar: (state) => {
       state.isSidebarOpen = !state.isSidebarOpen;
-    },
-    logoutUser: (state, { payload }) => {
-      state.user = null;
-      state.isSidebarOpen = false;
-      removeUserFromLocalStorage();
-      if (payload) {
-        toast.success(payload);
-      }
     },
   },
   extraReducers: {
@@ -61,6 +62,14 @@ const userSlice = createSlice({
       console.log(payload);
       state.isLoading = false;
       toast.error(payload);
+    },
+    [signoutUser.fulfilled]: (state, { payload }) => {
+      state.user = null;
+      state.isSidebarOpen = false;
+      removeUserFromLocalStorage();
+      if (payload) {
+        toast.success(payload);
+      }
     },
   },
 });
