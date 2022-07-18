@@ -56,6 +56,10 @@ const accountSlice = createSlice({
     clearAccount: (state) => {
       state.account = { ...defaultAccount };
     },
+    handleChange: (state, { payload }) => {
+      const { name, value } = payload;
+      state.account[name] = value;
+    },
   },
   extraReducers: {
     [getAccounts.pending]: (state) => {
@@ -90,5 +94,5 @@ const accountSlice = createSlice({
   },
 });
 
-export const { changePage, clearAccount } = accountSlice.actions;
+export const { changePage, clearAccount, handleChange } = accountSlice.actions;
 export default accountSlice.reducer;
