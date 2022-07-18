@@ -1,15 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import Header from './components/header';
+import Header from './components/header';
 import Footer from './components/footer';
 import Home from './pages';
 import Signin from './pages/auth/signin';
 import Signup from './pages/auth/signup';
 import Signout from './pages/auth/signout';
+
 function App() {
   return (
     <Router>
-      {/* <Header /> */}
+      <Header />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/auth/signin' element={<Signin />} />

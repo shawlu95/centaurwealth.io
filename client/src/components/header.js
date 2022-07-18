@@ -1,5 +1,4 @@
-import Link from 'next/link';
-import Head from 'next/head';
+import { Link } from 'react-router-dom';
 
 const Header = ({ currentUser }) => {
   const links = [
@@ -14,8 +13,8 @@ const Header = ({ currentUser }) => {
     .map(({ label, href }) => {
       return (
         <li key={href} className='nav-item'>
-          <Link href={href}>
-            <a className='nav-link'>{label}</a>
+          <Link to={href} className='nav-link'>
+            {label}
           </Link>
         </li>
       );
@@ -27,18 +26,8 @@ const Header = ({ currentUser }) => {
       }}
     >
       <nav className='navbar nav-light bg-light'>
-        <Head>
-          <title>Centaur</title>
-          <meta
-            name='viewport'
-            content='initial-scale=1.0, width=device-width'
-          />
-        </Head>
-
-        <Link href='/'>
-          <a className='navbar-brand' style={{ marginLeft: '15px' }}>
-            Home
-          </a>
+        <Link to='/' className='navbar-brand' style={{ marginLeft: '15px' }}>
+          Home
         </Link>
         <div className='d-flex justify-content-end'>
           <ul className='nav d-flex align-items-center'>{links}</ul>
