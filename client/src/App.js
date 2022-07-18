@@ -10,6 +10,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AccountHistory from './pages/account/history';
 import AccountDetail from './pages/account/detail';
+import AccountCreate from './pages/account/create';
+
 function App() {
   const { user } = useSelector((store) => store.user);
   return (
@@ -25,7 +27,8 @@ function App() {
           path='/account/history/:accountId'
           element={<AccountHistory />}
         />
-        <Route path='/account/detail' element={<AccountDetail />} />
+        <Route path='/account/create' element={<AccountCreate />} />
+        <Route path='/account/detail/:accountId' element={<AccountDetail />} />
       </Routes>
       <ToastContainer position='top-center' />
       <Footer />

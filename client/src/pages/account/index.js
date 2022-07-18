@@ -76,10 +76,8 @@ const AccountIndex = () => {
       {equity}
       {temporary}
 
-      <Link to='/account/detail'>
-        <button className='btn btn-primary w-100' onClick={clearAccount}>
-          New Account
-        </button>
+      <Link to='/account/create' className='btn btn-primary w-100'>
+        New Account
       </Link>
     </div>
   );
