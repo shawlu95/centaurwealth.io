@@ -6,6 +6,7 @@ import Home from './pages';
 import Signin from './pages/auth/signin';
 import Signup from './pages/auth/signup';
 import Signout from './pages/auth/signout';
+import Account from './pages/account';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,6 +21,7 @@ function App() {
         <Route path='/auth/signin' element={<Signin />} />
         <Route path='/auth/signup' element={<Signup />} />
         <Route path='/auth/signout' element={<Signout />} />
+        <Route path='/account' element={<Account />} />
       </Routes>
       <ToastContainer position='top-center' />
       <Footer />

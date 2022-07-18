@@ -1,9 +1,17 @@
-import Link from 'next/link';
-import Router from 'next/router';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { usd } from '../../utils';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAccounts } from '../../features/account/accountSlice';
 
 // Not allowed to fetch data in component in server-side render
-const AccountIndex = ({ accounts }) => {
+const AccountIndex = () => {
+  const dispatch = useDispatch();
+  const { accounts } = useSelector((store) => store.account);
+  useEffect(() => {
+    dispatch(getAccounts());
+  }, []);
+
   const getSection = (type) => {
     var subtotal = 0;
     const body = accounts
@@ -16,14 +24,11 @@ const AccountIndex = ({ accounts }) => {
             <td width='40%'>{account.name}</td>
             <td width='40%'>{usd.format(account.balance)}</td>
             <td>
-              <Link href='/account/[accountId]' as={`/account/${account.id}`}>
+              <Link to={`/account/${account.id}`}>
                 <button className='btn btn-light btn-sm'>View</button>
               </Link>
               {account.type === 'temporary' && (
-                <Link
-                  href='/account/close/[accountId]'
-                  as={`/account/close/${account.id}`}
-                >
+                <Link to={`/account/close/${account.id}`}>
                   <button className='btn btn-light btn-sm'>Close</button>
                 </Link>
               )}
@@ -58,18 +63,16 @@ const AccountIndex = ({ accounts }) => {
   const equity = getSection('equity');
   const temporary = getSection('temporary');
   return (
-    <div>
+    <div className='container d-grid gap-2'>
       <h3>Balance Sheet</h3>
       {asset}
       {liability}
       {equity}
       {temporary}
-      <button
-        className='btn btn-primary w-100'
-        onClick={() => Router.push('/account/create')}
-      >
+
+      <Link to='/account/create' className='btn btn-primary w-100'>
         New Account
-      </button>
+      </Link>
     </div>
   );
 };
