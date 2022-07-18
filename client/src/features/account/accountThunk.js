@@ -1,4 +1,5 @@
 import axios from '../../utils/axios';
+import { setTransaction } from '../transaction/transactionSlice';
 
 export const getAccountsThunk = async (user, thunkApi) => {
   try {
@@ -11,11 +12,11 @@ export const getAccountsThunk = async (user, thunkApi) => {
 
 export const getAccountThunk = async (accountId, thunkApi) => {
   try {
-    const account = thunkApi.getState().account;
-    const { page, limit } = account.transactions;
+    const { page, limit } = thunkApi.getState().transaction.transactions;
     const res = await axios.get(`/account/${accountId}`, {
       params: { page, limit },
     });
+    thunkApi.dispatch(setTransaction(res.data.transactions));
     return res.data;
   } catch (err) {
     return error.response.data.msg;

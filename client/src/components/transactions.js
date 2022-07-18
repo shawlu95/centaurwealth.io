@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 const Transactions = () => {
   const {
     transactions: { docs },
-  } = useSelector((store) => store.account);
+  } = useSelector((store) => store.transaction);
 
   const transactionList = docs.map((transaction) => {
     var debit = transaction.debit;

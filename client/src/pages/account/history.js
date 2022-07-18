@@ -9,7 +9,9 @@ import PageButtonContianer from '../../components/PageButtonContianer';
 const AccountHistory = () => {
   const dispatch = useDispatch();
   const { accountId } = useParams();
-  const { account, transactions } = useSelector((store) => store.account);
+  const { account } = useSelector((store) => store.account);
+  const { transactions } = useSelector((store) => store.transaction);
+
   useEffect(() => {
     dispatch(getAccount(accountId));
   }, [transactions.page]);

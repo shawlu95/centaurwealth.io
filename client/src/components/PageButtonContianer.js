@@ -3,13 +3,13 @@ import React from 'react';
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi';
 import Wrapper from '../assets/wrappers/PageButtonContainer';
 import { useSelector, useDispatch } from 'react-redux';
-import { changePage } from '../features/account/accountSlice';
+import { changePage } from '../features/transaction/transactionSlice';
 
 const OFFSET = 5;
 
 const PageButtonContianer = () => {
   const { totalPages, page } = useSelector(
-    (store) => store.account.transactions
+    (store) => store.transaction.transactions
   );
   const dispatch = useDispatch();
 
