@@ -1,11 +1,26 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { getAccountsThunk } from './accountThunk';
+import { getAccountsThunk, getAccountThunk } from './accountThunk';
 
 const initialState = {
   isLoading: false,
-  account: null,
+  account: {
+    name: '',
+    balance: 0,
+    type: 'asset',
+  },
   accounts: [],
+  transactions: {
+    docs: [],
+    hasMore: false,
+    hasNextPage: false,
+    hasPrevPage: false,
+    limit: 25,
+    page: 1,
+    pagingCounter: 1,
+    totalDocs: 3,
+    totalPages: 1,
+  },
   summary: [
     { type: 'asset', balance: 0, count: 0 },
     { type: 'liability', balance: 0, count: 0 },
@@ -19,10 +34,19 @@ export const getAccounts = createAsyncThunk(
   getAccountsThunk
 );
 
+export const getAccount = createAsyncThunk(
+  'account/getAccount',
+  getAccountThunk
+);
+
 const accountSlice = createSlice({
   name: 'account',
   initialState,
-
+  reducers: {
+    changePage: (state, { payload }) => {
+      state.transactions.page = payload;
+    },
+  },
   extraReducers: {
     [getAccounts.pending]: (state) => {
       state.isLoading = true;
@@ -37,7 +61,23 @@ const accountSlice = createSlice({
       state.isLoading = false;
       toast.error(payload);
     },
+    [getAccount.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [getAccount.fulfilled]: (state, { payload }) => {
+      const { transactions, account } = payload;
+      state.isLoading = false;
+      state.account = state.accounts.filter(
+        (item) => item.id === account.id
+      )[0];
+      state.transactions = transactions;
+    },
+    [getAccount.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    },
   },
 });
 
+export const { changePage } = accountSlice.actions;
 export default accountSlice.reducer;
