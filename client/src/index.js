@@ -4,6 +4,11 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './api/axios';
 import App from './App';
+import { ContextProvider } from './contexts/context';
 
 const root = createRoot(document.getElementById('root'));
-root.render(<App />);
+root.render(
+  <ContextProvider>
+    <App />
+  </ContextProvider>
+);

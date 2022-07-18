@@ -7,7 +7,12 @@ import Signin from './pages/auth/signin';
 import Signup from './pages/auth/signup';
 import Signout from './pages/auth/signout';
 
+import { useAppContext } from './contexts/context';
+
 function App() {
+  const state = useAppContext();
+  console.log('state', state);
+
   return (
     <Router>
       <Header />
