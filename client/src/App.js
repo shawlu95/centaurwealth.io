@@ -6,13 +6,10 @@ import Home from './pages';
 import Signin from './pages/auth/signin';
 import Signup from './pages/auth/signup';
 import Signout from './pages/auth/signout';
-
-import { useAppContext } from './contexts/context';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  const state = useAppContext();
-  console.log('state', state);
-
   return (
     <Router>
       <Header />
@@ -22,6 +19,7 @@ function App() {
         <Route path='/auth/signup' element={<Signup />} />
         <Route path='/auth/signout' element={<Signout />} />
       </Routes>
+      <ToastContainer position='top-center' />
       <Footer />
     </Router>
   );
