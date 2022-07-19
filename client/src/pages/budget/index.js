@@ -17,8 +17,8 @@ const BudgetIndex = () => {
       <h3>My Budgets</h3>
       <Budgets budgets={budgets} />
       <BudgetTotal budgets={budgets} />
-      <Link to='/budget/create'>
-        <button className='btn btn-primary'>Create Budget</button>
+      <Link to='/budget/create' className='btn btn-primary w-100'>
+        Create Budget
       </Link>
     </div>
   );
