@@ -55,6 +55,10 @@ const transactionSlice = createSlice({
     setTransaction: (state, { payload }) => {
       state.transactions = payload;
     },
+    updateTransaction: (state, { payload }) => {
+      const { name, value } = payload;
+      state.transaction[name] = value;
+    },
     addEntry: (state, { payload }) => {
       state.transaction.entries.push(payload);
     },
@@ -110,6 +114,7 @@ const transactionSlice = createSlice({
 export const {
   changePage,
   setTransaction,
+  updateTransaction,
   addEntry,
   updateEntry,
   deleteEntry,
