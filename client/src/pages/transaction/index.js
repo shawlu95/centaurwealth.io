@@ -24,3 +24,9 @@ const TransactionIndex = () => {
 };
 
 export default TransactionIndex;
+
+import TransactionClose from './close';
+import TransactionCreate from './create';
+import TransactionDetail from './detail';
+
+export { TransactionClose, TransactionCreate, TransactionDetail };
