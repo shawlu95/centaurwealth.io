@@ -20,3 +20,13 @@ export const createBudgetThunk = async (_, thunkApi) => {
     return error.response.data.msg;
   }
 };
+
+export const updateBudgetThunk = async (_, thunkApi) => {
+  try {
+    const { budget } = thunkApi.getState().budget;
+    const res = await axios.patch(`/budget/${budget.id}`, budget);
+    return res.data;
+  } catch (err) {
+    return error.response.data.msg;
+  }
+};

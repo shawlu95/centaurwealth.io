@@ -1,29 +1,39 @@
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Budget from '../../components/budget';
-// import Router from 'next/router';
-import useRequest from '../../hooks/use-request';
+import { useDispatch } from 'react-redux';
+import { setBudget, updateBudget } from '../../features/budget/budgetSlice';
 
-const BudgetUpdate = ({ budget }) => {
-  const { doRequest, errors } = useRequest({
-    url: `/api/budget/${budget.id}`,
-    method: 'patch',
-    body: {},
-    onSuccess: () => console.log("Router.push('/budget')"),
+const BudgetUpdate = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { budgetId } = useParams();
+
+  useEffect(() => {
+    dispatch(setBudget({ budgetId }));
   });
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(updateBudget());
+  };
+
   return (
-    <div className='container d-grid gap-2'>
-      <h4>Update Budget</h4>
-      <Budget budget={budget} post={doRequest} errors={errors} />
-    </div>
+    <form onSubmit={handleSubmit}>
+      <div className='container d-grid gap-2'>
+        <h4>Update Budget</h4>
+        <Budget />
+        <button className='btn btn-primary w-100'>Update</button>
+        <button
+          type='button'
+          className='btn btn-secondary w-100'
+          onClick={() => navigate(-1)}
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
   );
 };
-
-// BudgetUpdate.getInitialProps = async (context, axios) => {
-//   const { budgetId } = context.query;
-//   const res = await axios.get(`/api/budget/${budgetId}`);
-//   const budget = res.data.budget;
-
-//   return { budget };
-// };
 
 export default BudgetUpdate;

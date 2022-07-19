@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { createBudgetThunk, getBudgetsThunk } from './budgetThunk';
+import {
+  createBudgetThunk,
+  getBudgetsThunk,
+  updateBudgetThunk,
+} from './budgetThunk';
 const defaultExpenses = {
   docs: [],
   hasMore: false,
@@ -34,6 +38,11 @@ export const createBudget = createAsyncThunk(
   createBudgetThunk
 );
 
+export const updateBudget = createAsyncThunk(
+  'budget/updateBudget',
+  updateBudgetThunk
+);
+
 const budgetSlice = createSlice({
   name: 'budget',
   initialState,
@@ -41,6 +50,10 @@ const budgetSlice = createSlice({
     editBudget: (state, { payload }) => {
       const { name, value } = payload;
       state.budget[name] = value;
+    },
+    setBudget: (state, { payload }) => {
+      const { budgetId } = payload;
+      state.budget = state.budgets.filter((item) => item.id === budgetId)[0];
     },
   },
   extraReducers: {
@@ -65,8 +78,19 @@ const budgetSlice = createSlice({
       state.isLoading = false;
       toast.error(payload);
     },
+    [updateBudget.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [updateBudget.fulfilled]: (state, { payload }) => {
+      const budget = state.budget;
+      toast.success(`Updated budeget: ${budget.name}`);
+    },
+    [updateBudget.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    },
   },
 });
 
-export const { editBudget } = budgetSlice.actions;
+export const { editBudget, setBudget } = budgetSlice.actions;
 export default budgetSlice.reducer;

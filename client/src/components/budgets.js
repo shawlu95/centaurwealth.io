@@ -25,7 +25,7 @@ const Budgets = ({ budgets }) => {
                     <Link to={`/budget/update/${budget.id}`}>
                       <button className='btn btn-light btn-sm'>Edit</button>
                     </Link>
-                    <Link to={`/budget/${budget.id}`}>
+                    <Link to={`/budget/history/${budget.id}`}>
                       <button className='btn btn-light btn-sm'>View</button>
                     </Link>
                   </td>
