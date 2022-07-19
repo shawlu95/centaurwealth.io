@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import {
   getTransaction,
   deleteTransaction,
-  createTransaction,
+  updateTransaction,
 } from '../../features/transaction/transactionSlice';
 
 const TransactionDetail = () => {
@@ -19,7 +19,7 @@ const TransactionDetail = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(createTransaction());
+    dispatch(updateTransaction());
   };
 
   const handleDelete = async (e) => {
@@ -39,7 +39,7 @@ const TransactionDetail = () => {
                 className='btn btn-primary w-100'
                 style={{ marginRight: '15px' }}
               >
-                Create
+                Update
               </button>
             </div>
           </div>

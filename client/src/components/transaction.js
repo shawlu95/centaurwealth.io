@@ -2,7 +2,7 @@ import React from 'react';
 import Entry from './entry';
 import { addEntry } from '../features/transaction/transactionSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateTransaction } from '../features/transaction/transactionSlice';
+import { editTransaction } from '../features/transaction/transactionSlice';
 
 const Transaction = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const Transaction = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    dispatch(updateTransaction({ name, value }));
+    dispatch(editTransaction({ name, value }));
   };
 
   const transactionDetail = (

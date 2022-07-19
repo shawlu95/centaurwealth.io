@@ -3,6 +3,7 @@ import {
   getTransactionsThunk,
   getTransactionThunk,
   createTransactionThunk,
+  updateTransactionThunk,
   deleteTransactionThunk,
 } from './transactionThunk';
 import { toast } from 'react-toastify';
@@ -46,6 +47,11 @@ export const createTransaction = createAsyncThunk(
   createTransactionThunk
 );
 
+export const updateTransaction = createAsyncThunk(
+  'transaction/updateTransaction',
+  updateTransactionThunk
+);
+
 export const deleteTransaction = createAsyncThunk(
   'transaction/deleteTransaction',
   deleteTransactionThunk
@@ -64,7 +70,7 @@ const transactionSlice = createSlice({
     resetTransaction: (state, { payload }) => {
       state.transaction = { ...defaultTransaction };
     },
-    updateTransaction: (state, { payload }) => {
+    editTransaction: (state, { payload }) => {
       const { name, value } = payload;
       state.transaction[name] = value;
     },
@@ -114,6 +120,17 @@ const transactionSlice = createSlice({
       state.isLoading = false;
       toast.error(payload);
     },
+    [updateTransaction.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [updateTransaction.fulfilled]: (state, { payload }) => {
+      const transaction = state.transaction;
+      toast.success(`Updated transaction ${transaction.memo}`);
+    },
+    [updateTransaction.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    },
     [deleteTransaction.pending]: (state) => {
       state.isLoading = true;
     },
@@ -135,7 +152,7 @@ export const {
   changePage,
   setTransactions,
   resetTransaction,
-  updateTransaction,
+  editTransaction,
   addEntry,
   updateEntry,
   deleteEntry,
