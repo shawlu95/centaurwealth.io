@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import BudgetTotal from '../../components/budgetTotal';
@@ -64,7 +64,7 @@ const BudgetIndex = ({
         page={page}
         setPage={setPage}
       />
-      <Link href='/budget/update/[budgetId]' as={`/budget/update/${budgetId}`}>
+      <Link to={`/budget/update/${budgetId}`}>
         <button className='btn btn-primary w-100'>Update Budget</button>
       </Link>
     </div>

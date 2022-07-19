@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import React from 'react';
 import Budgets from '../../components/budgets';
 import BudgetTotal from '../../components/budgetTotal';
@@ -10,7 +10,7 @@ const BudgetIndex = ({ budgets }) => {
       <h3>My Budgets</h3>
       <Budgets budgets={budgets} />
       <BudgetTotal budgets={budgets} />
-      <Link href='/budget/create'>
+      <Link to='/budget/create'>
         <button className='btn btn-primary'>Create Budget</button>
       </Link>
     </div>

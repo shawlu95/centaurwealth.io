@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Account from '../../components/account';
+import { Account } from '../../components';
 import {
   clearAccount,
   createAccount,

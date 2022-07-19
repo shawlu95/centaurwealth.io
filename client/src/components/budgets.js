@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { usd } from '../utils';
 
 const Budgets = ({ budgets }) => {
@@ -22,13 +22,10 @@ const Budgets = ({ budgets }) => {
                 <tr>
                   <td width='35%'>
                     <b>{budget.name}</b>
-                    <Link
-                      href='/budget/update/[budgetId]'
-                      as={`/budget/update/${budget.id}`}
-                    >
+                    <Link to={`/budget/update/${budget.id}`}>
                       <button className='btn btn-light btn-sm'>Edit</button>
                     </Link>
-                    <Link href='/budget/[budgetId]' as={`/budget/${budget.id}`}>
+                    <Link to={`/budget/${budget.id}`}>
                       <button className='btn btn-light btn-sm'>View</button>
                     </Link>
                   </td>

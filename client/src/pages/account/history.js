@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import Transactions from '../../components/transactions';
+import { Transactions, PageButtonContianer } from '../../components';
 import { usd } from '../../utils';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAccount } from '../../features/account/accountSlice';
-import PageButtonContianer from '../../components/PageButtonContianer';
 
 const AccountHistory = () => {
   const dispatch = useDispatch();

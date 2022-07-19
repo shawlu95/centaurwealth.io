@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Transactions from '../../components/transactions';
+import { Transactions } from '../../components';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTransactions } from '../../features/transaction/transactionSlice';
 import { Link } from 'react-router-dom';

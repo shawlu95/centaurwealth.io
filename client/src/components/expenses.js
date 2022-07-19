@@ -1,6 +1,6 @@
 import React from 'react';
 import useRequest from '../hooks/use-request';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { usd } from '../utils';
 
 const OFFSET = 5;
@@ -79,10 +79,7 @@ const Expenses = ({
           </select>
         </td>
         <td>
-          <Link
-            href='/transaction/[transactionId]'
-            as={`/transaction/${expense.id}`}
-          >
+          <Link to={`/transaction/${expense.id}`}>
             <a>View</a>
           </Link>
         </td>

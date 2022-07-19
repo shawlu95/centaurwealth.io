@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { createTransaction } from '../../features/transaction/transactionSlice';
 import { getClosingTransactionForAccount } from '../../features/transaction/transactionSlice';
 import { useNavigate, useParams } from 'react-router-dom';
-import Transaction from '../../components/transaction';
+import { Transaction } from '../../components';
 import { useDispatch } from 'react-redux';
 
 const TransactionClose = () => {

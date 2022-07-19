@@ -1,5 +1,5 @@
 import Budget from '../../../components/budget';
-import Router from 'next/router';
+// import Router from 'next/router';
 import useRequest from '../../../hooks/use-request';
 
 const BudgetEdit = ({ budget }) => {
@@ -7,7 +7,7 @@ const BudgetEdit = ({ budget }) => {
     url: `/api/budget/${budget.id}`,
     method: 'patch',
     body: {},
-    onSuccess: () => Router.push('/budget'),
+    onSuccess: () => console.log("Router.push('/budget')"),
   });
 
   return (

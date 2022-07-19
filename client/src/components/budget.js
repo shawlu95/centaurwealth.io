@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 const Budget = ({ budget, post, errors }) => {
   const isNew = budget === undefined;
   const [name, setName] = useState(isNew ? '' : budget.name);
   const [monthly, setMonthly] = useState(isNew ? 0 : budget.monthly);
-  const router = useRouter();
+  // const router = useRouter();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -41,7 +41,7 @@ const Budget = ({ budget, post, errors }) => {
           <button
             type='button'
             className='btn btn-secondary w-100'
-            onClick={() => router.back()}
+            onClick={() => console.log('router.back()')}
           >
             Cancel
           </button>

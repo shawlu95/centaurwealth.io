@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Transaction from '../../components/transaction';
+import { Transaction } from '../../components';
 import { useDispatch } from 'react-redux';
 import {
   getTransaction,
