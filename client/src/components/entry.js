@@ -1,6 +1,9 @@
 import { usd } from '../utils';
+import { useDispatch } from 'react-redux';
+import { deleteEntry } from '../features/transaction/transactionSlice';
 
 const Entry = ({ index, accounts, entry, entries, setEntries }) => {
+  const dispatch = useDispatch();
   const getAccount = (id) => accounts.filter((acc) => acc.id === id)[0];
 
   const setAccountId = (e) => {
@@ -36,12 +39,6 @@ const Entry = ({ index, accounts, entry, entries, setEntries }) => {
       }
       return _entry;
     });
-    setEntries(updated);
-  };
-
-  const deleteEntry = (e) => {
-    e.preventDefault();
-    const updated = entries.filter((_entry, _index) => index !== _index);
     setEntries(updated);
   };
 
@@ -93,7 +90,7 @@ const Entry = ({ index, accounts, entry, entries, setEntries }) => {
 
       <div className='col-sm-2'>
         <button
-          onClick={deleteEntry}
+          onClick={() => dispatch(deleteEntry({ index }))}
           className='btn btn-outline-secondary w-100'
         >
           - Entry

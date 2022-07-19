@@ -56,8 +56,13 @@ const transactionSlice = createSlice({
       state.transactions = payload;
     },
     addEntry: (state, { payload }) => {
-      console.log(payload);
       state.transaction.entries.push(payload);
+    },
+    deleteEntry: (state, { payload }) => {
+      const { index } = payload;
+      state.transaction.entries = state.transaction.entries.filter(
+        (_, _index) => index !== _index
+      );
     },
   },
   extraReducers: {
@@ -98,6 +103,6 @@ const transactionSlice = createSlice({
   },
 });
 
-export const { changePage, setTransaction, addEntry } =
+export const { changePage, setTransaction, addEntry, deleteEntry } =
   transactionSlice.actions;
 export default transactionSlice.reducer;
