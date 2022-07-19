@@ -1,51 +1,18 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import Router from 'next/router';
-import useRequest from '../hooks/use-request';
 import React from 'react';
-import { useForm, Form } from '../hooks/use-form';
 import { useState } from 'react';
 import Entry from './entry';
 
 const Transaction = ({ transaction, accounts, closing }) => {
-  const { values, handleInputChange } = useForm(transaction);
   const isNew = transaction.id === undefined;
-  const router = useRouter();
-  const [entries, setEntries] = useState(transaction.entries);
-
-  const { doRequest: doUpsert, errors: upsertErrors } = useRequest({
-    url: isNew ? '/api/transaction' : `/api/transaction/${transaction.id}`,
-    method: isNew ? 'post' : 'put',
-    body: { closing },
-    onSuccess: () => Router.push('/transaction'),
-  });
-
-  const { doRequest: doDelete, errors: deleteErrors } = useRequest({
-    url: `/api/transaction/${transaction.id}`,
-    method: 'delete',
-    body: {},
-    onSuccess: () => Router.push('/transaction'),
-  });
 
   const addEntry = (e) => {
     e.preventDefault();
-    const updated = [...entries, entries[entries.length - 1]];
-    setEntries(updated);
+    const entry = { ...entries[entries.length - 1] };
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    doUpsert({
-      ...transaction,
-      memo: values.memo,
-      date: values.date,
-      entries,
-    });
-  };
-
-  const handleDelete = async (e) => {
-    e.preventDefault();
-    doDelete();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
   };
 
   const transactionDetail = (
@@ -55,7 +22,7 @@ const Transaction = ({ transaction, accounts, closing }) => {
         <input
           className='form-control'
           name='memo'
-          value={values.memo}
+          value={transaction.memo}
           onChange={handleInputChange}
         />
       </div>
@@ -66,7 +33,7 @@ const Transaction = ({ transaction, accounts, closing }) => {
           type='date'
           name='date'
           disabled={closing || !isNew}
-          value={values.date.split('T')[0]}
+          value={transaction.date.split('T')[0]}
           onChange={handleInputChange}
         ></input>
       </div>
@@ -95,70 +62,22 @@ const Transaction = ({ transaction, accounts, closing }) => {
     </div>
   );
 
-  const entryGroup = entries.map((entry, index) => (
+  const entryGroup = transaction.entries.map((entry, index) => (
     <Entry
       key={index}
       index={index}
       accounts={accounts}
       entry={entry}
-      entries={entries}
-      setEntries={setEntries}
+      entries={transaction.entries}
     />
   ));
 
-  const upsertButton = (
-    <div className='row'>
-      <div className='col-sm-12'>
-        <button
-          onClick={handleSubmit}
-          className='btn btn-primary w-100'
-          style={{ marginRight: '15px' }}
-        >
-          {isNew ? 'Create' : 'Update'}
-        </button>
-      </div>
-    </div>
-  );
-
-  const deleteButton = !isNew && (
-    <div className='row'>
-      <div className='col-sm-12'>
-        <button onClick={handleDelete} className='btn btn-danger w-100'>
-          Delete
-        </button>
-      </div>
-    </div>
-  );
-
-  const cancelButton = (
-    <div className='row'>
-      <div className='col-sm-12'>
-        <button
-          type='button'
-          className='btn btn-secondary w-100'
-          onClick={() => router.back()}
-        >
-          Cancel
-        </button>
-      </div>
-    </div>
-  );
-
   return (
-    <div>
-      <Form>
-        <div className='d-grid gap-2'>
-          {transactionDetail}
-          {header}
-          {entryGroup}
-          {upsertButton}
-          {deleteButton}
-          {cancelButton}
-        </div>
-        {upsertErrors}
-        {deleteErrors}
-      </Form>
-    </div>
+    <>
+      {transactionDetail}
+      {header}
+      {entryGroup}
+    </>
   );
 };
 

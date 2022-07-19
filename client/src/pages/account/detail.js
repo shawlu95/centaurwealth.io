@@ -1,13 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Account from '../../components/account';
 import { updateAccount } from '../../features/account/accountSlice';
 
 const AccountDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { account } = useSelector((store) => store.account);
 
   const onSubmit = async (e) => {
     e.preventDefault();

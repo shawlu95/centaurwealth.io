@@ -13,6 +13,7 @@ import Account, {
   AccountHistory,
 } from './pages/account';
 import Transaction from './pages/transaction';
+import TransactionDetail from './pages/transaction/detail';
 
 function App() {
   const { user } = useSelector((store) => store.user);
@@ -32,6 +33,10 @@ function App() {
         <Route path='/account/create' element={<AccountCreate />} />
         <Route path='/account/detail/:accountId' element={<AccountDetail />} />
         <Route path='/transaction' element={<Transaction />} />
+        <Route
+          path='/transaction/:transactionId'
+          element={<TransactionDetail />}
+        />
       </Routes>
       <ToastContainer position='top-center' />
       <Footer />
