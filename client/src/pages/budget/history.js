@@ -4,8 +4,7 @@ import React, { useState, useEffect } from 'react';
 import BudgetTotal from '../../components/budgetTotal';
 import Expenses from '../../components/expenses';
 
-// Not allowed to fetch data in component in server-side render
-const BudgetIndex = ({
+const BudgetHistory = ({
   budgetId: initBudgetId,
   budgets: initBudgets,
   expenses: initExpenses,
@@ -40,9 +39,9 @@ const BudgetIndex = ({
   const selectedBudget = budgets.filter((x) => x.id === budgetId)[0];
 
   return (
-    <div className='d-grid gap-2'>
+    <div className='container d-grid gap-2'>
       <h3>My Budget</h3>
-      <div className='d-grid gap-2'>
+      <div>
         <select
           name='budget'
           value={budgetId}
@@ -71,7 +70,7 @@ const BudgetIndex = ({
   );
 };
 
-BudgetIndex.getInitialProps = async (context, axios, currentUser) => {
+BudgetHistory.getInitialProps = async (context, axios, currentUser) => {
   const limit = 25;
   const { budgetId } = context.query;
   const {
@@ -81,4 +80,4 @@ BudgetIndex.getInitialProps = async (context, axios, currentUser) => {
   return { budgetId, budgets, expenses, limit };
 };
 
-export default BudgetIndex;
+export default BudgetHistory;

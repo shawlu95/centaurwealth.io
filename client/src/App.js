@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/header';
-import Footer from './components/footer';
+
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { Header, Footer } from './components';
 import Home from './pages';
 import { Signin, Signup, Signout } from './pages/auth';
 import Account, {
@@ -18,6 +18,11 @@ import Transaction, {
   TransactionCreate,
   TransactionDetail,
 } from './pages/transaction';
+import Budget, {
+  BudgetCreate,
+  BudgetHistory,
+  BudgetUpdate,
+} from './pages/budget';
 
 function App() {
   const { user } = useSelector((store) => store.user);
@@ -48,6 +53,11 @@ function App() {
           path='/transaction/:transactionId'
           element={<TransactionDetail />}
         />
+
+        <Route path='/budget' element={<Budget />} />
+        <Route path='/budget/create' element={<BudgetCreate />} />
+        <Route path='/budget/history/:budgetId' element={<BudgetHistory />} />
+        <Route path='/budget/update/:budgetId' element={<BudgetUpdate />} />
       </Routes>
       <ToastContainer position='top-center' />
       <Footer />

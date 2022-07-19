@@ -12,7 +12,7 @@ const BudgetCreate = () => {
   });
 
   return (
-    <div>
+    <div className='container d-grid gap-2'>
       <h4>New Budget</h4>
       <Budget post={doRequest} errors={errors} />
     </div>
