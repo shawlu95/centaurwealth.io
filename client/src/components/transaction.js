@@ -19,6 +19,7 @@ const Transaction = () => {
       entry = {
         amount: '0',
         type: 'debit',
+        accountName: accounts[0].name,
         accountId: accounts[0].id,
         accountType: accounts[0].type,
       };
