@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   getTransactionsThunk,
   getTransactionThunk,
+  getClosingTransactionForAccountThunk,
   createTransactionThunk,
   updateTransactionThunk,
   deleteTransactionThunk,
@@ -40,6 +41,11 @@ export const getTransaction = createAsyncThunk(
 export const getTransactions = createAsyncThunk(
   'transaction/getTransactions',
   getTransactionsThunk
+);
+
+export const getClosingTransactionForAccount = createAsyncThunk(
+  'account/getClosingTransaction',
+  getClosingTransactionForAccountThunk
 );
 
 export const createTransaction = createAsyncThunk(
@@ -111,6 +117,18 @@ const transactionSlice = createSlice({
     },
     [createTransaction.pending]: (state) => {
       state.isLoading = true;
+    },
+    [getClosingTransactionForAccount.pending]: (state, { payload }) => {
+      state.isLoading = true;
+    },
+    [getClosingTransactionForAccount.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      const { transaction } = payload;
+      state.transaction = transaction;
+    },
+    [getClosingTransactionForAccount.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
     },
     [createTransaction.fulfilled]: (state, { payload }) => {
       const transaction = state.transaction;

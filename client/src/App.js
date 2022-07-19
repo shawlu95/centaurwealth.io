@@ -15,6 +15,7 @@ import Account, {
 import Transaction from './pages/transaction';
 import TransactionCreate from './pages/transaction/create';
 import TransactionDetail from './pages/transaction/detail';
+import TransactionClose from './pages/transaction/close';
 
 function App() {
   const { user } = useSelector((store) => store.user);
@@ -35,6 +36,10 @@ function App() {
         <Route path='/account/detail/:accountId' element={<AccountDetail />} />
         <Route path='/transaction' element={<Transaction />} />
         <Route path='/transaction/create' element={<TransactionCreate />} />
+        <Route
+          path='/transaction/close/:accountId'
+          element={<TransactionClose />}
+        />
         <Route
           path='/transaction/:transactionId'
           element={<TransactionDetail />}

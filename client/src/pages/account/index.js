@@ -32,7 +32,7 @@ const AccountIndex = () => {
               </Link>
               {account.type === 'temporary' && (
                 <Link
-                  to={`/account/close/${account.id}`}
+                  to={`/transaction/close/${account.id}`}
                   className='btn btn-light btn-sm'
                 >
                   Close

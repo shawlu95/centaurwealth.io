@@ -23,6 +23,18 @@ export const getTransactionsThunk = async (_, thunkApi) => {
   }
 };
 
+export const getClosingTransactionForAccountThunk = async (
+  { accountId, lte },
+  thunkApi
+) => {
+  try {
+    const res = await axios.get(`/account/close/${accountId}?lte=${lte}`);
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
 export const createTransactionThunk = async (_, thunkApi) => {
   try {
     const { transaction } = thunkApi.getState().transaction;
