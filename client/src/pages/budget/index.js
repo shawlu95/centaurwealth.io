@@ -1,9 +1,17 @@
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import React from 'react';
 import { Budgets, BudgetTotal } from '../../components';
+import { useSelector, useDispatch } from 'react-redux';
 
 // Not allowed to fetch data in component in server-side render
-const BudgetIndex = ({ budgets = [] }) => {
+const BudgetIndex = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getBudgets());
+  }, []);
+
+  const { budgets } = useSelector((store) => store.budget);
+
   return (
     <div className='container d-grid gap-2'>
       <h3>My Budgets</h3>
@@ -16,19 +24,11 @@ const BudgetIndex = ({ budgets = [] }) => {
   );
 };
 
-// BudgetIndex.getInitialProps = async (context, axios, currentUser) => {
-//   const limit = 25;
-//   const {
-//     data: { budgets, expenses },
-//   } = await axios.get('/api/budget', { params: { page: 1, limit } });
-
-//   return { budgets, expenses, limit };
-// };
-
 export default BudgetIndex;
 
 import BudgetCreate from './create';
 import BudgetHistory from './history';
 import BudgetUpdate from './update';
+import { getBudgets } from '../../features/budget/budgetSlice';
 
 export { BudgetCreate, BudgetHistory, BudgetUpdate };
