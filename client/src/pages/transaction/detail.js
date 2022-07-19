@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Transaction from '../../components/transaction';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTransaction } from '../../features/transaction/transactionSlice';
 
 const TransactionDetail = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { accounts } = useSelector((store) => store.account);
   const { transaction } = useSelector((store) => store.transaction);
@@ -62,7 +63,7 @@ const TransactionDetail = () => {
               <button
                 type='button'
                 className='btn btn-secondary w-100'
-                onClick={() => console.log('back')}
+                onClick={() => navigate(-1)}
               >
                 Cancel
               </button>
