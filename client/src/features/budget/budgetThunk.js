@@ -11,6 +11,21 @@ export const getBudgetsThunk = async (_, thunkApi) => {
   }
 };
 
+export const getBudgetHistoryThunk = async (_, thunkApi) => {
+  const state = thunkApi.getState().budget;
+  const { page, limit } = state.expenses;
+  const budgetId = state.budget.id;
+  try {
+    const res = await axios.get('/budget', {
+      params: { page, limit, budgetId },
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return error.response.data.msg;
+  }
+};
+
 export const createBudgetThunk = async (_, thunkApi) => {
   try {
     const { budget } = thunkApi.getState().budget;

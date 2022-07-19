@@ -2,15 +2,11 @@ import React from 'react';
 
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi';
 import Wrapper from '../assets/wrappers/PageButtonContainer';
-import { useSelector, useDispatch } from 'react-redux';
-import { changePage } from '../features/transaction/transactionSlice';
+import { useDispatch } from 'react-redux';
 
 const OFFSET = 5;
 
-const PageButtonContianer = () => {
-  const { totalPages, page } = useSelector(
-    (store) => store.transaction.transactions
-  );
+const PageButtonContianer = ({ totalPages, page, setPage }) => {
   const dispatch = useDispatch();
 
   const range = (start, end) =>
@@ -21,10 +17,10 @@ const PageButtonContianer = () => {
   );
 
   const nextPage = () => {
-    dispatch(changePage(Math.min(page + 1, totalPages)));
+    dispatch(setPage(Math.min(page + 1, totalPages)));
   };
   const prevPage = () => {
-    dispatch(changePage(Math.max(page - 1, 1)));
+    dispatch(setPage(Math.max(page - 1, 1)));
   };
 
   return (
@@ -39,7 +35,7 @@ const PageButtonContianer = () => {
             type='button'
             key={pageNumber}
             className={pageNumber === page ? 'pageBtn active' : 'pageBtn'}
-            onClick={() => dispatch(changePage(pageNumber))}
+            onClick={() => dispatch(setPage(pageNumber))}
           >
             {pageNumber}
           </button>

@@ -1,65 +1,16 @@
 import React from 'react';
-import useRequest from '../hooks/use-request';
 import { Link } from 'react-router-dom';
 import { usd } from '../utils';
+import { useSelector } from 'react-redux';
 
-const OFFSET = 5;
-
-const Expenses = ({
-  expenses: { docs, totalPages },
-  budgets,
-  page,
-  setPage,
-  fetchPage,
-}) => {
-  const { doRequest: doClassify, errors: classifyErrors } = useRequest({
-    url: '/api/budget/classify',
-    method: 'post',
-    body: {},
-  });
-
-  const nextPage = () => {
-    setPage((oldPage) => {
-      let nextPage = oldPage + 1;
-      if (nextPage > totalPages) {
-        nextPage = 1;
-      }
-      return nextPage;
-    });
-  };
-
-  const prevPage = () => {
-    setPage((oldPage) => {
-      let nextPage = oldPage - 1;
-      if (nextPage < 1) {
-        nextPage = totalPages;
-      }
-      return nextPage;
-    });
-  };
+const Expenses = () => {
+  const { expenses, budgets } = useSelector((store) => store.budget);
 
   const setBudgetId = async (e, expenseId) => {
-    await doClassify({ budgetId: e.target.value, expenseId });
-    await fetchPage();
+    // await doClassify({ budgetId: e.target.value, expenseId });
   };
 
-  const range = (start, end) =>
-    [...Array(end - start + 1)].map((_, i) => start + i);
-
-  const buttons = range(
-    Math.max(page - OFFSET, 1),
-    Math.min(page + OFFSET, totalPages)
-  ).map((key) => (
-    <button
-      key={key}
-      className={`btn btn-sm ${page == key ? 'btn-primary' : 'btn-light'}`}
-      onClick={() => setPage(key)}
-    >
-      {key}
-    </button>
-  ));
-
-  const expenseList = docs.map((expense) => {
+  const expenseList = expenses.docs.map((expense) => {
     return (
       <tr key={expense.id}>
         <td width='20%'>{expense.date.split('T')[0]}</td>
@@ -79,9 +30,7 @@ const Expenses = ({
           </select>
         </td>
         <td>
-          <Link to={`/transaction/${expense.id}`}>
-            <a>View</a>
-          </Link>
+          <Link to={`/transaction/${expense.id}`}>View</Link>
         </td>
       </tr>
     );
@@ -100,15 +49,6 @@ const Expenses = ({
         </thead>
         <tbody>{expenseList}</tbody>
       </table>
-      <div className='btn-container'>
-        <button className='btn btn-light btn-sm' onClick={prevPage}>
-          Prev
-        </button>
-        {buttons}
-        <button className='btn btn-light btn-sm' onClick={nextPage}>
-          Next
-        </button>
-      </div>
     </div>
   );
 };

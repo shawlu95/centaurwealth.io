@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import {
   createBudgetThunk,
+  getBudgetHistoryThunk,
   getBudgetsThunk,
   updateBudgetThunk,
 } from './budgetThunk';
@@ -22,7 +23,10 @@ const initialState = {
   budget: {
     name: '',
     monthly: 0,
+    quarterly: 0,
+    annual: 0,
     mutable: true,
+    summary: {},
   },
   budgets: [],
   expenses: { ...defaultExpenses },
@@ -31,6 +35,11 @@ const initialState = {
 export const getBudgets = createAsyncThunk(
   'budget/getBudgets',
   getBudgetsThunk
+);
+
+export const getBudgetHistory = createAsyncThunk(
+  'budget/getHistory',
+  getBudgetHistoryThunk
 );
 
 export const createBudget = createAsyncThunk(
@@ -47,6 +56,10 @@ const budgetSlice = createSlice({
   name: 'budget',
   initialState,
   reducers: {
+    setPage: (state, { payload }) => {
+      const { page } = payload;
+      state.expenses.page = page;
+    },
     editBudget: (state, { payload }) => {
       const { name, value } = payload;
       state.budget[name] = value;
@@ -64,6 +77,16 @@ const budgetSlice = createSlice({
       state.budgets = payload.budgets;
     },
     [getBudgets.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    },
+    [getBudgetHistory.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [getBudgetHistory.fulfilled]: (state, { payload }) => {
+      state.expenses = payload.expenses;
+    },
+    [getBudgetHistory.rejected]: (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload);
     },
@@ -92,5 +115,5 @@ const budgetSlice = createSlice({
   },
 });
 
-export const { editBudget, setBudget } = budgetSlice.actions;
+export const { setPage, editBudget, setBudget } = budgetSlice.actions;
 export default budgetSlice.reducer;

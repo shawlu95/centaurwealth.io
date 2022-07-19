@@ -1,42 +1,25 @@
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+
+import React, { useEffect } from 'react';
 import BudgetTotal from '../../components/budgetTotal';
 import Expenses from '../../components/expenses';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  getBudgetHistory,
+  setBudget,
+  setPage,
+} from '../../features/budget/budgetSlice';
+import { PageButtonContianer } from '../../components';
 
-const BudgetHistory = ({
-  budgetId: initBudgetId,
-  budgets: initBudgets,
-  expenses: initExpenses,
-  limit,
-}) => {
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [expenses, setExpenses] = useState(initExpenses);
-  const [budgets, setBudgets] = useState(initBudgets);
-  const [budgetId, setBudgetId] = useState(initBudgetId);
+const BudgetHistory = () => {
+  const dispatch = useDispatch();
+  const { budgetId } = useParams();
+  const { budget, budgets, expenses } = useSelector((store) => store.budget);
+  const { page, totalPages } = expenses;
 
   useEffect(() => {
-    if (!loading) {
-      fetchPage();
-    }
-  }, [page, budgetId]);
-
-  const fetchPage = async () => {
-    setLoading(true);
-    const { data } = await axios.get('/api/budget', {
-      params: { page, limit, budgetId },
-    });
-    setExpenses(data.expenses);
-    setBudgets(data.budgets);
-    setLoading(false);
-  };
-
-  const setBudgetFilter = async (budgetId) => {
-    setBudgetId(budgetId);
-  };
-
-  const selectedBudget = budgets.filter((x) => x.id === budgetId)[0];
+    dispatch(getBudgetHistory());
+  }, [expenses.page]);
 
   return (
     <div className='container d-grid gap-2'>
@@ -46,7 +29,7 @@ const BudgetHistory = ({
           name='budget'
           value={budgetId}
           className='form-control'
-          onChange={(e) => setBudgetFilter(e.target.value)}
+          onChange={(e) => dispatch(setBudget({ budgetId: e.target.value }))}
         >
           {budgets.map((budget) => (
             <option value={budget.id} key={budget.id}>
@@ -55,11 +38,10 @@ const BudgetHistory = ({
           ))}
         </select>
       </div>
-      <BudgetTotal budgets={[selectedBudget]} />
-      <Expenses
-        budgets={budgets}
-        expenses={expenses}
-        fetchPage={fetchPage}
+      <BudgetTotal budgets={[budget]} />
+      <Expenses />
+      <PageButtonContianer
+        totalPages={totalPages}
         page={page}
         setPage={setPage}
       />

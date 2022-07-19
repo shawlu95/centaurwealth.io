@@ -4,12 +4,14 @@ import { Transactions, PageButtonContianer } from '../../components';
 import { usd } from '../../utils';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAccount } from '../../features/account/accountSlice';
+import { setPage } from '../../features/transaction/transactionSlice';
 
 const AccountHistory = () => {
   const dispatch = useDispatch();
   const { accountId } = useParams();
   const { account } = useSelector((store) => store.account);
   const { transactions } = useSelector((store) => store.transaction);
+  const { totalPages, page } = transactions;
 
   useEffect(() => {
     dispatch(getAccount(accountId));
@@ -25,7 +27,11 @@ const AccountHistory = () => {
       <div className='row'>
         <Transactions />
       </div>
-      <PageButtonContianer />
+      <PageButtonContianer
+        totalPages={totalPages}
+        page={page}
+        setPage={setPage}
+      />
 
       <div className='row'>
         <Link

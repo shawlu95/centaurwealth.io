@@ -67,7 +67,7 @@ const transactionSlice = createSlice({
   name: 'transaction',
   initialState,
   reducers: {
-    changePage: (state, { payload }) => {
+    setPage: (state, { payload }) => {
       state.transactions.page = payload;
     },
     setTransactions: (state, { payload }) => {
@@ -167,7 +167,7 @@ const transactionSlice = createSlice({
 });
 
 export const {
-  changePage,
+  setPage,
   setTransactions,
   resetTransaction,
   editTransaction,
