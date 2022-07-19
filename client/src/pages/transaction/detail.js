@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Transaction from '../../components/transaction';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   getTransaction,
   deleteTransaction,
@@ -10,9 +10,6 @@ import {
 const TransactionDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { accounts } = useSelector((store) => store.account);
-  const { transaction } = useSelector((store) => store.transaction);
-  const isNew = transaction.id === undefined;
   const { transactionId } = useParams();
 
   useEffect(() => {
@@ -39,7 +36,7 @@ const TransactionDetail = () => {
       <form onSubmit={handleSubmit}>
         <div className='container d-grid gap-2'>
           <h4>Update Transaction</h4>
-          <Transaction transaction={transaction} accounts={accounts} />
+          <Transaction />
           <div className='row'>
             <div className='col-sm-12'>
               <button
