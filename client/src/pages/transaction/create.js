@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { resetTransaction } from '../../features/transaction/transactionSlice';
 import Transaction from '../../components/transaction';
-
+import { useDispatch } from 'react-redux';
 const TransactionCreate = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(resetTransaction());
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // doUpsert({
