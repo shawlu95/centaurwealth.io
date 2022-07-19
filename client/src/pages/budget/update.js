@@ -1,17 +1,12 @@
-import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Budget from '../../components/budget';
 import { useDispatch } from 'react-redux';
-import { setBudget, updateBudget } from '../../features/budget/budgetSlice';
+import { updateBudget } from '../../features/budget/budgetSlice';
 
 const BudgetUpdate = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { budgetId } = useParams();
-
-  useEffect(() => {
-    dispatch(setBudget({ budgetId }));
-  });
 
   const handleSubmit = (e) => {
     e.preventDefault();

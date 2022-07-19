@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { usd } from '../utils';
+import { useDispatch } from 'react-redux';
+import { setBudget } from '../features/budget/budgetSlice';
 
 const Budgets = ({ budgets }) => {
+  const dispatch = useDispatch();
   return (
     <div>
       <table className='table'>
@@ -22,11 +25,23 @@ const Budgets = ({ budgets }) => {
                 <tr>
                   <td width='35%'>
                     <b>{budget.name}</b>
-                    <Link to={`/budget/update/${budget.id}`}>
-                      <button className='btn btn-light btn-sm'>Edit</button>
+                    <Link
+                      to={`/budget/update`}
+                      className='btn btn-light btn-sm'
+                      onClick={() =>
+                        dispatch(setBudget({ budgetId: budget.id }))
+                      }
+                    >
+                      Edit
                     </Link>
-                    <Link to={`/budget/history/${budget.id}`}>
-                      <button className='btn btn-light btn-sm'>View</button>
+                    <Link
+                      to={`/budget/history`}
+                      className='btn btn-light btn-sm'
+                      onClick={() =>
+                        dispatch(setBudget({ budgetId: budget.id }))
+                      }
+                    >
+                      View
                     </Link>
                   </td>
                   <td width='15%'>{usd.format(budget.monthly)}</td>

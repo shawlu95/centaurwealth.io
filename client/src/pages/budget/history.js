@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import React, { useEffect } from 'react';
 import BudgetTotal from '../../components/budgetTotal';
@@ -13,13 +13,12 @@ import { PageButtonContianer } from '../../components';
 
 const BudgetHistory = () => {
   const dispatch = useDispatch();
-  const { budgetId } = useParams();
   const { budget, budgets, expenses } = useSelector((store) => store.budget);
   const { page, totalPages } = expenses;
 
   useEffect(() => {
     dispatch(getBudgetHistory());
-  }, [expenses.page]);
+  }, [expenses.page, budget]);
 
   return (
     <div className='container d-grid gap-2'>
@@ -27,9 +26,11 @@ const BudgetHistory = () => {
       <div>
         <select
           name='budget'
-          value={budgetId}
+          value={budget.id}
           className='form-control'
-          onChange={(e) => dispatch(setBudget({ budgetId: e.target.value }))}
+          onChange={(e) => {
+            dispatch(setBudget({ budgetId: e.target.value }));
+          }}
         >
           {budgets.map((budget) => (
             <option value={budget.id} key={budget.id}>
@@ -45,7 +46,7 @@ const BudgetHistory = () => {
         page={page}
         setPage={setPage}
       />
-      <Link to={`/budget/update/${budgetId}`}>
+      <Link to={`/budget/update`}>
         <button className='btn btn-primary w-100'>Update Budget</button>
       </Link>
     </div>

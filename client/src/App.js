@@ -56,8 +56,8 @@ function App() {
 
         <Route path='/budget' element={<Budget />} />
         <Route path='/budget/create' element={<BudgetCreate />} />
-        <Route path='/budget/history/:budgetId' element={<BudgetHistory />} />
-        <Route path='/budget/update/:budgetId' element={<BudgetUpdate />} />
+        <Route path='/budget/history' element={<BudgetHistory />} />
+        <Route path='/budget/update' element={<BudgetUpdate />} />
       </Routes>
       <ToastContainer position='top-center' />
       <Footer />
