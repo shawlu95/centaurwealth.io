@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import {
   getTransaction,
   deleteTransaction,
+  createTransaction,
 } from '../../features/transaction/transactionSlice';
 
 const TransactionDetail = () => {
@@ -18,12 +19,7 @@ const TransactionDetail = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // doUpsert({
-    //   ...transaction,
-    //   memo: values.memo,
-    //   date: values.date,
-    //   entries,
-    // });
+    dispatch(createTransaction());
   };
 
   const handleDelete = async (e) => {

@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   getTransactionsThunk,
   getTransactionThunk,
+  createTransactionThunk,
   deleteTransactionThunk,
 } from './transactionThunk';
 import { toast } from 'react-toastify';
@@ -38,6 +39,11 @@ export const getTransaction = createAsyncThunk(
 export const getTransactions = createAsyncThunk(
   'transaction/getTransactions',
   getTransactionsThunk
+);
+
+export const createTransaction = createAsyncThunk(
+  'transaction/createTransaction',
+  createTransactionThunk
 );
 
 export const deleteTransaction = createAsyncThunk(
@@ -94,6 +100,17 @@ const transactionSlice = createSlice({
       state.transaction = payload.transaction;
     },
     [getTransaction.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    },
+    [createTransaction.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [createTransaction.fulfilled]: (state, { payload }) => {
+      const transaction = state.transaction;
+      toast.success(`Created transaction ${transaction.memo}`);
+    },
+    [createTransaction.rejected]: (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload);
     },

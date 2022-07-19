@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
-import { resetTransaction } from '../../features/transaction/transactionSlice';
+import {
+  createTransaction,
+  resetTransaction,
+} from '../../features/transaction/transactionSlice';
 import Transaction from '../../components/transaction';
 import { useDispatch } from 'react-redux';
 const TransactionCreate = () => {
@@ -10,12 +13,7 @@ const TransactionCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // doUpsert({
-    //   ...transaction,
-    //   memo: values.memo,
-    //   date: values.date,
-    //   entries,
-    // });
+    dispatch(createTransaction());
   };
 
   return (

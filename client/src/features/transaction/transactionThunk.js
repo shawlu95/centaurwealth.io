@@ -23,6 +23,17 @@ export const getTransactionsThunk = async (_, thunkApi) => {
   }
 };
 
+export const createTransactionThunk = async (_, thunkApi) => {
+  try {
+    const { transaction } = thunkApi.getState().transaction;
+    const res = await axios.post(`/transaction`, transaction);
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
+
 export const deleteTransactionThunk = async (transactionId, thunkApi) => {
   try {
     const res = await axios.delete(`/transaction/${transactionId}`);
