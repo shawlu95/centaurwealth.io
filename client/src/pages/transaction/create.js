@@ -3,9 +3,11 @@ import {
   createTransaction,
   resetTransaction,
 } from '../../features/transaction/transactionSlice';
+import { useNavigate } from 'react-router-dom';
 import Transaction from '../../components/transaction';
 import { useDispatch } from 'react-redux';
 const TransactionCreate = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(resetTransaction());
@@ -37,7 +39,7 @@ const TransactionCreate = () => {
               <button
                 type='button'
                 className='btn btn-secondary w-100'
-                onClick={() => console.log('back')}
+                onClick={() => navigate(-1)}
               >
                 Cancel
               </button>
