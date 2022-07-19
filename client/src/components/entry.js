@@ -1,45 +1,30 @@
+import React, { useState } from 'react';
 import { usd } from '../utils';
-import { useDispatch } from 'react-redux';
-import { deleteEntry } from '../features/transaction/transactionSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  deleteEntry,
+  updateEntry,
+} from '../features/transaction/transactionSlice';
 
-const Entry = ({ index, accounts, entry, entries, setEntries }) => {
+const Entry = ({ index, entry }) => {
   const dispatch = useDispatch();
+  const { accounts } = useSelector((store) => store.account);
   const getAccount = (id) => accounts.filter((acc) => acc.id === id)[0];
+  const [account, setAccount] = useState(getAccount(entry.accountId));
 
-  const setAccountId = (e) => {
-    const accountId = e.target.value;
-    const account = getAccount(accountId);
-    const accountName = account.name;
-    const accountType = account.type;
-    const updated = entries.map((_entry, _index) => {
-      if (_index === index) {
-        return { ..._entry, accountId, accountName, accountType };
-      }
-      return _entry;
-    });
-    setEntries(updated);
-  };
-
-  const setType = (e) => {
-    e.preventDefault();
-    const updated = entries.map((_entry, _index) => {
-      if (_index === index) {
-        return { ..._entry, type: e.target.value };
-      }
-      return _entry;
-    });
-    setEntries(updated);
-  };
-
-  const setAmount = (e) => {
-    e.preventDefault();
-    const updated = entries.map((_entry, _index) => {
-      if (_index === index) {
-        return { ..._entry, amount: e.target.value };
-      }
-      return _entry;
-    });
-    setEntries(updated);
+  const handleUpdateEntry = (e) => {
+    const { name, value } = e.target;
+    dispatch(updateEntry({ index, name, value }));
+    if (name === 'accountId') {
+      const selectedAccount = getAccount(value);
+      setAccount(selectedAccount);
+      dispatch(
+        updateEntry({ index, name: 'accountType', value: selectedAccount.type })
+      );
+      dispatch(
+        updateEntry({ index, name: 'accountName', value: selectedAccount.name })
+      );
+    }
   };
 
   return (
@@ -49,7 +34,7 @@ const Entry = ({ index, accounts, entry, entries, setEntries }) => {
           className='form-control'
           name='accountId'
           value={entry.accountId}
-          onChange={setAccountId}
+          onChange={handleUpdateEntry}
         >
           {accounts.map((account) => (
             <option value={account.id} key={account.id}>
@@ -60,15 +45,15 @@ const Entry = ({ index, accounts, entry, entries, setEntries }) => {
       </div>
 
       <div className='col-sm-2'>
-        <span>{usd.format(getAccount(entry.accountId)?.balance || 0)}</span>
+        <span>{usd.format(parseFloat(account.balance))}</span>
       </div>
 
       <div className='col-sm-2'>
         <select
           className='form-control'
-          name='entryType'
+          name='type'
           value={entry.type}
-          onChange={setType}
+          onChange={handleUpdateEntry}
         >
           <option value='debit' key='debit'>
             Debit
@@ -84,7 +69,7 @@ const Entry = ({ index, accounts, entry, entries, setEntries }) => {
           className='form-control'
           name='amount'
           value={entry.amount === 0 ? '' : entry.amount}
-          onChange={setAmount}
+          onChange={handleUpdateEntry}
         />
       </div>
 

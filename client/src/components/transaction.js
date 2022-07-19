@@ -1,11 +1,12 @@
 import React from 'react';
-import { useState } from 'react';
 import Entry from './entry';
 import { addEntry } from '../features/transaction/transactionSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-const Transaction = ({ transaction, accounts, closing }) => {
+const Transaction = () => {
   const dispatch = useDispatch();
+  const { accounts } = useSelector((store) => store.account);
+  const { transaction } = useSelector((store) => store.transaction);
   const isNew = transaction.id === undefined;
 
   const handleAddEntry = (e) => {
@@ -15,7 +16,7 @@ const Transaction = ({ transaction, accounts, closing }) => {
       entry = { ...transaction.entries[transaction.entries.length - 1] };
     } else {
       entry = {
-        amount: 0,
+        amount: '0',
         type: 'debit',
         accountId: accounts[0].id,
         accountType: accounts[0].type,
@@ -46,7 +47,7 @@ const Transaction = ({ transaction, accounts, closing }) => {
           className='form-control'
           type='date'
           name='date'
-          disabled={closing || !isNew}
+          disabled={!isNew}
           value={transaction.date.split('T')[0]}
           onChange={handleInputChange}
         ></input>
@@ -80,13 +81,7 @@ const Transaction = ({ transaction, accounts, closing }) => {
   );
 
   const entryGroup = transaction.entries.map((entry, index) => (
-    <Entry
-      key={index}
-      index={index}
-      accounts={accounts}
-      entry={entry}
-      entries={transaction.entries}
-    />
+    <Entry key={index} index={index} entry={entry} />
   ));
 
   return (

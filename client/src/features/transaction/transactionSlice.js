@@ -58,6 +58,10 @@ const transactionSlice = createSlice({
     addEntry: (state, { payload }) => {
       state.transaction.entries.push(payload);
     },
+    updateEntry: (state, { payload }) => {
+      const { name, value, index } = payload;
+      state.transaction.entries[index][name] = value;
+    },
     deleteEntry: (state, { payload }) => {
       const { index } = payload;
       state.transaction.entries = state.transaction.entries.filter(
@@ -103,6 +107,11 @@ const transactionSlice = createSlice({
   },
 });
 
-export const { changePage, setTransaction, addEntry, deleteEntry } =
-  transactionSlice.actions;
+export const {
+  changePage,
+  setTransaction,
+  addEntry,
+  updateEntry,
+  deleteEntry,
+} = transactionSlice.actions;
 export default transactionSlice.reducer;
