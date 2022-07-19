@@ -1,12 +1,12 @@
-export const addUserToLocalStorage = (user) => {
-  localStorage.setItem('user', JSON.stringify(user));
+export const addToLocalStorage = (k, v) => {
+  localStorage.setItem(k, JSON.stringify(v));
 };
 
-export const getUserFromLocalStorage = () => {
-  const result = localStorage.getItem('user');
+export const getFromLocalStorage = (k) => {
+  const result = localStorage.getItem(k);
   return result ? JSON.parse(result) : null;
 };
 
-export const removeUserFromLocalStorage = () => {
-  localStorage.removeItem('user');
+export const removeFromLocalStorage = (k) => {
+  localStorage.removeItem(k);
 };

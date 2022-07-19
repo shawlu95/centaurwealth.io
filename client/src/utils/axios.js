@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getUserFromLocalStorage } from './localStorage';
+import { getFromLocalStorage } from './localStorage';
 
 const DEV_URL = 'https://centaurwealth.dev/api';
 
@@ -9,7 +9,7 @@ const customFetch = axios.create({
 
 customFetch.interceptors.request.use(
   (config) => {
-    const user = getUserFromLocalStorage();
+    const user = getFromLocalStorage('user');
     if (user) {
       config.headers.common['Authorization'] = `Bearer ${user.token}`;
     }

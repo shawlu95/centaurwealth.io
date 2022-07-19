@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import {
-  addUserToLocalStorage,
-  getUserFromLocalStorage,
-  removeUserFromLocalStorage,
+  addToLocalStorage,
+  getFromLocalStorage,
+  removeFromLocalStorage,
 } from '../../utils/localStorage';
 import {
   signinUserThunk,
@@ -14,7 +14,7 @@ import {
 const initialState = {
   isLoading: false,
   isSidebarOpen: false,
-  user: getUserFromLocalStorage(),
+  user: getFromLocalStorage('user'),
 };
 
 export const signinUser = createAsyncThunk('user/signinUser', signinUserThunk);
@@ -42,7 +42,7 @@ const userSlice = createSlice({
       const { user } = payload;
       state.isLoading = false;
       state.user = user;
-      addUserToLocalStorage(user);
+      addToLocalStorage('user', user);
       toast.success(`Hello, ${user.email}`);
     },
     [signupUser.rejected]: (state, { payload }) => {
@@ -55,7 +55,7 @@ const userSlice = createSlice({
     [signinUser.fulfilled]: (state, { payload: user }) => {
       state.isLoading = false;
       state.user = user;
-      addUserToLocalStorage(user);
+      addToLocalStorage('user', user);
       toast.success(`Welcome back, ${user.email}`);
     },
     [signinUser.rejected]: (state, { payload }) => {
@@ -66,7 +66,7 @@ const userSlice = createSlice({
     [signoutUser.fulfilled]: (state, { payload }) => {
       state.user = null;
       state.isSidebarOpen = false;
-      removeUserFromLocalStorage();
+      removeFromLocalStorage('user');
       if (payload) {
         toast.success(payload);
       }
