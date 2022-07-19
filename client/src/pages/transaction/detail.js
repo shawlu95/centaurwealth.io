@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Transaction from '../../components/transaction';
 import { useSelector, useDispatch } from 'react-redux';
-import { getTransaction } from '../../features/transaction/transactionSlice';
+import {
+  getTransaction,
+  deleteTransaction,
+} from '../../features/transaction/transactionSlice';
 
 const TransactionDetail = () => {
   const navigate = useNavigate();
@@ -28,7 +31,7 @@ const TransactionDetail = () => {
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    // doDelete();
+    dispatch(deleteTransaction(transactionId));
   };
 
   return (
