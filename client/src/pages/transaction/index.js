@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Transactions from '../../components/transactions';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTransactions } from '../../features/transaction/transactionSlice';
+import { Link } from 'react-router-dom';
 
 const TransactionIndex = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,9 @@ const TransactionIndex = () => {
     <div className='container d-grid gap-2'>
       <h3>Transactions</h3>
       <Transactions />
-      <button className='btn btn-primary w-100'>New Transaction</button>
+      <Link to='/transaction/create' className='btn btn-primary w-100'>
+        New Transaction
+      </Link>
     </div>
   );
 };

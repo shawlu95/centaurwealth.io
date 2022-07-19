@@ -42,7 +42,7 @@ const TransactionDetail = () => {
                 className='btn btn-primary w-100'
                 style={{ marginRight: '15px' }}
               >
-                {isNew ? 'Create' : 'Update'}
+                Create
               </button>
             </div>
           </div>

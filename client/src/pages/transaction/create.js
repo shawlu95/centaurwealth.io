@@ -1,47 +1,53 @@
 import React from 'react';
 import Transaction from '../../components/transaction';
+import { useSelector, useDispatch } from 'react-redux';
 
-const TransactionCreate = ({ accounts, transaction }) => {
-  return (
-    <div>
-      <h4>New Transaction</h4>
-      <Transaction transaction={transaction} accounts={accounts} />
-    </div>
-  );
-};
+const TransactionCreate = () => {
+  const dispatch = useDispatch();
+  const { accounts } = useSelector((store) => store.account);
+  const { transaction } = useSelector((store) => store.transaction);
 
-TransactionCreate.getInitialProps = async (context, axios, currentUser) => {
-  let {
-    data: { accounts },
-  } = await axios.get('/api/balance/current');
-
-  accounts = accounts.sort((a, b) => a.name.localeCompare(b.name));
-
-  // Default accounts are guaranteed to exist
-  const expense = accounts.filter((a) => a.name === 'Expense')[0];
-
-  const transaction = {
-    memo: '',
-    date: new Date().toISOString(),
-    entries: [
-      {
-        amount: 0,
-        type: 'credit',
-        accountName: accounts[0]?.name || '',
-        accountType: accounts[0]?.type || '',
-        accountId: accounts[0]?.id || '',
-      },
-      {
-        amount: 0,
-        type: 'debit',
-        accountName: expense.name,
-        accountType: expense.type,
-        accountId: expense.id,
-      },
-    ],
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // doUpsert({
+    //   ...transaction,
+    //   memo: values.memo,
+    //   date: values.date,
+    //   entries,
+    // });
   };
 
-  return { accounts, transaction, currentUser };
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <div className='container d-grid gap-2'>
+          <h4>New Transaction</h4>
+          <Transaction transaction={transaction} accounts={accounts} />
+          <div className='row'>
+            <div className='col-sm-12'>
+              <button
+                className='btn btn-primary w-100'
+                style={{ marginRight: '15px' }}
+              >
+                Create
+              </button>
+            </div>
+          </div>
+          <div className='row'>
+            <div className='col-sm-12'>
+              <button
+                type='button'
+                className='btn btn-secondary w-100'
+                onClick={() => console.log('back')}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
 };
 
 export default TransactionCreate;
