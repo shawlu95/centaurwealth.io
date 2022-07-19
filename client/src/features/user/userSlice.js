@@ -67,6 +67,7 @@ const userSlice = createSlice({
       state.user = null;
       state.isSidebarOpen = false;
       removeFromLocalStorage('user');
+      removeFromLocalStorage('accounts');
       if (payload) {
         toast.success(payload);
       }

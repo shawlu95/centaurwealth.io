@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import {
+  addToLocalStorage,
+  getFromLocalStorage,
+} from '../../utils/localStorage';
+import {
   getAccountsThunk,
   getAccountThunk,
   createAccountThunk,
@@ -24,7 +28,7 @@ const defaultSummary = [
 const initialState = {
   isLoading: false,
   account: { ...defaultAccount },
-  accounts: [],
+  accounts: getFromLocalStorage('accounts') || [],
   summary: [...defaultSummary],
 };
 
@@ -69,6 +73,7 @@ const accountSlice = createSlice({
       state.isLoading = false;
       state.accounts = accounts;
       state.summary = summary;
+      addToLocalStorage('accounts', accounts);
     },
     [getAccounts.rejected]: (state, { payload }) => {
       state.isLoading = false;
