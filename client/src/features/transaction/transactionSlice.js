@@ -55,6 +55,10 @@ const transactionSlice = createSlice({
     setTransaction: (state, { payload }) => {
       state.transactions = payload;
     },
+    addEntry: (state, { payload }) => {
+      console.log(payload);
+      state.transaction.entries.push(payload);
+    },
   },
   extraReducers: {
     [getTransactions.pending]: (state) => {
@@ -94,5 +98,6 @@ const transactionSlice = createSlice({
   },
 });
 
-export const { changePage, setTransaction } = transactionSlice.actions;
+export const { changePage, setTransaction, addEntry } =
+  transactionSlice.actions;
 export default transactionSlice.reducer;

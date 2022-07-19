@@ -1,13 +1,27 @@
 import React from 'react';
 import { useState } from 'react';
 import Entry from './entry';
+import { addEntry } from '../features/transaction/transactionSlice';
+import { useDispatch } from 'react-redux';
 
 const Transaction = ({ transaction, accounts, closing }) => {
+  const dispatch = useDispatch();
   const isNew = transaction.id === undefined;
 
-  const addEntry = (e) => {
+  const handleAddEntry = (e) => {
     e.preventDefault();
-    const entry = { ...entries[entries.length - 1] };
+    let entry;
+    if (transaction.entries.length >= 1) {
+      entry = { ...transaction.entries[transaction.entries.length - 1] };
+    } else {
+      entry = {
+        amount: 0,
+        type: 'debit',
+        accountId: accounts[0].id,
+        accountType: accounts[0].type,
+      };
+    }
+    dispatch(addEntry(entry));
   };
 
   const handleInputChange = (e) => {
@@ -55,7 +69,10 @@ const Transaction = ({ transaction, accounts, closing }) => {
         <b>Amount</b>
       </div>
       <div className='col-sm-2'>
-        <button onClick={addEntry} className='btn btn-outline-secondary w-100'>
+        <button
+          onClick={handleAddEntry}
+          className='btn btn-outline-secondary w-100'
+        >
           + Entry
         </button>
       </div>
