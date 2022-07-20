@@ -14,7 +14,7 @@ const Signin = () => {
     event.preventDefault();
     dispatch(signinUser({ email, password })).then((res) => {
       if (res.meta.requestStatus === 'fulfilled') {
-        navigate('/', { replace: true });
+        navigate('/home', { replace: true });
       }
     });
   };

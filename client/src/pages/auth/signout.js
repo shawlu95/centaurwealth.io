@@ -10,7 +10,7 @@ const Signout = () => {
   useEffect(() => {
     dispatch(signoutUser()).then((res) => {
       if (res.meta.requestStatus === 'fulfilled') {
-        navigate('/auth/signin');
+        navigate('/');
       }
     });
   }, []);
