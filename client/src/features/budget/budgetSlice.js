@@ -87,6 +87,11 @@ const budgetSlice = createSlice({
     },
     [getBudgets.fulfilled]: (state, { payload }) => {
       state.budgets = payload.budgets;
+      if (state.budget.id) {
+        state.budget = payload.budgets.filter(
+          (item) => item.id === state.budget.id
+        )[0];
+      }
       addToLocalStorage('budgets', payload.budgets);
     },
     [getBudgets.rejected]: (state, { payload }) => {

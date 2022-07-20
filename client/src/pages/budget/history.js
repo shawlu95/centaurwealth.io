@@ -6,6 +6,7 @@ import Expenses from '../../components/expenses';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   getBudgetHistory,
+  getBudgets,
   setBudget,
   setPage,
 } from '../../features/budget/budgetSlice';
@@ -15,6 +16,10 @@ const BudgetHistory = () => {
   const dispatch = useDispatch();
   const { budget, budgets, expenses } = useSelector((store) => store.budget);
   const { page, totalPages } = expenses;
+
+  useEffect(() => {
+    dispatch(getBudgets());
+  }, [expenses.docs.length]);
 
   useEffect(() => {
     dispatch(getBudgetHistory());
