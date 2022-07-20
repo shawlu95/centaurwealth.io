@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usd } from '../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -11,10 +11,19 @@ const Entry = ({ index, entry }) => {
   const { accounts } = useSelector((store) => store.account);
   const getAccount = (id) => accounts.filter((acc) => acc.id === id)[0];
   const [account, setAccount] = useState(getAccount(entry.accountId));
+  const [balance, setBalance] = useState(account.balance);
+
+  useEffect(() => {
+    setAccount(getAccount(entry.accountId));
+    setBalance(account.balance);
+  }, [entry.accountId]);
 
   const handleUpdateEntry = (e) => {
+    const asset = entry.accountType === 'asset' ? 1 : -1;
+    const dr = entry.type === 'debit' ? 1 : -1;
+    const sign = asset * dr;
+
     const { name, value } = e.target;
-    dispatch(updateEntry({ index, name, value }));
     if (name === 'accountId') {
       const selectedAccount = getAccount(value);
       setAccount(selectedAccount);
@@ -24,7 +33,16 @@ const Entry = ({ index, entry }) => {
       dispatch(
         updateEntry({ index, name: 'accountName', value: selectedAccount.name })
       );
+      dispatch(updateEntry({ index, name: 'amount', value: '0' }));
+    } else if (name === 'amount') {
+      const newAmount = parseFloat(value) || 0;
+      const oldAmount = parseFloat(entry.amount) || 0;
+      setBalance(balance + sign * (newAmount - oldAmount));
+    } else if (name === 'type') {
+      const amount = parseFloat(entry.amount) || 0;
+      setBalance(balance - 2 * sign * amount);
     }
+    dispatch(updateEntry({ index, name, value }));
   };
 
   return (
@@ -45,7 +63,7 @@ const Entry = ({ index, entry }) => {
       </div>
 
       <div className='col-sm-2'>
-        <span>{usd.format(parseFloat(account.balance))}</span>
+        <span>{usd.format(balance)}</span>
       </div>
 
       <div className='col-sm-2'>

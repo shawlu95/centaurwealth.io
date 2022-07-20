@@ -46,18 +46,18 @@ const AccountHistory = () => {
         setPage={setPage}
       />
       <Link
-        to={`/account/detail/${account.id}`}
-        className='btn btn-primary'
-        disabled={!account.mutable}
-      >
-        Update Account
-      </Link>
-      <Link
         to='/transaction/create'
-        className='btn btn-secondary'
+        className='btn btn-primary'
         onClick={addEntryWithCurrentAccount}
       >
         New Transaction
+      </Link>
+      <Link
+        to={`/account/detail/${account.id}`}
+        className='btn btn-light'
+        disabled={!account.mutable}
+      >
+        Update Account
       </Link>
     </div>
   );
