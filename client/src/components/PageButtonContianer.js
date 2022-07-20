@@ -4,23 +4,20 @@ import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi';
 import Wrapper from '../assets/wrappers/PageButtonContainer';
 import { useDispatch } from 'react-redux';
 
-const OFFSET = 5;
-
 const PageButtonContianer = ({ totalPages, page, setPage }) => {
   const dispatch = useDispatch();
 
   const range = (start, end) =>
     [...Array(end - start + 1)].map((_, i) => start + i);
 
-  const pages = range(
-    Math.max(page - OFFSET, 1),
-    Math.min(page + OFFSET, totalPages)
-  );
+  const shift = Math.min(totalPages - 10, Math.max(0, Math.ceil(page - 5.5)));
+  const pages = range(Math.max(1, 1 + shift), Math.min(totalPages, 10 + shift));
 
   const nextPage = (e) => {
     e.preventDefault();
     dispatch(setPage({ page: Math.min(page + 1, totalPages) }));
   };
+
   const prevPage = (e) => {
     e.preventDefault();
     dispatch(setPage({ page: Math.max(page - 1, 1) }));
