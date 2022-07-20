@@ -1,17 +1,11 @@
-import React, { useEffect } from 'react';
-import {
-  createTransaction,
-  resetTransaction,
-} from '../../features/transaction/transactionSlice';
+import React from 'react';
+import { createTransaction } from '../../features/transaction/transactionSlice';
 import { useNavigate } from 'react-router-dom';
 import { Transaction } from '../../components';
 import { useDispatch } from 'react-redux';
 const TransactionCreate = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(resetTransaction());
-  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
