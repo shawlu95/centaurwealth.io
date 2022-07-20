@@ -1,12 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import {
+  addToLocalStorage,
+  getFromLocalStorage,
+} from '../../utils/localStorage';
+import {
   classifyTransactionThunk,
   createBudgetThunk,
   getBudgetHistoryThunk,
   getBudgetsThunk,
   updateBudgetThunk,
 } from './budgetThunk';
+
 const defaultExpenses = {
   docs: [],
   hasMore: false,
@@ -29,7 +34,7 @@ const initialState = {
     mutable: true,
     summary: {},
   },
-  budgets: [],
+  budgets: getFromLocalStorage('budgets') || [],
   expenses: { ...defaultExpenses },
 };
 
@@ -81,6 +86,7 @@ const budgetSlice = createSlice({
     },
     [getBudgets.fulfilled]: (state, { payload }) => {
       state.budgets = payload.budgets;
+      addToLocalStorage('budgets', payload.budgets);
     },
     [getBudgets.rejected]: (state, { payload }) => {
       state.isLoading = false;
