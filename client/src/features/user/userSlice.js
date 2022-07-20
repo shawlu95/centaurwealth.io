@@ -12,10 +12,15 @@ import {
 } from './userThunk';
 import { displayErrors } from '../../utils/toast';
 
-const initialState = {
-  isLoading: false,
-  isSidebarOpen: false,
-  user: getFromLocalStorage('user'),
+/**
+ * Use arrow function which returns the state, if refresh before logout,
+ * the state will contain local storage copy and user will not be deleted */
+const getInitialState = () => {
+  return {
+    isLoading: false,
+    isSidebarOpen: false,
+    user: getFromLocalStorage('user'),
+  };
 };
 
 export const signinUser = createAsyncThunk('user/signinUser', signinUserThunk);
@@ -29,14 +34,14 @@ export const signoutUser = createAsyncThunk(
 
 const userSlice = createSlice({
   name: 'user',
-  initialState,
+  initialState: getInitialState(),
   reducers: {
     toggleSidebar: (state) => {
       state.isSidebarOpen = !state.isSidebarOpen;
     },
     resetUserState: (state) => {
       removeFromLocalStorage('user');
-      return initialState;
+      return getInitialState();
     },
   },
   extraReducers: {
