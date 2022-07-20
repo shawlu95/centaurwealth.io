@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { usd } from '../../utils';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAccounts } from '../../features/account/accountSlice';
+import { setPage } from '../../features/transaction/transactionSlice';
 
 // Not allowed to fetch data in component in server-side render
 const AccountIndex = () => {
@@ -27,6 +28,7 @@ const AccountIndex = () => {
               <Link
                 to={`/account/history/${account.id}`}
                 className='btn btn-light btn-sm'
+                onClick={() => dispatch(setPage({ page: 1 }))}
               >
                 View
               </Link>

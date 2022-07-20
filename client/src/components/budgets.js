@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { usd } from '../utils';
 import { useDispatch } from 'react-redux';
-import { setBudget } from '../features/budget/budgetSlice';
+import { setBudget, setPage } from '../features/budget/budgetSlice';
 
 const Budgets = ({ budgets }) => {
   const dispatch = useDispatch();
@@ -37,9 +37,10 @@ const Budgets = ({ budgets }) => {
                     <Link
                       to={`/budget/history`}
                       className='btn btn-light btn-sm'
-                      onClick={() =>
-                        dispatch(setBudget({ budgetId: budget.id }))
-                      }
+                      onClick={() => {
+                        dispatch(setPage({ page: 1 }));
+                        dispatch(setBudget({ budgetId: budget.id }));
+                      }}
                     >
                       View
                     </Link>

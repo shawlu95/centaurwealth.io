@@ -13,6 +13,10 @@ const TransactionIndex = () => {
   const { transactions } = useSelector((store) => store.transaction);
 
   useEffect(() => {
+    dispatch(setPage({ page: 1 }));
+  }, []);
+
+  useEffect(() => {
     dispatch(getTransactions());
   }, [transactions.page]);
 
