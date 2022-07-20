@@ -85,6 +85,7 @@ const budgetSlice = createSlice({
       state.isLoading = true;
     },
     [getBudgets.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
       state.budgets = payload.budgets;
       if (state.budget.id) {
         state.budget = payload.budgets.filter(
@@ -101,6 +102,7 @@ const budgetSlice = createSlice({
       state.isLoading = true;
     },
     [getBudgetHistory.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
       state.expenses = payload.expenses;
     },
     [getBudgetHistory.rejected]: (state, { payload }) => {
@@ -111,6 +113,7 @@ const budgetSlice = createSlice({
       state.isLoading = true;
     },
     [createBudget.fulfilled]: (state) => {
+      state.isLoading = false;
       const budget = state.budget;
       toast.success(`Created budeget: ${budget.name}`);
     },
@@ -122,6 +125,7 @@ const budgetSlice = createSlice({
       state.isLoading = true;
     },
     [updateBudget.fulfilled]: (state) => {
+      state.isLoading = false;
       const budget = state.budget;
       toast.success(`Updated budeget: ${budget.name}`);
     },

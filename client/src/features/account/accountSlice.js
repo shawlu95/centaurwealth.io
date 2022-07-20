@@ -70,8 +70,8 @@ const accountSlice = createSlice({
       state.isLoading = true;
     },
     [getAccounts.fulfilled]: (state, { payload }) => {
-      const { accounts, summary } = payload;
       state.isLoading = false;
+      const { accounts, summary } = payload;
       state.accounts = accounts;
       state.summary = summary;
       addToLocalStorage('accounts', accounts);
@@ -84,11 +84,11 @@ const accountSlice = createSlice({
       state.isLoading = true;
     },
     [getAccount.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
       const { account } = payload;
       const balance = state.accounts.filter(
         (item) => item.id === account.id
       )[0];
-      state.isLoading = false;
       state.account = { ...balance, ...account };
     },
     [getAccount.rejected]: (state, { payload }) => {
@@ -99,6 +99,7 @@ const accountSlice = createSlice({
       state.isLoading = true;
     },
     [createAccount.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
       const { name } = state.account;
       state.account = { ...state.account, id: payload.id };
       toast.success(`Created account: ${name}`);
@@ -111,6 +112,7 @@ const accountSlice = createSlice({
       state.isLoading = true;
     },
     [updateAccount.fulfilled]: (state) => {
+      state.isLoading = false;
       const { name } = state.account;
       toast.success(`Updated account: ${name}`);
     },

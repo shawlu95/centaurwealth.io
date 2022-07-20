@@ -100,6 +100,7 @@ const transactionSlice = createSlice({
       state.isLoading = true;
     },
     [getTransactions.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
       state.transactions = payload.transactions;
     },
     [getTransactions.rejected]: (state, { payload }) => {
@@ -110,14 +111,12 @@ const transactionSlice = createSlice({
       state.isLoading = true;
     },
     [getTransaction.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
       state.transaction = payload.transaction;
     },
     [getTransaction.rejected]: (state, { payload }) => {
       state.isLoading = false;
       displayErrors(payload.errors);
-    },
-    [createTransaction.pending]: (state) => {
-      state.isLoading = true;
     },
     [getClosingTransactionForAccount.pending]: (state, { payload }) => {
       state.isLoading = true;
@@ -131,7 +130,11 @@ const transactionSlice = createSlice({
       state.isLoading = false;
       displayErrors(payload.errors);
     },
-    [createTransaction.fulfilled]: (state, { payload }) => {
+    [createTransaction.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [createTransaction.fulfilled]: (state) => {
+      state.isLoading = false;
       const transaction = state.transaction;
       toast.success(`Created transaction ${transaction.memo}`);
     },
@@ -142,7 +145,8 @@ const transactionSlice = createSlice({
     [updateTransaction.pending]: (state) => {
       state.isLoading = true;
     },
-    [updateTransaction.fulfilled]: (state, { payload }) => {
+    [updateTransaction.fulfilled]: (state) => {
+      state.isLoading = false;
       const transaction = state.transaction;
       toast.success(`Updated transaction ${transaction.memo}`);
     },
@@ -153,7 +157,8 @@ const transactionSlice = createSlice({
     [deleteTransaction.pending]: (state) => {
       state.isLoading = true;
     },
-    [deleteTransaction.fulfilled]: (state, { payload }) => {
+    [deleteTransaction.fulfilled]: (state) => {
+      state.isLoading = false;
       const deleted = state.transaction;
       state.transactions.docs = state.transactions.docs.filter(
         (item) => item.id !== deleted.id
