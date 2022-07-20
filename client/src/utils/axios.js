@@ -2,12 +2,13 @@ import axios from 'axios';
 import { getFromLocalStorage } from './localStorage';
 
 const DEV_URL = 'https://centaurwealth.dev/api';
+const PROD_URL = 'http://www.centaurwealth.io/api';
 
-const customFetch = axios.create({
-  baseURL: DEV_URL,
+const global = axios.create({
+  baseURL: PROD_URL,
 });
 
-customFetch.interceptors.request.use(
+global.interceptors.request.use(
   (config) => {
     const user = getFromLocalStorage('user');
     if (user) {
@@ -20,4 +21,4 @@ customFetch.interceptors.request.use(
   }
 );
 
-export default customFetch;
+export default global;
