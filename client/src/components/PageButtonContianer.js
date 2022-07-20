@@ -35,7 +35,7 @@ const PageButtonContianer = ({ totalPages, page, setPage }) => {
             type='button'
             key={pageNumber}
             className={pageNumber === page ? 'pageBtn active' : 'pageBtn'}
-            onClick={() => dispatch(setPage(pageNumber))}
+            onClick={() => dispatch(setPage({ page: pageNumber }))}
           >
             {pageNumber}
           </button>
