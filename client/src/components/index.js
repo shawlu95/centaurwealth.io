@@ -9,6 +9,7 @@ import Expenses from './expenses';
 import Footer from './footer';
 import Header from './header';
 import Loading from './Loading';
+import Logo from './Logo';
 import PageButtonContianer from './PageButtonContianer';
 import Timeline from './timeline';
 import Transaction from './transaction';
@@ -26,6 +27,7 @@ export {
   Footer,
   Header,
   Loading,
+  Logo,
   PageButtonContianer,
   Timeline,
   Transaction,

@@ -26,7 +26,11 @@ const Header = ({ currentUser }) => {
       }}
     >
       <nav className='navbar nav-light bg-light'>
-        <Link to='/' className='navbar-brand' style={{ marginLeft: '15px' }}>
+        <Link
+          to='/home'
+          className='navbar-brand'
+          style={{ marginLeft: '15px' }}
+        >
           Home
         </Link>
         <div className='d-flex justify-content-end'>

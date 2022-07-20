@@ -13,3 +13,8 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+import Error from './Error';
+import Landing from './Landing';
+
+export { Error, Landing };

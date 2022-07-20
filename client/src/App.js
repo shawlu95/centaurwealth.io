@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { Header, Footer } from './components';
-import Home from './pages';
+import Home, { Landing, Error } from './pages';
 import { Signin, Signup, Signout } from './pages/auth';
 import Account, {
   AccountCreate,
@@ -30,7 +30,9 @@ function App() {
     <Router>
       <Header currentUser={user} />
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Landing />} />
+        <Route path='/home' element={<Home />} />
+
         <Route path='/auth/signin' element={<Signin />} />
         <Route path='/auth/signup' element={<Signup />} />
         <Route path='/auth/signout' element={<Signout />} />
@@ -58,6 +60,8 @@ function App() {
         <Route path='/budget/create' element={<BudgetCreate />} />
         <Route path='/budget/history' element={<BudgetHistory />} />
         <Route path='/budget/update' element={<BudgetUpdate />} />
+
+        <Route path='*' element={<Error />} />
       </Routes>
       <ToastContainer position='top-left' />
       <Footer />
