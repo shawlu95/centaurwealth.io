@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { usd } from '../utils';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { classifyTransaction } from '../features/budget/budgetSlice';
 
 const Expenses = () => {
+  const dispatch = useDispatch();
   const { expenses, budgets } = useSelector((store) => store.budget);
 
   const setBudgetId = async (e, expenseId) => {
-    // await doClassify({ budgetId: e.target.value, expenseId });
+    dispatch(classifyTransaction({ budgetId: e.target.value, expenseId }));
   };
 
   const expenseList = expenses.docs.map((expense) => {

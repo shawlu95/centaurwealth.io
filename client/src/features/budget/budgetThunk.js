@@ -45,3 +45,13 @@ export const updateBudgetThunk = async (_, thunkApi) => {
     return error.response.data.msg;
   }
 };
+
+export const classifyTransactionThunk = async (payload, thunkApi) => {
+  try {
+    const { expenseId, budgetId } = payload;
+    const res = await axios.post(`/budget/classify`, { expenseId, budgetId });
+    return res.data;
+  } catch (err) {
+    return error.response.data.msg;
+  }
+};

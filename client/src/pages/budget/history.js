@@ -53,14 +53,4 @@ const BudgetHistory = () => {
   );
 };
 
-BudgetHistory.getInitialProps = async (context, axios, currentUser) => {
-  const limit = 25;
-  const { budgetId } = context.query;
-  const {
-    data: { budgets, expenses },
-  } = await axios.get('/api/budget', { params: { page: 1, limit, budgetId } });
-
-  return { budgetId, budgets, expenses, limit };
-};
-
 export default BudgetHistory;

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import {
+  classifyTransactionThunk,
   createBudgetThunk,
   getBudgetHistoryThunk,
   getBudgetsThunk,
@@ -50,6 +51,11 @@ export const createBudget = createAsyncThunk(
 export const updateBudget = createAsyncThunk(
   'budget/updateBudget',
   updateBudgetThunk
+);
+
+export const classifyTransaction = createAsyncThunk(
+  'budget/classify',
+  classifyTransactionThunk
 );
 
 const budgetSlice = createSlice({
@@ -109,6 +115,22 @@ const budgetSlice = createSlice({
       toast.success(`Updated budeget: ${budget.name}`);
     },
     [updateBudget.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    },
+    [classifyTransaction.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [classifyTransaction.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      const { id, memo, budgetId } = payload.expense;
+      const budget = state.budgets.filter((item) => item.id === budgetId)[0];
+      state.expenses.docs = state.expenses.docs.filter(
+        (item) => item.id !== id
+      );
+      toast.success(`Put '${memo}' into budget '${budget.name}'`);
+    },
+    [classifyTransaction.rejected]: (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload);
     },
