@@ -6,6 +6,7 @@ import {
   getTransaction,
   deleteTransaction,
   updateTransaction,
+  resetTransaction,
 } from '../../features/transaction/transactionSlice';
 
 const TransactionDetail = () => {
@@ -21,6 +22,7 @@ const TransactionDetail = () => {
     e.preventDefault();
     dispatch(updateTransaction()).then((res) => {
       if (res.meta.requestStatus === 'fulfilled') {
+        dispatch(resetTransaction());
         navigate(-1);
       }
     });
@@ -30,6 +32,7 @@ const TransactionDetail = () => {
     e.preventDefault();
     dispatch(deleteTransaction(transactionId)).then((res) => {
       if (res.meta.requestStatus === 'fulfilled') {
+        dispatch(resetTransaction());
         navigate(-1);
       }
     });
@@ -67,7 +70,10 @@ const TransactionDetail = () => {
               <button
                 type='button'
                 className='btn btn-secondary w-100'
-                onClick={() => navigate(-1)}
+                onClick={() => {
+                  dispatch(resetTransaction());
+                  navigate(-1);
+                }}
               >
                 Cancel
               </button>

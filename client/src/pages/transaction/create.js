@@ -1,5 +1,8 @@
 import React from 'react';
-import { createTransaction } from '../../features/transaction/transactionSlice';
+import {
+  createTransaction,
+  resetTransaction,
+} from '../../features/transaction/transactionSlice';
 import { useNavigate } from 'react-router-dom';
 import { Transaction } from '../../components';
 import { useDispatch } from 'react-redux';
@@ -11,6 +14,7 @@ const TransactionCreate = () => {
     e.preventDefault();
     dispatch(createTransaction()).then((res) => {
       if (res.meta.requestStatus === 'fulfilled') {
+        dispatch(resetTransaction());
         navigate(-1);
       }
     });
@@ -37,7 +41,10 @@ const TransactionCreate = () => {
               <button
                 type='button'
                 className='btn btn-secondary w-100'
-                onClick={() => navigate(-1)}
+                onClick={() => {
+                  dispatch(resetTransaction());
+                  navigate(-1);
+                }}
               >
                 Cancel
               </button>
