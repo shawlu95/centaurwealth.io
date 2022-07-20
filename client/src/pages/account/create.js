@@ -17,6 +17,11 @@ const AccountCreate = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    dispatch(createAccount()).then((res) => {
+      if (res.meta.requestStatus === 'fulfilled') {
+        navigate('/account', { replace: true });
+      }
+    });
   };
 
   return (
@@ -24,15 +29,7 @@ const AccountCreate = () => {
       <form onSubmit={onSubmit}>
         <div className='container d-grid gap-2'>
           <Account />
-          <button
-            className='btn btn-primary'
-            onClick={() => {
-              dispatch(createAccount());
-              navigate(-1);
-            }}
-          >
-            Create
-          </button>
+          <button className='btn btn-primary'>Create</button>
           <button
             type='button'
             className='btn btn-secondary w-100'

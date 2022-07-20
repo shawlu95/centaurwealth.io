@@ -10,6 +10,11 @@ const AccountDetail = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    dispatch(updateAccount()).then((res) => {
+      if (res.meta.requestStatus === 'fulfilled') {
+        navigate(-1);
+      }
+    });
   };
 
   return (
@@ -17,15 +22,7 @@ const AccountDetail = () => {
       <form onSubmit={onSubmit}>
         <div className='container d-grid gap-2'>
           <Account />
-          <button
-            className='btn btn-primary'
-            onClick={() => {
-              dispatch(updateAccount());
-              navigate(-1);
-            }}
-          >
-            Update
-          </button>
+          <button className='btn btn-primary'>Update</button>
           <button
             type='button'
             className='btn btn-secondary w-100'

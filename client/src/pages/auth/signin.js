@@ -12,8 +12,11 @@ const Signin = () => {
 
   const handleSignin = async ({ event, email, password }) => {
     event.preventDefault();
-    dispatch(signinUser({ email, password }));
-    navigate('/', { replace: true });
+    dispatch(signinUser({ email, password })).then((res) => {
+      if (res.meta.requestStatus === 'fulfilled') {
+        navigate('/', { replace: true });
+      }
+    });
   };
 
   return (

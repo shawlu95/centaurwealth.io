@@ -9,7 +9,11 @@ const TransactionCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(createTransaction());
+    dispatch(createTransaction()).then((res) => {
+      if (res.meta.requestStatus === 'fulfilled') {
+        navigate(-1);
+      }
+    });
   };
 
   return (
