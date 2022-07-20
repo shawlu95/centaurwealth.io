@@ -19,7 +19,7 @@ const defaultExpenses = {
   hasMore: false,
   hasNextPage: false,
   hasPrevPage: false,
-  limit: 25,
+  limit: 15,
   page: 1,
   pagingCounter: 1,
   totalDocs: 1,
