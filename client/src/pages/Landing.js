@@ -1,15 +1,10 @@
 import main from '../assets/images/main.svg';
 import Wrapper from '../assets/wrappers/LandingPage';
-
-import { Logo } from '../components';
 import { Link } from 'react-router-dom';
 
 const Landing = ({ currentUser }) => {
   return (
     <Wrapper>
-      <nav>
-        <Logo />
-      </nav>
       <div className='container page'>
         <div className='info'>
           <h1>
@@ -28,12 +23,16 @@ const Landing = ({ currentUser }) => {
           </p>
           {!currentUser && (
             <Link to='/auth/signin' className='btn btn-primary'>
-              Login
+              Sign in
             </Link>
           )}
           {!currentUser && (
-            <Link to='/auth/signup' className='btn btn-light'>
-              Register
+            <Link
+              to='/auth/signup'
+              className='btn btn-light'
+              style={{ marginLeft: '15px' }}
+            >
+              Sign up
             </Link>
           )}
         </div>

@@ -21,7 +21,7 @@ export default function Footer() {
     <footer style={style}>
       <p>
         &copy; {new Date().getFullYear()}
-        <span> Shaw Lu</span>
+        <span> Centaur Wealth</span>
       </p>
     </footer>
   );
