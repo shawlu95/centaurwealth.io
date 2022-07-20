@@ -63,4 +63,8 @@ kubectl config delete-context do-sfo3-centaur
 # set up secret after switching context
 kubectl create secret generic jwt-secret --from-literal=jwt=foo
 kubectl create secret generic mongo-pass --from-literal=mongo_pass=bar
+
+# delete secret after use
+kubectl delete secret jwt-secret
+kubectl delete secret mongo-pass
 ```
