@@ -44,7 +44,7 @@ html {
   --green-dark: #0f5132;
 
   /* fonts  */
-  --headingFont: 'Roboto Condensed', Sans-Serif;
+  --headingFont: 'Cabin', Sans-Serif;
   --bodyFont: 'Cabin', Sans-Serif;
   --small-text: 0.875rem;
   --extra-small-text: 0.7em;
