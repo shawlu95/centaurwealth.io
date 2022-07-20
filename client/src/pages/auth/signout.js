@@ -8,8 +8,11 @@ const Signout = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(signoutUser());
-    navigate('/auth/signin');
+    dispatch(signoutUser()).then((res) => {
+      if (res.meta.requestStatus === 'fulfilled') {
+        navigate('/auth/signin');
+      }
+    });
   }, []);
 
   return (

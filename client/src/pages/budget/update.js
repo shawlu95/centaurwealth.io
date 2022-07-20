@@ -10,7 +10,11 @@ const BudgetUpdate = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateBudget());
+    dispatch(updateBudget()).then((res) => {
+      if (res.meta.requestStatus === 'fulfilled') {
+        navigate(-1);
+      }
+    });
   };
 
   return (

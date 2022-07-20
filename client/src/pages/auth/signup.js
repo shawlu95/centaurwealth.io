@@ -12,8 +12,11 @@ const Signup = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    dispatch(signupUser({ email, password }));
-    navigate('/', { replace: true });
+    dispatch(signupUser({ email, password })).then((res) => {
+      if (res.meta.requestStatus === 'fulfilled') {
+        setTimeout(() => navigate('/', { replace: true }), 3000);
+      }
+    });
   };
 
   return (

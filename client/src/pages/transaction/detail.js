@@ -19,12 +19,20 @@ const TransactionDetail = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateTransaction());
+    dispatch(updateTransaction()).then((res) => {
+      if (res.meta.requestStatus === 'fulfilled') {
+        navigate(-1);
+      }
+    });
   };
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    dispatch(deleteTransaction(transactionId));
+    dispatch(deleteTransaction(transactionId)).then((res) => {
+      if (res.meta.requestStatus === 'fulfilled') {
+        navigate(-1);
+      }
+    });
   };
 
   return (
