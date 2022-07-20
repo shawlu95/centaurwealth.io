@@ -22,7 +22,7 @@ const TransactionIndex = () => {
         totalPages={transactions.totalPages}
         setPage={setPage}
       />
-      <Link to='/transaction/create' className='btn btn-primary w-100'>
+      <Link to='/transaction/create' className='btn btn-primary'>
         New Transaction
       </Link>
     </div>

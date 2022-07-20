@@ -23,31 +23,22 @@ const AccountHistory = () => {
         <h4>{account.name}</h4>
         <b>Balance: {usd.format(account.balance)}</b>
       </div>
-
-      <div className='row'>
-        <Transactions />
-      </div>
+      <Transactions />
       <PageButtonContianer
         totalPages={totalPages}
         page={page}
         setPage={setPage}
       />
-
-      <div className='row'>
-        <Link
-          to={`/account/detail/${account.id}`}
-          className='btn btn-primary w-100'
-          disabled={!account.mutable}
-        >
-          Update Account
-        </Link>
-      </div>
-
-      <div className='row'>
-        <Link to='/transaction/create' className='btn btn-secondary w-100'>
-          New Transaction
-        </Link>
-      </div>
+      <Link
+        to={`/account/detail/${account.id}`}
+        className='btn btn-primary'
+        disabled={!account.mutable}
+      >
+        Update Account
+      </Link>
+      <Link to='/transaction/create' className='btn btn-secondary'>
+        New Transaction
+      </Link>
     </div>
   );
 };
