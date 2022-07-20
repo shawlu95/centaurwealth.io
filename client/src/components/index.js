@@ -8,6 +8,7 @@ import Entry from './entry';
 import Expenses from './expenses';
 import Footer from './footer';
 import Header from './header';
+import Loading from './Loading';
 import PageButtonContianer from './PageButtonContianer';
 import Timeline from './timeline';
 import Transaction from './transaction';
@@ -24,6 +25,7 @@ export {
   Expenses,
   Footer,
   Header,
+  Loading,
   PageButtonContianer,
   Timeline,
   Transaction,
