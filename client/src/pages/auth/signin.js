@@ -6,11 +6,11 @@ import { useDispatch } from 'react-redux';
 const Signin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignin = async ({ event, email, password }) => {
-    // Do not reload page
     event.preventDefault();
     dispatch(signinUser({ email, password }));
     navigate('/', { replace: true });
