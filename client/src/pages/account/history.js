@@ -4,7 +4,11 @@ import { Transactions, PageButtonContianer } from '../../components';
 import { usd } from '../../utils';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAccount } from '../../features/account/accountSlice';
-import { setPage } from '../../features/transaction/transactionSlice';
+import {
+  addEntry,
+  resetTransaction,
+  setPage,
+} from '../../features/transaction/transactionSlice';
 
 const AccountHistory = () => {
   const dispatch = useDispatch();
@@ -16,6 +20,18 @@ const AccountHistory = () => {
   useEffect(() => {
     dispatch(getAccount(accountId));
   }, [transactions.page]);
+
+  const addEntryWithCurrentAccount = () => {
+    dispatch(resetTransaction());
+    const entry = {
+      amount: '0',
+      type: 'debit',
+      accountId,
+      accountName: account.name,
+      accountType: account.type,
+    };
+    dispatch(addEntry({ entry }));
+  };
 
   return (
     <div className='container d-grid gap-2'>
@@ -36,7 +52,11 @@ const AccountHistory = () => {
       >
         Update Account
       </Link>
-      <Link to='/transaction/create' className='btn btn-secondary'>
+      <Link
+        to='/transaction/create'
+        className='btn btn-secondary'
+        onClick={addEntryWithCurrentAccount}
+      >
         New Transaction
       </Link>
     </div>

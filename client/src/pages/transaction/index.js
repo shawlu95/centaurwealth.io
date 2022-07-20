@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import { PageButtonContianer, Transactions } from '../../components';
 import { useSelector, useDispatch } from 'react-redux';
-import { getTransactions } from '../../features/transaction/transactionSlice';
+import {
+  getTransactions,
+  resetTransaction,
+} from '../../features/transaction/transactionSlice';
 import { setPage } from '../../features/transaction/transactionSlice';
 import { Link } from 'react-router-dom';
 
@@ -22,7 +25,11 @@ const TransactionIndex = () => {
         totalPages={transactions.totalPages}
         setPage={setPage}
       />
-      <Link to='/transaction/create' className='btn btn-primary'>
+      <Link
+        to='/transaction/create'
+        className='btn btn-primary'
+        onClick={() => dispatch(resetTransaction())}
+      >
         New Transaction
       </Link>
     </div>
