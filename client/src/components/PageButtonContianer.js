@@ -11,15 +11,18 @@ const PageButtonContianer = ({ totalPages, page, setPage }) => {
 
   const range = (start, end) =>
     [...Array(end - start + 1)].map((_, i) => start + i);
+
   const pages = range(
     Math.max(page - OFFSET, 1),
     Math.min(page + OFFSET, totalPages)
   );
 
-  const nextPage = () => {
+  const nextPage = (e) => {
+    e.preventDefault();
     dispatch(setPage({ page: Math.min(page + 1, totalPages) }));
   };
-  const prevPage = () => {
+  const prevPage = (e) => {
+    e.preventDefault();
     dispatch(setPage({ page: Math.max(page - 1, 1) }));
   };
 
