@@ -17,10 +17,10 @@ const PageButtonContianer = ({ totalPages, page, setPage }) => {
   );
 
   const nextPage = () => {
-    dispatch(setPage(Math.min(page + 1, totalPages)));
+    dispatch(setPage({ page: Math.min(page + 1, totalPages) }));
   };
   const prevPage = () => {
-    dispatch(setPage(Math.max(page - 1, 1)));
+    dispatch(setPage({ page: Math.max(page - 1, 1) }));
   };
 
   return (

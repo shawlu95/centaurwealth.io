@@ -16,7 +16,7 @@ export const getAccountThunk = async (accountId, thunkApi) => {
     const res = await axios.get(`/account/${accountId}`, {
       params: { page, limit },
     });
-    thunkApi.dispatch(setTransactions(res.data.transactions));
+    thunkApi.dispatch(setTransactions({ transactions: res.data.transactions }));
     return res.data;
   } catch (err) {
     return thunkApi.rejectWithValue(err.response.data);

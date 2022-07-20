@@ -69,8 +69,7 @@ const budgetSlice = createSlice({
   initialState,
   reducers: {
     setPage: (state, { payload }) => {
-      const { page } = payload;
-      state.expenses.page = page;
+      state.expenses.page = payload.page;
     },
     editBudget: (state, { payload }) => {
       const { name, value } = payload;
@@ -111,7 +110,7 @@ const budgetSlice = createSlice({
     [createBudget.pending]: (state) => {
       state.isLoading = true;
     },
-    [createBudget.fulfilled]: (state, { payload }) => {
+    [createBudget.fulfilled]: (state) => {
       const budget = state.budget;
       toast.success(`Created budeget: ${budget.name}`);
     },
@@ -122,7 +121,7 @@ const budgetSlice = createSlice({
     [updateBudget.pending]: (state) => {
       state.isLoading = true;
     },
-    [updateBudget.fulfilled]: (state, { payload }) => {
+    [updateBudget.fulfilled]: (state) => {
       const budget = state.budget;
       toast.success(`Updated budeget: ${budget.name}`);
     },

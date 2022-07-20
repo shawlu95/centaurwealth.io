@@ -110,7 +110,7 @@ const accountSlice = createSlice({
     [updateAccount.pending]: (state) => {
       state.isLoading = true;
     },
-    [updateAccount.fulfilled]: (state, { payload }) => {
+    [updateAccount.fulfilled]: (state) => {
       const { name } = state.account;
       toast.success(`Updated account: ${name}`);
     },

@@ -69,12 +69,12 @@ const transactionSlice = createSlice({
   initialState,
   reducers: {
     setPage: (state, { payload }) => {
-      state.transactions.page = payload;
+      state.transactions.page = payload.page;
     },
     setTransactions: (state, { payload }) => {
-      state.transactions = payload;
+      state.transactions = payload.transactions;
     },
-    resetTransaction: (state, { payload }) => {
+    resetTransaction: (state) => {
       state.transaction = { ...defaultTransaction };
     },
     editTransaction: (state, { payload }) => {
@@ -82,7 +82,7 @@ const transactionSlice = createSlice({
       state.transaction[name] = value;
     },
     addEntry: (state, { payload }) => {
-      state.transaction.entries.push(payload);
+      state.transaction.entries.push(payload.entry);
     },
     updateEntry: (state, { payload }) => {
       const { name, value, index } = payload;

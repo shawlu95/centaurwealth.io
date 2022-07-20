@@ -24,7 +24,7 @@ const Transaction = () => {
         accountType: accounts[0].type,
       };
     }
-    dispatch(addEntry(entry));
+    dispatch(addEntry({ entry }));
   };
 
   const handleInputChange = (e) => {
