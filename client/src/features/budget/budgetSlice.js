@@ -11,6 +11,7 @@ import {
   getBudgetsThunk,
   updateBudgetThunk,
 } from './budgetThunk';
+import { displayErrors } from '../../utils/toast';
 
 const defaultExpenses = {
   docs: [],
@@ -90,7 +91,7 @@ const budgetSlice = createSlice({
     },
     [getBudgets.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
     [getBudgetHistory.pending]: (state) => {
       state.isLoading = true;
@@ -100,7 +101,7 @@ const budgetSlice = createSlice({
     },
     [getBudgetHistory.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
     [createBudget.pending]: (state) => {
       state.isLoading = true;
@@ -111,7 +112,7 @@ const budgetSlice = createSlice({
     },
     [createBudget.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
     [updateBudget.pending]: (state) => {
       state.isLoading = true;
@@ -122,7 +123,7 @@ const budgetSlice = createSlice({
     },
     [updateBudget.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
     [classifyTransaction.pending]: (state) => {
       state.isLoading = true;
@@ -138,7 +139,7 @@ const budgetSlice = createSlice({
     },
     [classifyTransaction.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
   },
 });

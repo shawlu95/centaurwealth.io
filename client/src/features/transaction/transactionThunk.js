@@ -5,8 +5,7 @@ export const getTransactionThunk = async (transactionId, thunkApi) => {
     const res = await axios.get(`/transaction/${transactionId}`);
     return res.data;
   } catch (err) {
-    console.log(err);
-    return err;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };
 
@@ -18,8 +17,7 @@ export const getTransactionsThunk = async (_, thunkApi) => {
     });
     return res.data;
   } catch (err) {
-    console.log(err);
-    return err;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };
 
@@ -31,7 +29,7 @@ export const getClosingTransactionForAccountThunk = async (
     const res = await axios.get(`/account/close/${accountId}?lte=${lte}`);
     return res.data;
   } catch (err) {
-    return err;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };
 
@@ -41,8 +39,7 @@ export const createTransactionThunk = async (_, thunkApi) => {
     const res = await axios.post(`/transaction`, transaction);
     return res.data;
   } catch (err) {
-    console.log(err);
-    return err;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };
 
@@ -52,8 +49,7 @@ export const updateTransactionThunk = async (_, thunkApi) => {
     const res = await axios.put(`/transaction/${transaction.id}`, transaction);
     return res.data;
   } catch (err) {
-    console.log(err);
-    return err;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };
 
@@ -62,7 +58,6 @@ export const deleteTransactionThunk = async (transactionId, thunkApi) => {
     const res = await axios.delete(`/transaction/${transactionId}`);
     return res.data;
   } catch (err) {
-    console.log(err);
-    return err;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };

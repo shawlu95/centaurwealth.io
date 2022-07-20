@@ -6,7 +6,7 @@ export const getAccountsThunk = async (user, thunkApi) => {
     const res = await axios.get('/balance/current');
     return res.data;
   } catch (err) {
-    return error.response.data.msg;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };
 
@@ -19,7 +19,7 @@ export const getAccountThunk = async (accountId, thunkApi) => {
     thunkApi.dispatch(setTransactions(res.data.transactions));
     return res.data;
   } catch (err) {
-    return error.response.data.msg;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };
 
@@ -29,7 +29,7 @@ export const createAccountThunk = async (_, thunkApi) => {
     const res = await axios.post(`/account`, account);
     return res.data;
   } catch (err) {
-    return error.response.data.msg;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };
 
@@ -39,6 +39,6 @@ export const updateAccountThunk = async (_, thunkApi) => {
     const res = await axios.patch(`/account/${account.id}`, account);
     return res.data;
   } catch (err) {
-    return error.response.data.msg;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };

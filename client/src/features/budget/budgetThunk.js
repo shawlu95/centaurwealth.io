@@ -7,7 +7,7 @@ export const getBudgetsThunk = async (_, thunkApi) => {
     });
     return res.data;
   } catch (err) {
-    return error.response.data.msg;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };
 
@@ -21,8 +21,7 @@ export const getBudgetHistoryThunk = async (_, thunkApi) => {
     });
     return res.data;
   } catch (err) {
-    console.log(err);
-    return error.response.data.msg;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };
 
@@ -32,7 +31,7 @@ export const createBudgetThunk = async (_, thunkApi) => {
     const res = await axios.post('/budget', budget);
     return res.data;
   } catch (err) {
-    return error.response.data.msg;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };
 
@@ -42,7 +41,7 @@ export const updateBudgetThunk = async (_, thunkApi) => {
     const res = await axios.patch(`/budget/${budget.id}`, budget);
     return res.data;
   } catch (err) {
-    return error.response.data.msg;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };
 
@@ -52,6 +51,6 @@ export const classifyTransactionThunk = async (payload, thunkApi) => {
     const res = await axios.post(`/budget/classify`, { expenseId, budgetId });
     return res.data;
   } catch (err) {
-    return error.response.data.msg;
+    return thunkApi.rejectWithValue(err.response.data);
   }
 };

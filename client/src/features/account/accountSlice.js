@@ -10,6 +10,7 @@ import {
   createAccountThunk,
   updateAccountThunk,
 } from './accountThunk';
+import { displayErrors } from '../../utils/toast';
 
 const defaultAccount = {
   name: '',
@@ -77,7 +78,7 @@ const accountSlice = createSlice({
     },
     [getAccounts.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
     [getAccount.pending]: (state) => {
       state.isLoading = true;
@@ -92,7 +93,7 @@ const accountSlice = createSlice({
     },
     [getAccount.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
     [createAccount.pending]: (state) => {
       state.isLoading = true;
@@ -104,7 +105,7 @@ const accountSlice = createSlice({
     },
     [createAccount.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
     [updateAccount.pending]: (state) => {
       state.isLoading = true;
@@ -115,7 +116,7 @@ const accountSlice = createSlice({
     },
     [updateAccount.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
   },
 });

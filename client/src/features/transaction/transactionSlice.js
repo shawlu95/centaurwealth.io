@@ -8,6 +8,7 @@ import {
   deleteTransactionThunk,
 } from './transactionThunk';
 import { toast } from 'react-toastify';
+import { displayErrors } from '../../utils/toast';
 
 const defaultTransactions = {
   docs: [],
@@ -103,7 +104,7 @@ const transactionSlice = createSlice({
     },
     [getTransactions.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
     [getTransaction.pending]: (state) => {
       state.isLoading = true;
@@ -113,7 +114,7 @@ const transactionSlice = createSlice({
     },
     [getTransaction.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
     [createTransaction.pending]: (state) => {
       state.isLoading = true;
@@ -128,7 +129,7 @@ const transactionSlice = createSlice({
     },
     [getClosingTransactionForAccount.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
     [createTransaction.fulfilled]: (state, { payload }) => {
       const transaction = state.transaction;
@@ -136,7 +137,7 @@ const transactionSlice = createSlice({
     },
     [createTransaction.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
     [updateTransaction.pending]: (state) => {
       state.isLoading = true;
@@ -147,7 +148,7 @@ const transactionSlice = createSlice({
     },
     [updateTransaction.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
     [deleteTransaction.pending]: (state) => {
       state.isLoading = true;
@@ -161,7 +162,7 @@ const transactionSlice = createSlice({
     },
     [deleteTransaction.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
   },
 });
