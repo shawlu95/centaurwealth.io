@@ -9,9 +9,21 @@ import {
 const Entry = ({ index, entry }) => {
   const dispatch = useDispatch();
   const { accounts } = useSelector((store) => store.account);
+  const { transaction } = useSelector((store) => store.transaction);
   const getAccount = (id) => accounts.filter((acc) => acc.id === id)[0];
   const [account, setAccount] = useState(getAccount(entry.accountId));
   const [balance, setBalance] = useState(account.balance);
+
+  const asset = entry.accountType === 'asset' ? 1 : -1;
+  const dr = entry.type === 'debit' ? 1 : -1;
+  const sign = asset * dr;
+
+  useEffect(() => {
+    const isNew = transaction.id === undefined;
+    if (isNew) {
+      setBalance(account.balance - sign * entry.amount);
+    }
+  }, []);
 
   useEffect(() => {
     setAccount(getAccount(entry.accountId));
@@ -19,10 +31,6 @@ const Entry = ({ index, entry }) => {
   }, [entry.accountId]);
 
   const handleUpdateEntry = (e) => {
-    const asset = entry.accountType === 'asset' ? 1 : -1;
-    const dr = entry.type === 'debit' ? 1 : -1;
-    const sign = asset * dr;
-
     const { name, value } = e.target;
     if (name === 'accountId') {
       const selectedAccount = getAccount(value);
