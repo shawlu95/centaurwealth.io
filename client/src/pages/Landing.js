@@ -4,7 +4,7 @@ import Wrapper from '../assets/wrappers/LandingPage';
 import { Logo } from '../components';
 import { Link } from 'react-router-dom';
 
-const Landing = () => {
+const Landing = ({ currentUser }) => {
   return (
     <Wrapper>
       <nav>
@@ -26,12 +26,16 @@ const Landing = () => {
             "father of accounting," in his book Summa de Arithmetica, Geometria,
             Proportioni et Proportionalita, published 1494.
           </p>
-          <Link to='/auth/signin' className='btn btn-hero'>
-            Login
-          </Link>
-          <Link to='/auth/signup' className='btn btn-hero'>
-            Register
-          </Link>
+          {!currentUser && (
+            <Link to='/auth/signin' className='btn btn-primary'>
+              Login
+            </Link>
+          )}
+          {!currentUser && (
+            <Link to='/auth/signup' className='btn btn-light'>
+              Register
+            </Link>
+          )}
         </div>
         <img src={main} alt='job hunt' className='img main-img' />
       </div>

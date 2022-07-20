@@ -30,7 +30,7 @@ function App() {
     <Router>
       <Header currentUser={user} />
       <Routes>
-        <Route path='/' element={<Landing />} />
+        <Route path='/' element={<Landing currentUser={user} />} />
         <Route path='/home' element={<Home />} />
 
         <Route path='/auth/signin' element={<Signin />} />
