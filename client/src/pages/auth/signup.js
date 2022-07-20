@@ -1,20 +1,19 @@
 import { useState } from 'react';
-import useRequest from '../../hooks/use-request';
+import { useNavigate } from 'react-router-dom';
+import { signupUser } from '../../features/user/userSlice';
+import { useDispatch } from 'react-redux';
 
 const Signup = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { doRequest, errors } = useRequest({
-    url: '/api/auth/signup',
-    method: 'post',
-    body: { email, password },
-    onSuccess: () => console.log('signup'),
-  });
 
   const onSubmit = async (event) => {
-    // Do not reload page
     event.preventDefault();
-    await doRequest();
+    dispatch(signupUser({ email, password }));
+    navigate('/', { replace: true });
   };
 
   return (
@@ -38,7 +37,6 @@ const Signup = () => {
             className='form-control'
           />
         </div>
-        {errors}
         <button className='btn btn-primary'>Sign Up</button>
       </div>
     </form>

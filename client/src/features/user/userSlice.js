@@ -43,12 +43,13 @@ const userSlice = createSlice({
     [signupUser.pending]: (state) => {
       state.isLoading = true;
     },
-    [signupUser.fulfilled]: (state, { payload }) => {
-      const { user } = payload;
+    [signupUser.fulfilled]: (state, { payload: user }) => {
       state.isLoading = false;
       state.user = user;
       addToLocalStorage('user', user);
-      toast.success(`Hello, ${user.email}`);
+
+      const name = user.email.split('@')[0];
+      toast.success(`Hello, ${name}`);
     },
     [signupUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
@@ -60,8 +61,9 @@ const userSlice = createSlice({
     [signinUser.fulfilled]: (state, { payload: user }) => {
       state.isLoading = false;
       state.user = user;
-      const name = state.user.email.split('@')[0];
       addToLocalStorage('user', user);
+
+      const name = state.user.email.split('@')[0];
       toast.success(`Welcome back, ${name}`);
     },
     [signinUser.rejected]: (state, { payload }) => {
