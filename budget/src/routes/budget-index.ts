@@ -108,6 +108,7 @@ router.get(
         monthly: budget.monthly,
         quarterly: budget.quarterly,
         annual: budget.annual,
+        mutable: budget.mutable,
         summary: {
           monthly: monthly.get(budget.id),
           quarterly: quarterly.get(budget.id),
