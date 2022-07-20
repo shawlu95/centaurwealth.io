@@ -17,7 +17,7 @@ const Transaction = () => {
       entry = { ...transaction.entries[transaction.entries.length - 1] };
     } else {
       entry = {
-        amount: '0',
+        amount: 0,
         type: 'debit',
         accountName: accounts[0].name,
         accountId: accounts[0].id,
@@ -63,7 +63,7 @@ const Transaction = () => {
         <b>Account</b>
       </div>
       <div className='col-sm-2'>
-        <b>Current Balance</b>
+        <b>Balance</b>
       </div>
       <div className='col-sm-2'>
         <b>DR/CR</b>
