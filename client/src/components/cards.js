@@ -1,6 +1,19 @@
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAccounts } from '../features/account/accountSlice';
 import Card from './card';
 
-const Cards = ({ summary }) => {
+const Cards = () => {
+  const dispatch = useDispatch();
+  const { summary } = useSelector((store) => store.account);
+  const { user } = useSelector((store) => store.user);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getAccounts());
+    }
+  }, [user]);
+
   const groups = Object.assign({}, ...summary.map((x) => ({ [x.type]: x })));
   return (
     groups && (

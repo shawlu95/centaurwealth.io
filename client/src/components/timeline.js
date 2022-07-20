@@ -1,5 +1,6 @@
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { getTimeline, setRange } from '../features/chart/chartSlice';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -71,46 +72,15 @@ const buildDatasets = (points) => {
 };
 
 const Timeline = () => {
-  const format = (date) => date.toISOString().split('T')[0];
-  const yearFirstDay = new Date(new Date().getFullYear(), 0, 1);
-  const [points, setPoints] = useState([]);
-  const [range, setRange] = useState('all');
-
-  const getDate = (value) => {
-    var date = new Date();
-    switch (value) {
-      case 'ytd':
-        date = yearFirstDay;
-        break;
-      case '1m':
-        date.setMonth(date.getMonth() - 1);
-        break;
-      case '3m':
-        date.setMonth(date.getMonth() - 3);
-        break;
-      case '6m':
-        date.setMonth(date.getMonth() - 6);
-        break;
-      case '1y':
-        date.setFullYear(date.getFullYear() - 1);
-        break;
-      case 'all':
-        date.setFullYear(1970);
-        break;
-    }
-    return format(date);
-  };
-
-  const fetchData = async () => {
-    const {
-      data: { points },
-    } = await axios.get('/api/timeline', { params: { start: getDate(range) } });
-    setPoints(points);
-  };
+  const dispatch = useDispatch();
+  const { points, range } = useSelector((store) => store.chart);
+  const { user } = useSelector((store) => store.user);
 
   useEffect(() => {
-    fetchData();
-  }, [range]);
+    if (user) {
+      dispatch(getTimeline());
+    }
+  }, [range, user]);
 
   const data = buildDatasets(points);
   return (
@@ -118,7 +88,7 @@ const Timeline = () => {
       <div className='form-group'>
         <select
           className='form-control'
-          onChange={(e) => setRange(e.target.value)}
+          onChange={(e) => dispatch(setRange({ range: e.target.value }))}
           value={range}
         >
           <option value='1m'>1 Month</option>
