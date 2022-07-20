@@ -28,8 +28,8 @@ const Header = ({ currentUser }) => {
       <nav className='navbar nav-light bg-light'>
         <Link
           to='/home'
-          className='nav-item nav-link'
-          style={{ marginLeft: '15px' }}
+          className='nav-link'
+          style={{ marginLeft: '15px', color: 'primary-400' }}
         >
           Home
         </Link>
