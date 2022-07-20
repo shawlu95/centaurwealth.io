@@ -20,7 +20,7 @@ const Signin = () => {
   };
 
   return (
-    <form>
+    <form className='page-100'>
       <div className='container d-grid gap-2'>
         <h3>Sign In</h3>
         <div className='form-group'>

@@ -16,5 +16,7 @@ export default HomePage;
 
 import Error from './Error';
 import Landing from './Landing';
+import ProtectedRoute from './ProtectedRoute';
+import SharedLayout from './SharedLayout';
 
-export { Error, Landing };
+export { Error, Landing, ProtectedRoute, SharedLayout };

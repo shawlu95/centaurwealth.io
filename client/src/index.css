@@ -297,6 +297,10 @@ ul {
 .full-page {
   min-height: 100vh;
 }
+.page-100 {
+  min-height: calc(100vh - 10rem);
+  padding: 5rem 0;
+}
 
 .coffee-info {
   text-align: center;

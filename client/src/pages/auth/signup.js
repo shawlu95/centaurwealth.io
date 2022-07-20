@@ -20,7 +20,7 @@ const Signup = () => {
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className='page-100'>
       <div className='container d-grid gap-2'>
         <h3>Sign Up</h3>
         <div className='form-group'>
