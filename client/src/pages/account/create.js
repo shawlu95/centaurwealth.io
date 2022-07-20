@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Account } from '../../components';
 import {
-  clearAccount,
+  resetAccount,
   createAccount,
 } from '../../features/account/accountSlice';
 
@@ -12,7 +12,7 @@ const AccountCreate = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(clearAccount());
+    dispatch(resetAccount());
   }, []);
 
   const onSubmit = async (e) => {

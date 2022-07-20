@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import {
   addToLocalStorage,
   getFromLocalStorage,
+  removeFromLocalStorage,
 } from '../../utils/localStorage';
 import {
   classifyTransactionThunk,
@@ -79,6 +80,11 @@ const budgetSlice = createSlice({
       const { budgetId } = payload;
       state.budget = state.budgets.filter((item) => item.id === budgetId)[0];
     },
+    resetBudgetState: (state) => {
+      // called when user signs out
+      removeFromLocalStorage('budgets');
+      return initialState;
+    },
   },
   extraReducers: {
     [getBudgets.pending]: (state) => {
@@ -152,5 +158,6 @@ const budgetSlice = createSlice({
   },
 });
 
-export const { setPage, editBudget, setBudget } = budgetSlice.actions;
+export const { setPage, editBudget, setBudget, resetBudgetState } =
+  budgetSlice.actions;
 export default budgetSlice.reducer;

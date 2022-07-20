@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import {
   addToLocalStorage,
   getFromLocalStorage,
+  removeFromLocalStorage,
 } from '../../utils/localStorage';
 import {
   getAccountsThunk,
@@ -57,12 +58,18 @@ const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
-    clearAccount: (state) => {
+    resetAccount: (state) => {
+      // called when creating new account
       state.account = { ...defaultAccount };
     },
     handleChange: (state, { payload }) => {
       const { name, value } = payload;
       state.account[name] = value;
+    },
+    resetAccountState: (state) => {
+      // called when user signs out
+      removeFromLocalStorage('accounts');
+      return initialState;
     },
   },
   extraReducers: {
@@ -123,5 +130,6 @@ const accountSlice = createSlice({
   },
 });
 
-export const { clearAccount, handleChange } = accountSlice.actions;
+export const { resetAccount, handleChange, resetAccountState } =
+  accountSlice.actions;
 export default accountSlice.reducer;

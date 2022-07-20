@@ -10,6 +10,7 @@ import {
   signupUserThunk,
   signoutUserThunk,
 } from './userThunk';
+import { displayErrors } from '../../utils/toast';
 
 const initialState = {
   isLoading: false,
@@ -33,6 +34,10 @@ const userSlice = createSlice({
     toggleSidebar: (state) => {
       state.isSidebarOpen = !state.isSidebarOpen;
     },
+    resetUserState: (state) => {
+      removeFromLocalStorage('user');
+      return initialState;
+    },
   },
   extraReducers: {
     [signupUser.pending]: (state) => {
@@ -47,7 +52,7 @@ const userSlice = createSlice({
     },
     [signupUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
     [signinUser.pending]: (state) => {
       state.isLoading = true;
@@ -55,25 +60,26 @@ const userSlice = createSlice({
     [signinUser.fulfilled]: (state, { payload: user }) => {
       state.isLoading = false;
       state.user = user;
+      const name = state.user.email.split('@')[0];
       addToLocalStorage('user', user);
-      toast.success(`Welcome back, ${user.email}`);
+      toast.success(`Welcome back, ${name}`);
     },
     [signinUser.rejected]: (state, { payload }) => {
-      console.log(payload);
       state.isLoading = false;
-      toast.error(payload);
+      displayErrors(payload.errors);
     },
-    [signoutUser.fulfilled]: (state, { payload }) => {
-      state.user = null;
-      state.isSidebarOpen = false;
-      removeFromLocalStorage('user');
-      removeFromLocalStorage('accounts');
-      if (payload) {
-        toast.success(payload);
-      }
+    [signoutUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [signoutUser.fulfilled]: (state) => {
+      state.isLoading = false;
+    },
+    [signoutUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      displayErrors(payload.errors);
     },
   },
 });
 
-export const { toggleSidebar } = userSlice.actions;
+export const { toggleSidebar, resetUserState } = userSlice.actions;
 export default userSlice.reducer;

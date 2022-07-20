@@ -18,6 +18,10 @@ const chartSlice = createSlice({
       const { range } = payload;
       state.range = range;
     },
+    resetChartState: (state) => {
+      // called when user signs out
+      return initialState;
+    },
   },
   extraReducers: {
     [getTimeline.pending]: (state) => {
@@ -34,5 +38,5 @@ const chartSlice = createSlice({
   },
 });
 
-export const { setRange } = chartSlice.actions;
+export const { setRange, resetChartState } = chartSlice.actions;
 export default chartSlice.reducer;
