@@ -15,10 +15,10 @@ const Wrapper = styled.section`
   .pageBtn {
     background: transparent;
     border-color: transparent;
-    width: 50px;
-    height: 40px;
-    font-weight: 700;
-    font-size: 1.25rem;
+    width: 40px;
+    height: 30px;
+    font-weight: 500;
+    font-size: 1rem;
     color: var(--primary-500);
     transition: var(--transition);
     border-radius: var(--borderRadius);
@@ -30,8 +30,8 @@ const Wrapper = styled.section`
   }
   .prev-btn,
   .next-btn {
-    width: 100px;
-    height: 40px;
+    width: 80px;
+    height: 30px;
     background: var(--white);
     border-color: transparent;
     border-radius: var(--borderRadius);

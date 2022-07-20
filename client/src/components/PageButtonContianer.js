@@ -45,8 +45,8 @@ const PageButtonContianer = ({ totalPages, page, setPage }) => {
         ))}
       </div>
       <button type='button' className='next-btn' onClick={nextPage}>
-        <HiChevronDoubleRight />
         next
+        <HiChevronDoubleRight />
       </button>
     </Wrapper>
   );
