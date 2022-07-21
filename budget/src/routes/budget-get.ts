@@ -5,7 +5,6 @@ import { StatusCodes } from 'http-status-codes';
 import {
   NotAuthorizedError,
   NotFoundError,
-  requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
 
@@ -18,11 +17,10 @@ const validators = [
 
 router.get(
   '/api/budget/:id',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
-    const userId = req.currentUser!.id;
+    const userId = req.user!.id;
     const { id: budgetId } = req.params;
     const budget = await Budget.findById(budgetId);
 

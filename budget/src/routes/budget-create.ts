@@ -2,11 +2,7 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Budget } from '../models/budget';
 import { StatusCodes } from 'http-status-codes';
-import {
-  BadRequestError,
-  requireAuth,
-  validateRequest,
-} from '@bookkeeping/common';
+import { BadRequestError, validateRequest } from '@bookkeeping/common';
 
 const router = express.Router();
 
@@ -18,11 +14,10 @@ const validators = [
 
 router.post(
   '/api/budget',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
-    const userId = req.currentUser!.id;
+    const userId = req.user!.id;
     const { name, monthly } = req.body;
 
     if (parseFloat(monthly) <= 0) {

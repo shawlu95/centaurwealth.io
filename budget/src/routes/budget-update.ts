@@ -6,7 +6,6 @@ import {
   BadRequestError,
   NotAuthorizedError,
   NotFoundError,
-  requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
 
@@ -22,11 +21,10 @@ const validators = [
 
 router.patch(
   '/api/budget/:id',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
-    const userId = req.currentUser!.id;
+    const userId = req.user!.id;
     const { id } = req.params;
     const { name, monthly } = req.body;
 

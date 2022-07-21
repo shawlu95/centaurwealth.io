@@ -6,7 +6,6 @@ import { StatusCodes } from 'http-status-codes';
 import {
   NotAuthorizedError,
   NotFoundError,
-  requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
 
@@ -21,11 +20,10 @@ const validators = [
 
 router.post(
   '/api/budget/classify',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
-    const userId = req.currentUser!.id;
+    const userId = req.user!.id;
     const { budgetId, expenseId } = req.body;
     const budget = await Budget.findById(budgetId);
     const expense = await Expense.findById(expenseId);

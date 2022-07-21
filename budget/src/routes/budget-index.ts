@@ -5,7 +5,6 @@ import { Budget } from '../models/budget';
 import { StatusCodes } from 'http-status-codes';
 import dateUtils from './date-util';
 import {
-  requireAuth,
   validateRequest,
   NotFoundError,
   NotAuthorizedError,
@@ -37,11 +36,10 @@ const summarize = async (
 
 router.get(
   '/api/budget',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
-    const userId = req.currentUser!.id;
+    const userId = req.user!.id;
     const budgets = await Budget.find({ userId }).sort({ monthly: -1 });
     const budgetId = req.query.budgetId;
 
