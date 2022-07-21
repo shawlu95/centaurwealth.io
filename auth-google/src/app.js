@@ -26,7 +26,7 @@ app.get(
     failureRedirect: '/auth/signin',
   }),
   async (req, res) => {
-    res.redirect('http://centaurwealth.dev/home');
+    res.redirect('/home');
   }
 );
 
