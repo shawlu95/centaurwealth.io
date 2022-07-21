@@ -9,6 +9,7 @@ import {
   signinUserThunk,
   signupUserThunk,
   signoutUserThunk,
+  getCurrentUserThunk,
 } from './userThunk';
 import { displayErrors } from '../../utils/toast';
 
@@ -22,6 +23,11 @@ const getInitialState = () => {
     user: getFromLocalStorage('user'),
   };
 };
+
+export const getCurrentUser = createAsyncThunk(
+  'user/getCurrentUser',
+  getCurrentUserThunk
+);
 
 export const signinUser = createAsyncThunk('user/signinUser', signinUserThunk);
 
@@ -45,6 +51,22 @@ const userSlice = createSlice({
     },
   },
   extraReducers: {
+    [getCurrentUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [getCurrentUser.fulfilled]: (state, { payload }) => {
+      const user = payload.currentUser;
+      state.isLoading = false;
+      state.user = user;
+      addToLocalStorage('user', user);
+
+      const name = user.email.split('@')[0];
+      toast.success(`Hello, ${name}`);
+    },
+    [getCurrentUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      displayErrors(payload.errors);
+    },
     [signupUser.pending]: (state) => {
       state.isLoading = true;
     },

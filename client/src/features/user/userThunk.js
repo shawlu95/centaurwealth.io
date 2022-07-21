@@ -4,6 +4,15 @@ import { resetBudgetState } from '../budget/budgetSlice';
 import { resetChartState } from '../chart/chartSlice';
 import { resetUserState } from './userSlice';
 
+export const getCurrentUserThunk = async (user, thunkApi) => {
+  try {
+    const res = await axios.get('/auth/currentUser', user);
+    return res.data;
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.response.data);
+  }
+};
+
 export const signupUserThunk = async (user, thunkApi) => {
   try {
     const res = await axios.post('/auth/signup', user);
