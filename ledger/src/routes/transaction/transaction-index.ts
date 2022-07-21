@@ -4,7 +4,6 @@ import { StatusCodes } from 'http-status-codes';
 import {
   NotAuthorizedError,
   NotFoundError,
-  requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
 import { Transaction } from '../../model/transaction';
@@ -18,11 +17,10 @@ const validators = [
 
 router.get(
   '/api/transaction',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
-    const userId = req.currentUser!.id;
+    const userId = req.user!.id;
     const transactions = await Transaction.paginate({
       query: { userId },
       sort: { date: -1 },
@@ -45,24 +43,20 @@ router.get(
   }
 );
 
-router.get(
-  '/api/transaction/:id',
-  requireAuth,
-  async (req: Request, res: Response) => {
-    const userId = req.currentUser!.id;
-    const { id } = req.params;
-    const transaction = await Transaction.findById(id);
+router.get('/api/transaction/:id', async (req: Request, res: Response) => {
+  const userId = req.user!.id;
+  const { id } = req.params;
+  const transaction = await Transaction.findById(id);
 
-    if (!transaction) {
-      throw new NotFoundError();
-    }
-
-    if (transaction.userId !== userId) {
-      throw new NotAuthorizedError();
-    }
-
-    return res.status(StatusCodes.OK).send({ transaction });
+  if (!transaction) {
+    throw new NotFoundError();
   }
-);
+
+  if (transaction.userId !== userId) {
+    throw new NotAuthorizedError();
+  }
+
+  return res.status(StatusCodes.OK).send({ transaction });
+});
 
 export { router as transactionRead };

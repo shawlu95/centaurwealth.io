@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signupUser } from '../../features/user/userSlice';
 import { useDispatch } from 'react-redux';
+import GoogleButton from 'react-google-button';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -41,6 +42,9 @@ const Signup = () => {
           />
         </div>
         <button className='btn btn-primary'>Sign Up</button>
+        <a href='/api/auth/google'>
+          <GoogleButton className='w-100' type='light' />
+        </a>
       </div>
     </form>
   );

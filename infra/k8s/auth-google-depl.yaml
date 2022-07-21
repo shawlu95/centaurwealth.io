@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-google-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-google
+  template:
+    metadata:
+      labels:
+        app: auth-google
+    spec:
+      containers:
+        - name: auth-google
+          image: shawlu95/centaur-auth-google
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'centaurwealth'
+            - name: MONGO_DB
+              value: 'auth'
+            - name: MONGO_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-pass
+                  key: mongo_pass
+            - name: jwt
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwt
+            - name: GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: google-client-id
+                  key: google_client_id
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: google-client-secret
+                  key: google_client_secret
+            - name: GOOGLE_CLIENT_CALLBACK
+              valueFrom:
+                secretKeyRef:
+                  name: google-client-callback
+                  key: google_client_callback
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-google-srv
+spec:
+  selector:
+    app: auth-google
+  ports:
+    - name: auth-google
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

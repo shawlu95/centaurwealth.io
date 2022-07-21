@@ -1,7 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -25,12 +23,11 @@ import Budget, {
 } from './pages/budget';
 
 function App() {
-  const { user } = useSelector((store) => store.user);
   return (
     <Router>
-      <Header currentUser={user} />
+      <Header />
       <Routes>
-        <Route path='/' element={<Landing currentUser={user} />} />
+        <Route path='/' element={<Landing />} />
 
         <Route path='/auth/signin' element={<Signin />} />
         <Route path='/auth/signup' element={<Signup />} />
@@ -76,7 +73,7 @@ function App() {
 
         <Route path='*' element={<Error />} />
       </Routes>
-      <ToastContainer position='top-left' />
+      <ToastContainer position='top-left' autoClose={1000} />
       <Footer />
     </Router>
   );

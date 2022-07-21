@@ -3,7 +3,7 @@ require('express-async-errors');
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 
-import { currentUser } from '@bookkeeping/common';
+import { authenticate } from '@bookkeeping/common';
 import { errorHandler, NotFoundError } from '@bookkeeping/common';
 
 import {
@@ -23,7 +23,8 @@ app.use(
     secure: false,
   })
 );
-app.use(currentUser);
+app.use(authenticate);
+
 app.use(budegetCreate);
 app.use(budgetIndex);
 app.use(budgetGet);

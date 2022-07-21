@@ -7,7 +7,6 @@ import {
   BadRequestError,
   NotAuthorizedError,
   NotFoundError,
-  requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
 import { AccountUpdatedPublisher } from '../../events/publishers/account-updated-publisher';
@@ -23,13 +22,12 @@ const validators = [
 
 router.patch(
   '/api/account/:id',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
     const { name } = req.body;
     const { id } = req.params;
-    const userId = req.currentUser!.id;
+    const userId = req.user!.id;
 
     const account = await Account.findById(id);
     if (!account) {
@@ -45,7 +43,7 @@ router.patch(
       throw new BadRequestError('Collide with existing account');
     }
 
-    if (account.userId != req.currentUser!.id) {
+    if (account.userId != req.user!.id) {
       throw new NotAuthorizedError();
     }
 

@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const Header = ({ currentUser }) => {
+const Header = () => {
+  const { user } = useSelector((store) => store.user);
   const links = [
-    !currentUser && { label: 'Sign up', href: '/auth/signup' },
-    !currentUser && { label: 'Sign in', href: '/auth/signin' },
-    currentUser && { label: 'Accounts', href: '/account' },
-    currentUser && { label: 'Transactions', href: '/transaction' },
-    currentUser && { label: 'Budgets', href: '/budget' },
-    currentUser && { label: 'Sign out', href: '/auth/signout' },
+    !user && { label: 'Sign up', href: '/auth/signup' },
+    !user && { label: 'Sign in', href: '/auth/signin' },
+    user && { label: 'Accounts', href: '/account' },
+    user && { label: 'Transactions', href: '/transaction' },
+    user && { label: 'Budgets', href: '/budget' },
+    user && { label: 'Sign out', href: '/auth/signout' },
   ]
     .filter((config) => config)
     .map(({ label, href }) => {

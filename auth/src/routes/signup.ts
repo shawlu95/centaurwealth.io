@@ -1,7 +1,5 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import jwt from 'jsonwebtoken';
-
 import { User } from '../model/user';
 import { validateRequest, BadRequestError } from '@bookkeeping/common';
 import { StatusCodes } from 'http-status-codes';
@@ -32,23 +30,11 @@ router.post(
     const user = User.build({ email, password });
     await user.save();
 
-    const userJwt = jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-      },
-      process.env.jwt!
-    );
-
-    // attach jwt to cookie (must be https protocol)
-    req.session = { jwt: userJwt };
-
     new UserSignupPublisher(natsWrapper.client).publish({
       id: user.id,
       email: user.email,
     });
 
-    // send a cookie/jwt
     return res.status(StatusCodes.CREATED).send(user);
   }
 );

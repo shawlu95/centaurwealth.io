@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signinUser } from '../../features/user/userSlice';
+import { signinUser, signinGoogle } from '../../features/user/userSlice';
 import { useDispatch } from 'react-redux';
+import GoogleButton from 'react-google-button';
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const Signin = () => {
           Sign In
         </button>
         <button
-          className='btn btn-secondary'
+          className='btn btn-outline-primary'
           onClick={(event) => {
             handleSignin({
               event,
@@ -58,6 +59,9 @@ const Signin = () => {
         >
           Demo Account
         </button>
+        <a href='/api/auth/google'>
+          <GoogleButton className='w-100' type='light' />
+        </a>
       </div>
     </form>
   );

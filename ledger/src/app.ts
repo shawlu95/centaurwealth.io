@@ -18,7 +18,7 @@ import {
   transactionImport,
 } from './routes/transaction';
 
-import { currentUser } from '@bookkeeping/common';
+import { authenticate } from '@bookkeeping/common';
 import { errorHandler, NotFoundError } from '@bookkeeping/common';
 
 const app = express();
@@ -30,7 +30,7 @@ app.use(
     secure: false,
   })
 );
-app.use(currentUser);
+app.use(authenticate);
 
 app.use(accountCreate);
 app.use(accountRead);

@@ -9,7 +9,6 @@ import {
   EntryType,
   NotAuthorizedError,
   NotFoundError,
-  requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
 import { Transaction } from '../../model/transaction';
@@ -24,11 +23,10 @@ const validators = [
 
 router.get(
   '/api/account/close/:id',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
-    const userId = req.currentUser!.id;
+    const userId = req.user!.id;
     const accountId = req.params.id;
     const lte = req.query.lte!;
     const account = await Account.findById(accountId);

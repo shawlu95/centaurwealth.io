@@ -3,7 +3,7 @@ require('express-async-errors');
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 
-import { currentUser } from '@bookkeeping/common';
+import { authenticate } from '@bookkeeping/common';
 import { errorHandler, NotFoundError } from '@bookkeeping/common';
 
 import { balanceCurrent } from './routes/balance-current';
@@ -18,7 +18,7 @@ app.use(
     secure: false,
   })
 );
-app.use(currentUser);
+app.use(authenticate);
 
 app.use(balanceCurrent);
 app.use(balance);

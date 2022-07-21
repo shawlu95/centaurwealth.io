@@ -4,7 +4,6 @@ import { StatusCodes } from 'http-status-codes';
 import {
   NotAuthorizedError,
   NotFoundError,
-  requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
 import { Transaction } from '../../model/transaction';
@@ -20,7 +19,6 @@ const validators = [
 
 router.delete(
   '/api/transaction/:id',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
@@ -31,7 +29,7 @@ router.delete(
       throw new NotFoundError();
     }
 
-    if (transaction.userId != req.currentUser!.id) {
+    if (transaction.userId != req.user!.id) {
       throw new NotAuthorizedError();
     }
 

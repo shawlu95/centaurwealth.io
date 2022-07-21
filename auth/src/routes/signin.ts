@@ -1,11 +1,8 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import jwt from 'jsonwebtoken';
-
-import { User } from '../model/user';
-import { validateRequest, BadRequestError } from '@bookkeeping/common';
-import { Password } from '../services/password';
+import { validateRequest } from '@bookkeeping/common';
 import { StatusCodes } from 'http-status-codes';
+import passport from 'passport';
 
 const router = express.Router();
 
@@ -18,31 +15,9 @@ router.post(
   '/api/auth/signin',
   validators,
   validateRequest,
-  async (req: Request, res: Response) => {
-    const { email, password } = req.body;
-    const existing = await User.findOne({ email });
-    if (!existing) {
-      // share as little info as possible when login
-      throw new BadRequestError('Invalid credential');
-    }
-
-    const match = await Password.compare(existing.password, password);
-    if (!match) {
-      throw new BadRequestError('Invalid credential');
-    }
-
-    const userJwt = jwt.sign(
-      {
-        id: existing.id,
-        email: existing.email,
-      },
-      process.env.jwt!
-    );
-
-    // attach jwt to cookie (must be https protocol)
-    req.session = { jwt: userJwt };
-
-    return res.status(StatusCodes.OK).json(existing);
+  passport.authenticate('local'),
+  (req: Request, res: Response) => {
+    return res.status(StatusCodes.OK).json(req.user);
   }
 );
 

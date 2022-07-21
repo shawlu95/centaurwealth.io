@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Transaction } from '../../model/transaction';
 import { StatusCodes } from 'http-status-codes';
-import { requireAuth, validateRequest } from '@bookkeeping/common';
+import { validateRequest } from '@bookkeeping/common';
 import { TransactionCreatedPublisher } from '../../events/publishers/transaction-created-publisher';
 import { natsWrapper } from '../../nats-wrapper';
 
@@ -17,12 +17,11 @@ const validators = [
 
 router.post(
   '/api/transaction/import',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
     const { transactions } = req.body;
-    const userId = req.currentUser!.id;
+    const userId = req.user!.id;
     const publisher = new TransactionCreatedPublisher(natsWrapper.client);
     const ids = [];
 

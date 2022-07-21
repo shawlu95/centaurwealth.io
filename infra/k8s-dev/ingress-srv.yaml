@@ -17,6 +17,13 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
+          - path: /api/auth/google/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-google-srv
+                port:
+                  number: 3000
           - path: /api/balance/?(.*)
             pathType: Prefix
             backend:
