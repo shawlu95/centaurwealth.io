@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signinUser } from '../../features/user/userSlice';
+import { signinUser, signinGoogle } from '../../features/user/userSlice';
 import { useDispatch } from 'react-redux';
 
 const Signin = () => {
@@ -46,6 +46,9 @@ const Signin = () => {
         >
           Sign In
         </button>
+        <a className='btn btn-primary' href='/api/auth/google'>
+          Use Google
+        </a>
         <button
           className='btn btn-secondary'
           onClick={(event) => {

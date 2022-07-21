@@ -46,6 +46,11 @@ spec:
                 secretKeyRef:
                   name: google-client-secret
                   key: google_client_secret
+            - name: GOOGLE_CLIENT_CALLBACK
+              valueFrom:
+                secretKeyRef:
+                  name: google-client-callback
+                  key: google_client_callback
 ---
 apiVersion: v1
 kind: Service
