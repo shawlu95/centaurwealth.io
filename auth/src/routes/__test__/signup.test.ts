@@ -78,7 +78,4 @@ it('sets a cookie after successful signup', async () => {
     .expect(StatusCodes.CREATED);
 
   expect(natsWrapper.client.publish).toHaveBeenCalled();
-
-  // cookie is only set on https connection
-  expect(res.get('Set-Cookie')).toBeDefined();
 });
