@@ -24,17 +24,17 @@ const Landing = () => {
             Proportioni et Proportionalita, published 1494.
           </p>
           {!user && (
-            <Link to='/auth/signin' className='btn btn-primary'>
-              Sign in
+            <Link
+              to='/auth/signup'
+              className='btn btn-primary'
+              style={{ marginRight: '15px' }}
+            >
+              Sign up
             </Link>
           )}
           {!user && (
-            <Link
-              to='/auth/signup'
-              className='btn btn-light'
-              style={{ marginLeft: '15px' }}
-            >
-              Sign up
+            <Link to='/auth/signin' className='btn btn-primary-outlined'>
+              Sign in
             </Link>
           )}
         </div>
