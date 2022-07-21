@@ -41,6 +41,9 @@ const Signup = () => {
           />
         </div>
         <button className='btn btn-primary'>Sign Up</button>
+        <a className='btn btn-primary' href='/api/auth/google'>
+          Use Google
+        </a>
       </div>
     </form>
   );
