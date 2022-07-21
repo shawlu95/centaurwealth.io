@@ -51,7 +51,7 @@ router.post(
     await user.save();
 
     // require re-login
-    req.session = null;
+    res.clearCookie('session');
     return res.status(StatusCodes.OK).send();
   }
 );
