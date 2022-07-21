@@ -64,6 +64,10 @@ kubectl config delete-context do-sfo3-centaur
 kubectl create secret generic jwt-secret --from-literal=jwt=foo
 kubectl create secret generic mongo-pass --from-literal=mongo_pass=bar
 
+kubectl create secret generic google-client-id --from-literal=google_client_id=
+kubectl create secret generic google-client-secret --from-literal=google_client_secret=
+kubectl create secret generic google-client-callback --from-literal=google_client_callback=
+
 # delete secret after use
 kubectl delete secret jwt-secret
 kubectl delete secret mongo-pass
