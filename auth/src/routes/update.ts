@@ -4,8 +4,7 @@ import { body } from 'express-validator';
 import { User } from '../model/user';
 import { Password } from '../services/password';
 import {
-  currentUser,
-  requireAuth,
+  authenticate,
   validateRequest,
   BadRequestError,
   NotFoundError,
@@ -24,14 +23,13 @@ const validators = [
 
 router.post(
   '/api/auth/update',
-  currentUser,
-  requireAuth,
+  authenticate,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    const user = await User.findById(req.currentUser!.id);
+    const user = await User.findById(req.user!.id);
 
     if (!user) {
       throw new NotFoundError();
