@@ -1,8 +1,10 @@
 import main from '../assets/images/main.svg';
 import Wrapper from '../assets/wrappers/LandingPage';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const Landing = ({ currentUser }) => {
+const Landing = () => {
+  const { user } = useSelector((store) => store.user);
   return (
     <Wrapper>
       <div className='container page'>
@@ -21,12 +23,12 @@ const Landing = ({ currentUser }) => {
             "father of accounting," in his book Summa de Arithmetica, Geometria,
             Proportioni et Proportionalita, published 1494.
           </p>
-          {!currentUser && (
+          {!user && (
             <Link to='/auth/signin' className='btn btn-primary'>
               Sign in
             </Link>
           )}
-          {!currentUser && (
+          {!user && (
             <Link
               to='/auth/signup'
               className='btn btn-light'
