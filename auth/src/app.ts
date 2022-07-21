@@ -11,6 +11,9 @@ import { updateRouter } from './routes/update';
 
 import { errorHandler, NotFoundError } from '@bookkeeping/common';
 
+import './services/passport';
+import passport from 'passport';
+
 const app = express();
 app.set('trust proxy', true);
 app.use(json());
@@ -20,6 +23,8 @@ app.use(
     secure: false,
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(currentUserRouter);
 app.use(signinRouter);
