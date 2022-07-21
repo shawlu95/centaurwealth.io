@@ -45,7 +45,7 @@ global.signin = (id?: string) => {
   const token = jwt.sign(payload, process.env.jwt!);
 
   // Build session Object. { jwt: MY_JWT }
-  const session = { jwt: token };
+  const session = { passport: { user: { jwt: token } } };
 
   // Turn that session into JSON
   const sessionJSON = JSON.stringify(session);

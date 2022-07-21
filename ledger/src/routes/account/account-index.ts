@@ -6,15 +6,14 @@ import {
   EntryType,
   NotAuthorizedError,
   NotFoundError,
-  requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
 import { Transaction } from '../../model/transaction';
 
 const router = express.Router();
 
-router.get('/api/account', requireAuth, async (req: Request, res: Response) => {
-  const userId = req.currentUser!.id;
+router.get('/api/account', async (req: Request, res: Response) => {
+  const userId = req.user!.id;
   const accounts = await Account.find({ userId });
   return res.status(StatusCodes.OK).send({ accounts });
 });
@@ -28,11 +27,10 @@ const validators = [
 
 router.get(
   '/api/account/:id',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
-    const userId = req.currentUser!.id;
+    const userId = req.user!.id;
     const accountId = req.params.id;
 
     const account = await Account.findById(accountId);

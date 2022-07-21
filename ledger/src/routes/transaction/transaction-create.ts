@@ -4,7 +4,6 @@ import { Transaction } from '../../model/transaction';
 import { StatusCodes } from 'http-status-codes';
 import {
   AccountType,
-  requireAuth,
   validateRequest,
   Entry,
   NotFoundError,
@@ -23,12 +22,11 @@ const validators = [
 
 router.post(
   '/api/transaction',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
     const { memo, date, entries, closing } = req.body;
-    const userId = req.currentUser!.id;
+    const userId = req.user!.id;
 
     // @ts-ignore
     const transaction = Transaction.build({

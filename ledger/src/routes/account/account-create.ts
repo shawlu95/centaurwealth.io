@@ -2,11 +2,7 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Account, AccountType } from '../../model/account';
 import { StatusCodes } from 'http-status-codes';
-import {
-  BadRequestError,
-  requireAuth,
-  validateRequest,
-} from '@bookkeeping/common';
+import { BadRequestError, validateRequest } from '@bookkeeping/common';
 import { AccountCreatedPublisher } from '../../events/publishers/account-created-publisher';
 import { natsWrapper } from '../../nats-wrapper';
 
@@ -22,12 +18,11 @@ const validators = [
 
 router.post(
   '/api/account',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
     const { name, type } = req.body;
-    const userId = req.currentUser!.id;
+    const userId = req.user!.id;
     const genesis = new Date('1970-01-01');
     const exist = await Account.findOne({ name, userId });
     if (exist) {

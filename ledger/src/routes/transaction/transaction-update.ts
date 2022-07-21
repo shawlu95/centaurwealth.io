@@ -4,7 +4,6 @@ import { StatusCodes } from 'http-status-codes';
 import {
   NotAuthorizedError,
   NotFoundError,
-  requireAuth,
   validateRequest,
 } from '@bookkeeping/common';
 import { Transaction } from '../../model/transaction';
@@ -23,13 +22,12 @@ const validators = [
 
 router.put(
   '/api/transaction/:id',
-  requireAuth,
   validators,
   validateRequest,
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const { memo, date, entries } = req.body;
-    const userId = req.currentUser!.id;
+    const userId = req.user!.id;
 
     const transaction = await Transaction.findById(id);
     if (!transaction) {
