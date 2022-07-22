@@ -9,9 +9,10 @@ import { setPage } from '../../features/transaction/transactionSlice';
 const AccountIndex = () => {
   const dispatch = useDispatch();
   const { accounts } = useSelector((store) => store.account);
+  const { transaction } = useSelector((store) => store.transaction);
   useEffect(() => {
     dispatch(getAccounts());
-  }, []);
+  }, [transaction]);
 
   const getSection = (type) => {
     var subtotal = 0;

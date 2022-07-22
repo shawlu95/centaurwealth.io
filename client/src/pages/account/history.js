@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Transactions, PageButtonContianer } from '../../components';
 import { usd } from '../../utils';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAccount } from '../../features/account/accountSlice';
+import { getAccount, getAccounts } from '../../features/account/accountSlice';
 import {
   addEntry,
   resetTransaction,
@@ -14,8 +14,14 @@ const AccountHistory = () => {
   const dispatch = useDispatch();
   const { accountId } = useParams();
   const { account } = useSelector((store) => store.account);
-  const { transactions } = useSelector((store) => store.transaction);
+  const { transactions, transaction } = useSelector(
+    (store) => store.transaction
+  );
   const { totalPages, page } = transactions;
+
+  useEffect(() => {
+    dispatch(getAccounts());
+  }, [transaction]);
 
   useEffect(() => {
     dispatch(getAccount(accountId));

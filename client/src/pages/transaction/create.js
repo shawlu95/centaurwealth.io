@@ -15,7 +15,7 @@ const TransactionCreate = () => {
     dispatch(createTransaction()).then((res) => {
       if (res.meta.requestStatus === 'fulfilled') {
         dispatch(resetTransaction());
-        navigate(-1);
+        setTimeout(() => navigate(-1), 1000);
       }
     });
   };

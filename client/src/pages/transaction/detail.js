@@ -23,7 +23,7 @@ const TransactionDetail = () => {
     dispatch(updateTransaction()).then((res) => {
       if (res.meta.requestStatus === 'fulfilled') {
         dispatch(resetTransaction());
-        navigate(-1);
+        setTimeout(() => navigate(-1), 1000);
       }
     });
   };
@@ -33,7 +33,7 @@ const TransactionDetail = () => {
     dispatch(deleteTransaction(transactionId)).then((res) => {
       if (res.meta.requestStatus === 'fulfilled') {
         dispatch(resetTransaction());
-        navigate(-1);
+        setTimeout(() => navigate(-1), 1000);
       }
     });
   };
