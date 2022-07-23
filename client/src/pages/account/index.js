@@ -28,7 +28,6 @@ const AccountIndex = () => {
             <td>
               <Link
                 to={`/account/history/${account.id}`}
-                className='btn btn-light btn-sm'
                 onClick={() => dispatch(setPage({ page: 1 }))}
               >
                 View
@@ -36,7 +35,7 @@ const AccountIndex = () => {
               {account.type === 'temporary' && (
                 <Link
                   to={`/transaction/close/${account.id}`}
-                  className='btn btn-light btn-sm'
+                  style={{ marginLeft: '1rem' }}
                 >
                   Close
                 </Link>

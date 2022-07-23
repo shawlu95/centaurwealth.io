@@ -22,12 +22,7 @@ const Transactions = () => {
         <td width='20%'>{usd.format(debit)}</td>
         <td width='20%'>{usd.format(credit)}</td>
         <td>
-          <Link
-            to={`/transaction/${transaction.id}`}
-            className='btn btn-light btn-sm'
-          >
-            View
-          </Link>
+          <Link to={`/transaction/${transaction.id}`}>View</Link>
         </td>
       </tr>
     );
