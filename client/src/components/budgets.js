@@ -11,10 +11,10 @@ const Budgets = ({ budgets }) => {
       <table className='table'>
         <thead>
           <tr>
-            <th width='40%'>Category</th>
-            <th width='20%'>Month-to-Date</th>
-            <th width='20%'>Quarter-to-Date</th>
-            <th width='20%'>Year-to-Date</th>
+            <th width='25%'>Category</th>
+            <th width='25%'></th>
+            <th width='25%'></th>
+            <th width='25%'></th>
           </tr>
         </thead>
         <tbody>
@@ -23,7 +23,7 @@ const Budgets = ({ budgets }) => {
             .map((budget) => (
               <React.Fragment key={budget.id}>
                 <tr>
-                  <td width='40%'>
+                  <td width='25%'>
                     <Link
                       to={`/budget/history`}
                       onClick={() => {
@@ -34,26 +34,20 @@ const Budgets = ({ budgets }) => {
                       <b>{budget.name}</b>
                     </Link>
                   </td>
-                  <td width='20%' style={{ color: 'grey' }}>
+                  <td width='25%'>
+                    {usd.format(budget.summary.monthly?.amount || 0)}
+                    {' / '}
                     {usd.format(budget.monthly)}
                   </td>
-                  <td width='20%' style={{ color: 'grey' }}>
+                  <td width='25%'>
+                    {usd.format(budget.summary.quarterly?.amount || 0)}
+                    {' / '}
                     {usd.format(budget.quarterly)}
                   </td>
-                  <td width='20%' style={{ color: 'grey' }}>
-                    {usd.format(budget.annual)}
-                  </td>
-                </tr>
-                <tr>
-                  <td width='40%'></td>
-                  <td width='20%'>
-                    {usd.format(budget.summary.monthly?.amount || 0)}
-                  </td>
-                  <td width='20%'>
-                    {usd.format(budget.summary.quarterly?.amount || 0)}
-                  </td>
-                  <td width='20%'>
+                  <td width='25%'>
                     {usd.format(budget.summary.annual?.amount || 0)}
+                    {' / '}
+                    {usd.format(budget.annual)}
                   </td>
                 </tr>
               </React.Fragment>

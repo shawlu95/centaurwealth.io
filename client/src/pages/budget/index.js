@@ -15,8 +15,8 @@ const BudgetIndex = () => {
   return (
     <div className='container d-grid gap-2'>
       <h3>My Budgets</h3>
-      <Budgets budgets={budgets} />
       <BudgetTotal budgets={budgets} />
+      <Budgets budgets={budgets} />
       <Link to='/budget/create' className='btn btn-primary w-100'>
         Create Budget
       </Link>
