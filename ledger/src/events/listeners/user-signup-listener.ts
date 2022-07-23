@@ -11,13 +11,13 @@ import { Account } from '../../model/account';
 import { natsWrapper } from '../../nats-wrapper';
 
 const defaultAccounts = {
-  asset: ['Checking Account', 'Savings Account', 'Cash'],
+  asset: ['Checking Account', 'Savings Account', 'Cash', 'Default'],
   liability: ['Credit Card Debt', 'Loan'],
   equity: ['Retained Earning'],
   temporary: ['Expense', 'Salary'],
 };
 
-const immutable = new Set(['Expense']);
+const immutable = new Set(['Expense', 'Default']);
 
 export class UserSignupListener extends Listener<UserSignupEvent> {
   readonly subject = Subjects.UserSignup;
