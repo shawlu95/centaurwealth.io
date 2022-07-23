@@ -8,9 +8,9 @@ const BudgetTotal = ({ budgets }) => {
         <thead>
           <tr>
             <th width='40%'>Total</th>
-            <th width='20%'>Month</th>
-            <th width='20%'>Quarter</th>
-            <th width='20%'>Annual</th>
+            <th width='20%'>Month-to-Date</th>
+            <th width='20%'>Quarter-to-Date</th>
+            <th width='20%'>Year-to-Date</th>
           </tr>
         </thead>
         <tbody>
