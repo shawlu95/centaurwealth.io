@@ -12,17 +12,20 @@ const Transaction = () => {
 
   const handleAddEntry = (e) => {
     e.preventDefault();
-    let entry;
+
+    const account = accounts.filter((item) => item.name === 'Default')[0];
+    let entry = {
+      amount: 0,
+      type: 'debit',
+      accountName: account.name,
+      accountId: account.id,
+      accountType: account.type,
+    };
+
     if (transaction.entries.length >= 1) {
-      entry = { ...transaction.entries[transaction.entries.length - 1] };
-    } else {
-      entry = {
-        amount: 0,
-        type: 'debit',
-        accountName: accounts[0].name,
-        accountId: accounts[0].id,
-        accountType: accounts[0].type,
-      };
+      const lastEntry = transaction.entries[transaction.entries.length - 1];
+      entry.amount = lastEntry.amount;
+      entry.type = lastEntry.type === 'debit' ? 'credit' : 'debit';
     }
     dispatch(addEntry({ entry }));
   };
