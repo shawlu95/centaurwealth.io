@@ -92,7 +92,7 @@ AccountIndex.getInitialProps = async (context, axios, currentUser) => {
 
 export default AccountIndex;
 
-import AccountCreate from './create';
-import AccountDetail from './detail';
-import AccountHistory from './history';
+import AccountCreate from './Create';
+import AccountDetail from './Detail';
+import AccountHistory from './History';
 export { AccountCreate, AccountDetail, AccountHistory };

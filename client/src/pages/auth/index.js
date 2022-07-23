@@ -1,5 +1,5 @@
-import Signin from './signin';
-import Signout from './signout';
-import Signup from './signup';
+import Signin from './Signin';
+import Signout from './Signout';
+import Signup from './Signup';
 
 export { Signin, Signout, Signup };

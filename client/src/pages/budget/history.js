@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import React, { useEffect } from 'react';
-import BudgetTotal from '../../components/budgetTotal';
-import Expenses from '../../components/expenses';
+import { BudgetTotal, Expenses } from '../../components';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   getBudgetHistory,

@@ -1,19 +1,19 @@
-import Account from './account';
-import Budget from './budget';
-import Budgets from './budgets';
-import BudgetTotal from './budgetTotal';
-import Card from './card';
-import Cards from './cards';
-import Entry from './entry';
-import Expenses from './expenses';
-import Footer from './footer';
-import Header from './header';
+import Account from './Account';
+import Budget from './Budget';
+import Budgets from './Budgets';
+import BudgetTotal from './BudgetTotal';
+import Card from './Card';
+import Cards from './Cards';
+import Entry from './Entry';
+import Expenses from './Expenses';
+import Footer from './Footer';
+import Header from './Header';
 import Loading from './Loading';
 import Logo from './Logo';
 import PageButtonContianer from './PageButtonContianer';
-import Timeline from './timeline';
-import Transaction from './transaction';
-import Transactions from './transactions';
+import Timeline from './Timeline';
+import Transaction from './Transaction';
+import Transactions from './Transactions';
 
 export {
   Account,

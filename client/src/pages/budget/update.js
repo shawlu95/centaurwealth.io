@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Budget from '../../components/budget';
+import { Budget } from '../../components';
 import { useDispatch } from 'react-redux';
 import { updateBudget } from '../../features/budget/budgetSlice';
 

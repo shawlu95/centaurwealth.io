@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Budgets, BudgetTotal } from '../../components';
 import { useSelector, useDispatch } from 'react-redux';
+import { getBudgets } from '../../features/budget/budgetSlice';
 
 // Not allowed to fetch data in component in server-side render
 const BudgetIndex = () => {
@@ -26,9 +27,8 @@ const BudgetIndex = () => {
 
 export default BudgetIndex;
 
-import BudgetCreate from './create';
-import BudgetHistory from './history';
-import BudgetUpdate from './update';
-import { getBudgets } from '../../features/budget/budgetSlice';
+import BudgetCreate from './Create';
+import BudgetHistory from './History';
+import BudgetUpdate from './Update';
 
 export { BudgetCreate, BudgetHistory, BudgetUpdate };

@@ -1,5 +1,5 @@
 import React from 'react';
-import Entry from './entry';
+import Entry from './Entry';
 import { addEntry } from '../features/transaction/transactionSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { editTransaction } from '../features/transaction/transactionSlice';

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAccounts } from '../features/account/accountSlice';
-import Card from './card';
+import Card from './Card';
 
 const Cards = () => {
   const dispatch = useDispatch();
