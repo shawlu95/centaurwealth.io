@@ -27,12 +27,8 @@ const Header = () => {
         marginBottom: '2rem',
       }}
     >
-      <nav className='navbar nav-light bg-light'>
-        <Link
-          to='/home'
-          className='nav-link'
-          style={{ marginLeft: '15px', color: 'primary-400' }}
-        >
+      <nav className='navbar'>
+        <Link to='/home' className='nav d-flex align-items-center nav-link'>
           Home
         </Link>
         <div className='d-flex justify-content-end'>
