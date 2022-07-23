@@ -11,10 +11,10 @@ const Budgets = ({ budgets }) => {
       <table className='table'>
         <thead>
           <tr>
-            <th width='35%'>Category</th>
-            <th width='15%'>Month</th>
-            <th width='15%'>Quarter</th>
-            <th width='15%'>Annual</th>
+            <th width='40%'>Category</th>
+            <th width='20%'>Month-to-Date</th>
+            <th width='20%'>Quarter-to-Date</th>
+            <th width='20%'>Year-to-Date</th>
           </tr>
         </thead>
         <tbody>
@@ -23,41 +23,36 @@ const Budgets = ({ budgets }) => {
             .map((budget) => (
               <React.Fragment key={budget.id}>
                 <tr>
-                  <td width='35%'>
-                    <b>{budget.name}</b>
-                    <Link
-                      to={`/budget/update`}
-                      className='btn btn-light btn-sm'
-                      onClick={() =>
-                        dispatch(setBudget({ budgetId: budget.id }))
-                      }
-                    >
-                      Edit
-                    </Link>
+                  <td width='40%'>
                     <Link
                       to={`/budget/history`}
-                      className='btn btn-light btn-sm'
                       onClick={() => {
                         dispatch(setPage({ page: 1 }));
                         dispatch(setBudget({ budgetId: budget.id }));
                       }}
                     >
-                      View
+                      <b>{budget.name}</b>
                     </Link>
                   </td>
-                  <td width='15%'>{usd.format(budget.monthly)}</td>
-                  <td width='15%'>{usd.format(budget.quarterly)}</td>
-                  <td width='15%'>{usd.format(budget.annual)}</td>
+                  <td width='20%' style={{ color: 'grey' }}>
+                    {usd.format(budget.monthly)}
+                  </td>
+                  <td width='20%' style={{ color: 'grey' }}>
+                    {usd.format(budget.quarterly)}
+                  </td>
+                  <td width='20%' style={{ color: 'grey' }}>
+                    {usd.format(budget.annual)}
+                  </td>
                 </tr>
                 <tr>
-                  <td width='35%'></td>
-                  <td width='15%'>
+                  <td width='40%'></td>
+                  <td width='20%'>
                     {usd.format(budget.summary.monthly?.amount || 0)}
                   </td>
-                  <td width='15%'>
+                  <td width='20%'>
                     {usd.format(budget.summary.quarterly?.amount || 0)}
                   </td>
-                  <td width='15%'>
+                  <td width='20%'>
                     {usd.format(budget.summary.annual?.amount || 0)}
                   </td>
                 </tr>
