@@ -22,6 +22,7 @@ const Expenses = () => {
           <select
             name='budgetId'
             value={expense.budgetId}
+            style={{ border: 'none' }}
             onChange={(e) => setBudgetId(e, expense.id)}
           >
             {budgets.map((budget) => (

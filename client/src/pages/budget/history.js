@@ -28,22 +28,20 @@ const BudgetHistory = () => {
   return (
     <div className='container d-grid gap-2'>
       <h3>My Budget</h3>
-      <div>
-        <select
-          name='budget'
-          value={budget.id}
-          className='form-control'
-          onChange={(e) => {
-            dispatch(setBudget({ budgetId: e.target.value }));
-          }}
-        >
-          {budgets.map((budget) => (
-            <option value={budget.id} key={budget.id}>
-              {budget.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      <select
+        name='budget'
+        value={budget.id}
+        className='form-control'
+        onChange={(e) => {
+          dispatch(setBudget({ budgetId: e.target.value }));
+        }}
+      >
+        {budgets.map((budget) => (
+          <option value={budget.id} key={budget.id}>
+            {budget.name}
+          </option>
+        ))}
+      </select>
       <BudgetTotal budgets={[budget]} />
       <Expenses />
       <PageButtonContianer
