@@ -9,7 +9,6 @@ import {
 const Entry = ({ index, entry }) => {
   const dispatch = useDispatch();
   const { accounts } = useSelector((store) => store.account);
-  const { transaction } = useSelector((store) => store.transaction);
   const getAccount = (id) => accounts.filter((acc) => acc.id === id)[0];
   const [account, setAccount] = useState(getAccount(entry.accountId));
   const [balance, setBalance] = useState(account.balance);
@@ -19,15 +18,8 @@ const Entry = ({ index, entry }) => {
   const sign = asset * dr;
 
   useEffect(() => {
-    const isNew = transaction.id === undefined;
-    if (isNew) {
-      setBalance(account.balance - sign * entry.amount);
-    }
-  }, []);
-
-  useEffect(() => {
     setAccount(getAccount(entry.accountId));
-    setBalance(account.balance);
+    setBalance(account.balance + sign * entry.amount);
   }, [entry.accountId]);
 
   const handleUpdateEntry = (e) => {
@@ -41,7 +33,6 @@ const Entry = ({ index, entry }) => {
       dispatch(
         updateEntry({ index, name: 'accountName', value: selectedAccount.name })
       );
-      dispatch(updateEntry({ index, name: 'amount', value: '0' }));
     } else if (name === 'amount') {
       const newAmount = parseFloat(value) || 0;
       const oldAmount = parseFloat(entry.amount) || 0;
