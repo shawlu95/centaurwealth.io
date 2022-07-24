@@ -26,16 +26,18 @@ const defaultExpenses = {
   totalPages: 1,
 };
 
+const defaultBudget = {
+  name: '',
+  monthly: 0,
+  quarterly: 0,
+  annual: 0,
+  mutable: true,
+  summary: {},
+};
+
 const initialState = {
   isLoading: false,
-  budget: {
-    name: '',
-    monthly: 0,
-    quarterly: 0,
-    annual: 0,
-    mutable: true,
-    summary: {},
-  },
+  budget: { ...defaultBudget },
   budgets: getFromLocalStorage('budgets') || [],
   expenses: { ...defaultExpenses },
 };
@@ -79,6 +81,10 @@ const budgetSlice = createSlice({
     setBudget: (state, { payload }) => {
       const { budgetId } = payload;
       state.budget = state.budgets.filter((item) => item.id === budgetId)[0];
+    },
+    resetBudget: (state) => {
+      // called when creating new budget
+      state.budget = { ...defaultBudget };
     },
     resetBudgetState: (state) => {
       // called when user signs out
@@ -158,6 +164,6 @@ const budgetSlice = createSlice({
   },
 });
 
-export const { setPage, editBudget, setBudget, resetBudgetState } =
+export const { setPage, editBudget, setBudget, resetBudget, resetBudgetState } =
   budgetSlice.actions;
 export default budgetSlice.reducer;
